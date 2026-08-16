@@ -325,7 +325,7 @@ impl NetworkManager {
             }
             peers.remove(pos);
             drop(peers);
-            self.banned_addrs.lock().unwrap().push(peer_ip);
+            self.banned_addrs.lock().unwrap().push(peer_ip.clone());
             self.rebuild_player_list_and_broadcast();
             println!("[GladeSync] Banned player: {} ({})", player_name, peer_ip);
             return true;
