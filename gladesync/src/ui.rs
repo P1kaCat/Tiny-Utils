@@ -548,6 +548,39 @@ unsafe fn paint_dialog(hwnd: HWND, state: &UIState) {
             SelectObject(hdc, font_btn as _);
             DeleteObject(font_back as _);
         }
+        MODE_HOST_ACTIVE => {
+            let (btn_color, btn_label): (u32, String) = if state.stop_countdown > 0 {
+                (GRAY_COLOR, format!("Stop Hosting... {}\0", state.stop_countdown))
+            } else if state.stop_countdown == -1 {
+                (0x00A84D4D, "Confirm Stop?\0".to_string())
+            } else {
+                (KICK_COLOR, "Stop Hosting\0".to_string())
+            };
+            let brush_action = CreateSolidBrush(btn_color) as *mut c_void;
+            let pen_action = CreatePen(PS_SOLID, 1, btn_color);
+            SelectObject(hdc, brush_action as _);
+            SelectObject(hdc, pen_action as _);
+            RoundRect(hdc, 30, SETUP_ACTION_BTN_T, 390, SETUP_ACTION_BTN_B, 16, 16);
+            DeleteObject(brush_action as _);
+            DeleteObject(pen_action as _);
+            SetTextColor(hdc, BTN_TEXT_COLOR);
+            let mut r_btn1 = RECT { left: 30, top: SETUP_ACTION_BTN_T, right: 390, bottom: SETUP_ACTION_BTN_B };
+            let btn1_txt: Vec<u16> = btn_label.encode_utf16().collect();
+            DrawTextW(hdc, btn1_txt.as_ptr(), -1, &mut r_btn1, (DT_CENTER | DT_SINGLELINE | DT_VCENTER) as u32);
+        }
+        MODE_JOIN_ACTIVE => {
+            let brush_action = CreateSolidBrush(KICK_COLOR) as *mut c_void;
+            let pen_action = CreatePen(PS_SOLID, 1, KICK_COLOR);
+            SelectObject(hdc, brush_action as _);
+            SelectObject(hdc, pen_action as _);
+            RoundRect(hdc, 30, SETUP_ACTION_BTN_T, 390, SETUP_ACTION_BTN_B, 16, 16);
+            DeleteObject(brush_action as _);
+            DeleteObject(pen_action as _);
+            SetTextColor(hdc, BTN_TEXT_COLOR);
+            let mut r_btn1 = RECT { left: 30, top: SETUP_ACTION_BTN_T, right: 390, bottom: SETUP_ACTION_BTN_B };
+            let btn1_txt: Vec<u16> = "Leave\0".encode_utf16().collect();
+            DrawTextW(hdc, btn1_txt.as_ptr(), -1, &mut r_btn1, (DT_CENTER | DT_SINGLELINE | DT_VCENTER) as u32);
+        }
         _ => {}
     }
     DeleteObject(font_btn as _);
@@ -648,7 +681,10 @@ unsafe fn switch_to_layered(hwnd: HWND, state: &mut UIState) {
     ShowWindow(state.hwnd_ip, SW_HIDE);
     ShowWindow(state.hwnd_port, SW_HIDE);
 
-    state.dialog_mode = MODE_IDLE;
+    // Preserve active mode if still hosting or connected
+    if !state.network.is_active() {
+        state.dialog_mode = MODE_IDLE;
+    }
 
     SetWindowRgn(hwnd, std::ptr::null_mut(), 0);
 
