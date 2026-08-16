@@ -219,8 +219,8 @@ impl NetworkManager {
         stream.set_read_timeout(Some(Duration::from_secs(5))).map_err(|e| e.to_string())?;
         let mut ack_reader = BufReader::new(stream.try_clone().map_err(|e| e.to_string())?);
         let mut line = String::new();
-        let mut assigned_id: Option<u32> = None;
-        let mut host_name_recv: Option<String> = None;
+        let assigned_id: u32;
+        let host_name_recv: String;
 
         loop {
             line.clear();
@@ -231,8 +231,8 @@ impl NetworkManager {
                     if trimmed.is_empty() { continue; }
                     match serde_json::from_str::<NetMessage>(trimmed) {
                         Ok(NetMessage::HandshakeAck { assigned_id: id, host_name, .. }) => {
-                            assigned_id = Some(id);
-                            host_name_recv = Some(host_name);
+                            assigned_id = id;
+                            host_name_recv = host_name;
                             break;
                         }
                         _ => continue,
@@ -245,11 +245,6 @@ impl NetworkManager {
             }
         }
 
-        let assigned_id = match assigned_id {
-            Some(id) => id,
-            None => return Err("Host did not confirm the connection.".to_string()),
-        };
-
         // Verified — reset to blocking with no timeout for normal ongoing play.
         stream.set_read_timeout(None).map_err(|e| e.to_string())?;
         let stream_clone = stream.try_clone().map_err(|e| e.to_string())?;
@@ -257,7 +252,7 @@ impl NetworkManager {
         self.is_connected.store(true, Ordering::SeqCst);
         self.local_id.store(assigned_id, Ordering::SeqCst);
         self.update_self_in_player_list();
-        println!("[GladeSync] Connected! ID: #{} | Host: {}", assigned_id, host_name_recv.unwrap_or_default());
+        println!("[GladeSync] Connected! ID: #{} | Host: {}", assigned_id, host_name_recv);
 
         let self_clone = Arc::clone(self);
         thread::spawn(move || {
@@ -323,7 +318,7 @@ impl NetworkManager {
         if let Some(pos) = peers.iter().position(|p| p.name == player_name) {
             let peer_addr = peers[pos].addr.clone();
             // Extract IP only (strip port) for ban list
-            let peer_ip: String = peer_addr.split(':').next().unwrap_or('').to_string();
+            let peer_ip: String = peer_addr.split(':').next().unwrap_or("").to_string();
             let ban_msg = NetMessage::YouBanned { reason: "Banned by host".to_string() };
             if let Ok(json) = serde_json::to_string(&ban_msg) {
                 let _ = writeln!(peers[pos].stream, "{}", json);
