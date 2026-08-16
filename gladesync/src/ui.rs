@@ -6,11 +6,11 @@ use std::thread;
 use tiny_skia::{FillRule, Paint, PathBuilder, Pixmap, Stroke, Transform};
 use windows_sys::Win32::Foundation::{BOOL, HWND, LPARAM, LRESULT, POINT, RECT, SIZE, WPARAM};
 use windows_sys::Win32::Graphics::Gdi::{
-    BeginPaint, CreateCompatibleDC, CreateDIBSection, CreateFontW, CreatePen,
-    CreateRoundRectRgn, CreateSolidBrush, DeleteDC, DeleteObject, DrawTextW, EndPaint,
-    FillRect, GetDC, InvalidateRect, ReleaseDC, RoundRect, SelectObject, SetBkColor,
-    SetBkMode, SetTextColor, SetWindowRgn, BITMAPINFO, BITMAPINFOHEADER, BI_RGB,
-    DIB_RGB_COLORS, DT_CENTER, DT_SINGLELINE, DT_VCENTER, PAINTSTRUCT, PS_SOLID,
+    AddFontMemResourceEx, BeginPaint, CreateCompatibleDC, CreateDIBSection, CreateFontW,
+    CreatePen, CreateRoundRectRgn, CreateSolidBrush, DeleteDC, DeleteObject, DrawTextW,
+    EndPaint, FillRect, GetDC, InvalidateRect, ReleaseDC, RoundRect, SelectObject,
+    SetBkColor, SetBkMode, SetTextColor, SetWindowRgn, BITMAPINFO, BITMAPINFOHEADER,
+    BI_RGB, DIB_RGB_COLORS, DT_CENTER, DT_SINGLELINE, DT_VCENTER, PAINTSTRUCT, PS_SOLID,
     TRANSPARENT,
 };
 use windows_sys::Win32::System::LibraryLoader::GetModuleHandleW;
@@ -27,6 +27,11 @@ use windows_sys::Win32::UI::WindowsAndMessaging::{
     WNDCLASSEXW, WS_CHILD, WS_CLIPCHILDREN, WS_EX_LAYERED, WS_EX_TOOLWINDOW,
     WS_POPUP, WS_TABSTOP, WS_VISIBLE,
 };
+
+/// The game's own hand-drawn UI font, embedded so the mod's menu matches
+/// Tiny Glade's native look exactly (SIL OFL licensed, see assets/PatrickHandSC-Regular.ttf).
+static GAME_FONT_BYTES: &[u8] = include_bytes!("../assets/PatrickHandSC-Regular.ttf");
+const GAME_FONT_NAME: &str = "Patrick Hand SC";
 
 static IS_MENU_OPEN: AtomicBool = AtomicBool::new(false);
 
@@ -45,12 +50,27 @@ const CLOSED_H: i32 = 56;
 /// WM_CTLCOLOREDIT = 0x0133
 const WM_CTLCOLOREDIT: u32 = 0x0133;
 
-/// Dialog background: Ivory parchment F8F4EB → BGR = 0x00EBF4F8
-const BG_COLOR: u32 = 0x00EBF4F8;
-/// Input field background: warm off-white FDFBF6 → BGR = 0x00F6FBFD
-const FIELD_BG_COLOR: u32 = 0x00F6FBFD;
-/// Input field border: soft taupe D4CFC4 → BGR = 0x00C4CFD4
-const FIELD_BORDER_COLOR: u32 = 0x00C4CFD4;
+// ── Soft cream palette (COLORREF is 0x00BBGGRR) ──
+/// Dialog background: warm cream #FBF2E1
+const BG_COLOR: u32 = 0x00E1F2FB;
+/// Input field background: soft warm white #FFFAF0
+const FIELD_BG_COLOR: u32 = 0x00F0FAFF;
+/// Input field border: gentle warm sand #E6D9BE
+const FIELD_BORDER_COLOR: u32 = 0x00BED9E6;
+/// Title / strong text: warm cocoa brown #5B4636
+const TEXT_DARK: u32 = 0x0036465B;
+/// Muted label text: soft taupe #9C8A73
+const TEXT_MUTED: u32 = 0x00738A9C;
+/// Row highlight: pale cream #F6EEDC
+const ROW_ALT_COLOR: u32 = 0x00DCEEF6;
+/// Soft sage green (Host button): #8FAE86
+const GREEN_COLOR: u32 = 0x0086AE8F;
+/// Soft warm amber (Join/Connect button): #E0A868
+const AMBER_COLOR: u32 = 0x0068A8E0;
+/// Soft neutral (Back button): #E6DCC6
+const GRAY_COLOR: u32 = 0x00C6DCE6;
+/// Kick link color: muted terracotta #C97B63
+const KICK_COLOR: u32 = 0x00637BC9;
 
 /// Dialog modes: 0=Idle, 1=HostSetup, 2=JoinSetup
 const MODE_IDLE: u8 = 0;
@@ -72,6 +92,25 @@ struct UIState {
     edit_bg_brush: *mut c_void,
     last_player_count: usize,
     dialog_mode: u8,
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Font loading — embed the game's own TTF so no external file dependency exists
+// ─────────────────────────────────────────────────────────────────────────────
+
+unsafe fn install_game_font() {
+    let mut num_fonts: u32 = 0;
+    AddFontMemResourceEx(
+        GAME_FONT_BYTES.as_ptr() as *const c_void,
+        GAME_FONT_BYTES.len() as u32,
+        std::ptr::null(),
+        &mut num_fonts,
+    );
+}
+
+unsafe fn make_font(size: i32, weight: i32) -> *mut c_void {
+    let font_name: Vec<u16> = format!("{}\0", GAME_FONT_NAME).encode_utf16().collect();
+    CreateFontW(size, 0, 0, 0, weight, 0, 0, 0, 1, 0, 0, 2, 0, font_name.as_ptr())
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -113,6 +152,8 @@ fn find_game_window() -> HWND {
 
 pub fn start_ui_thread(network: Arc<NetworkManager>) {
     thread::spawn(move || unsafe {
+        install_game_font();
+
         let game_hwnd = find_game_window();
 
         let instance = GetModuleHandleW(std::ptr::null());
@@ -215,13 +256,14 @@ unsafe fn render_star_button(hwnd: HWND, state: &UIState) {
     pb.close();
     let rect_path = pb.finish().unwrap();
 
+    // Warm frosted cream fill
     let mut bg_paint = Paint::default();
-    bg_paint.set_color_rgba8(85, 80, 75, 150);
+    bg_paint.set_color_rgba8(95, 85, 70, 150);
     bg_paint.anti_alias = true;
     pixmap.fill_path(&rect_path, &bg_paint, FillRule::Winding, Transform::identity(), None);
 
     let mut border_paint = Paint::default();
-    border_paint.set_color_rgba8(210, 205, 195, 100);
+    border_paint.set_color_rgba8(230, 217, 190, 110);
     border_paint.anti_alias = true;
     let mut stroke = Stroke::default();
     stroke.width = 1.5;
@@ -240,7 +282,7 @@ unsafe fn render_star_button(hwnd: HWND, state: &UIState) {
     sp.close();
     if let Some(star_path) = sp.finish() {
         let mut star_paint = Paint::default();
-        star_paint.set_color_rgba8(255, 255, 255, 250);
+        star_paint.set_color_rgba8(255, 250, 240, 250);
         star_paint.anti_alias = true;
         pixmap.fill_path(&star_path, &star_paint, FillRule::Winding, Transform::identity(), None);
     }
@@ -301,21 +343,18 @@ unsafe fn render_star_button(hwnd: HWND, state: &UIState) {
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
-// Helper: draw a themed input field background (rounded rect with subtle border)
+// Helper: draw a themed input field background (rounded rect with soft border)
 // ─────────────────────────────────────────────────────────────────────────────
 
-unsafe fn draw_field_bg(hdc: HDC_TYPE, x: i32, y: i32, w: i32, h: i32) {
-    // Fill with field background color
+unsafe fn draw_field_bg(hdc: *mut c_void, x: i32, y: i32, w: i32, h: i32) {
     let brush = CreateSolidBrush(FIELD_BG_COLOR) as *mut c_void;
     let pen = CreatePen(PS_SOLID, 1, FIELD_BORDER_COLOR);
     SelectObject(hdc, brush as _);
     SelectObject(hdc, pen as _);
-    RoundRect(hdc, x, y, x + w, y + h, 8, 8);
+    RoundRect(hdc, x, y, x + w, y + h, 10, 10);
     DeleteObject(brush as _);
     DeleteObject(pen as _);
 }
-
-type HDC_TYPE = *mut c_void;
 
 // ─────────────────────────────────────────────────────────────────────────────
 // Dialog painter
@@ -332,30 +371,29 @@ unsafe fn paint_dialog(hwnd: HWND, state: &UIState) {
     DeleteObject(bg_brush as _);
 
     SetBkMode(hdc, TRANSPARENT as _);
-    let font_name: Vec<u16> = "Segoe UI\0".encode_utf16().collect();
 
-    // ── Title ──
-    let font_title = CreateFontW(22, 0, 0, 0, 700, 0, 0, 0, 1, 0, 0, 2, 0, font_name.as_ptr());
+    // ── Title (game font, larger, bold-ish weight) ──
+    let font_title = make_font(26, 400);
     SelectObject(hdc, font_title as _);
-    SetTextColor(hdc, 0x0036312B);
-    let mut r_title = RECT { left: 30, top: 15, right: 350, bottom: 50 };
+    SetTextColor(hdc, TEXT_DARK);
+    let mut r_title = RECT { left: 30, top: 12, right: 350, bottom: 52 };
     let title: Vec<u16> = "Tiny Utils\0".encode_utf16().collect();
     DrawTextW(hdc, title.as_ptr(), -1, &mut r_title, (DT_SINGLELINE | DT_VCENTER) as u32);
     DeleteObject(font_title as _);
 
     // ── Close [✕] ──
-    let font_x = CreateFontW(20, 0, 0, 0, 700, 0, 0, 0, 1, 0, 0, 2, 0, font_name.as_ptr());
+    let font_x = make_font(22, 400);
     SelectObject(hdc, font_x as _);
-    SetTextColor(hdc, 0x00706B60);
-    let mut r_close = RECT { left: 375, top: 15, right: 405, bottom: 45 };
+    SetTextColor(hdc, TEXT_MUTED);
+    let mut r_close = RECT { left: 375, top: 15, right: 405, bottom: 48 };
     let x_str: Vec<u16> = "✕\0".encode_utf16().collect();
     DrawTextW(hdc, x_str.as_ptr(), -1, &mut r_close, (DT_CENTER | DT_SINGLELINE | DT_VCENTER) as u32);
     DeleteObject(font_x as _);
 
-    // ── "Pseudo:" label ──
-    let font_label = CreateFontW(14, 0, 0, 0, 400, 0, 0, 0, 1, 0, 0, 2, 0, font_name.as_ptr());
+    // ── "Pseudo:" label (game font) ──
+    let font_label = make_font(17, 400);
     SelectObject(hdc, font_label as _);
-    SetTextColor(hdc, 0x00706B60);
+    SetTextColor(hdc, TEXT_MUTED);
     let label_pseudo: Vec<u16> = "Pseudo:\0".encode_utf16().collect();
     let mut r_lpseudo = RECT { left: 30, top: 52, right: 200, bottom: 72 };
     DrawTextW(hdc, label_pseudo.as_ptr(), -1, &mut r_lpseudo, (DT_SINGLELINE | DT_VCENTER) as u32);
@@ -365,11 +403,9 @@ unsafe fn paint_dialog(hwnd: HWND, state: &UIState) {
 
     // ── IP/Port labels (only in setup modes) ──
     if state.dialog_mode == MODE_HOST {
-        // Centered "Port:" label
         let label_port: Vec<u16> = "Port:\0".encode_utf16().collect();
         let mut r_lport = RECT { left: 100, top: 110, right: 320, bottom: 130 };
         DrawTextW(hdc, label_port.as_ptr(), -1, &mut r_lport, (DT_CENTER | DT_SINGLELINE | DT_VCENTER) as u32);
-        // Centered port field background (x=110, w=200)
         draw_field_bg(hdc, 108, 132, 204, 32);
     } else if state.dialog_mode == MODE_JOIN {
         let label_ip: Vec<u16> = "IP Address:\0".encode_utf16().collect();
@@ -378,95 +414,87 @@ unsafe fn paint_dialog(hwnd: HWND, state: &UIState) {
         let label_port: Vec<u16> = "Port:\0".encode_utf16().collect();
         let mut r_lport = RECT { left: 290, top: 110, right: 390, bottom: 130 };
         DrawTextW(hdc, label_port.as_ptr(), -1, &mut r_lport, (DT_SINGLELINE | DT_VCENTER) as u32);
-        // IP field background (x=30, w=240)
         draw_field_bg(hdc, 28, 132, 244, 32);
-        // Port field background (x=290, w=100)
         draw_field_bg(hdc, 288, 132, 104, 32);
     }
     DeleteObject(font_label as _);
 
-    // ── Buttons ──
-    let font_btn = CreateFontW(16, 0, 0, 0, 700, 0, 0, 0, 1, 0, 0, 2, 0, font_name.as_ptr());
+    // ── Buttons (game font) ──
+    let font_btn = make_font(19, 400);
     SelectObject(hdc, font_btn as _);
 
     match state.dialog_mode {
         MODE_IDLE => {
-            // Host button (green)
-            let brush_green = CreateSolidBrush(0x00628056) as *mut c_void;
-            let pen_green = CreatePen(PS_SOLID, 1, 0x00628056);
+            let brush_green = CreateSolidBrush(GREEN_COLOR) as *mut c_void;
+            let pen_green = CreatePen(PS_SOLID, 1, GREEN_COLOR);
             SelectObject(hdc, brush_green as _);
             SelectObject(hdc, pen_green as _);
-            RoundRect(hdc, 30, 115, 390, 155, 14, 14);
+            RoundRect(hdc, 30, 115, 390, 155, 16, 16);
             DeleteObject(brush_green as _);
             DeleteObject(pen_green as _);
-            SetTextColor(hdc, 0x00FFFFFF);
+            SetTextColor(hdc, 0x00FFFBF3);
             let mut r_btn1 = RECT { left: 30, top: 115, right: 390, bottom: 155 };
             let btn1_txt: Vec<u16> = "Host Multiplayer Game\0".encode_utf16().collect();
             DrawTextW(hdc, btn1_txt.as_ptr(), -1, &mut r_btn1, (DT_CENTER | DT_SINGLELINE | DT_VCENTER) as u32);
 
-            // Join button (amber)
-            let brush_amber = CreateSolidBrush(0x00447ABD) as *mut c_void;
-            let pen_amber = CreatePen(PS_SOLID, 1, 0x00447ABD);
+            let brush_amber = CreateSolidBrush(AMBER_COLOR) as *mut c_void;
+            let pen_amber = CreatePen(PS_SOLID, 1, AMBER_COLOR);
             SelectObject(hdc, brush_amber as _);
             SelectObject(hdc, pen_amber as _);
-            RoundRect(hdc, 30, 165, 390, 205, 14, 14);
+            RoundRect(hdc, 30, 165, 390, 205, 16, 16);
             DeleteObject(brush_amber as _);
             DeleteObject(pen_amber as _);
-            SetTextColor(hdc, 0x00FFFFFF);
+            SetTextColor(hdc, 0x00FFFBF3);
             let mut r_btn2 = RECT { left: 30, top: 165, right: 390, bottom: 205 };
             let btn2_txt: Vec<u16> = "Join Friend\0".encode_utf16().collect();
             DrawTextW(hdc, btn2_txt.as_ptr(), -1, &mut r_btn2, (DT_CENTER | DT_SINGLELINE | DT_VCENTER) as u32);
         }
         MODE_HOST => {
-            // Start Hosting button (green)
-            let brush_green = CreateSolidBrush(0x00628056) as *mut c_void;
-            let pen_green = CreatePen(PS_SOLID, 1, 0x00628056);
+            let brush_green = CreateSolidBrush(GREEN_COLOR) as *mut c_void;
+            let pen_green = CreatePen(PS_SOLID, 1, GREEN_COLOR);
             SelectObject(hdc, brush_green as _);
             SelectObject(hdc, pen_green as _);
-            RoundRect(hdc, 30, 170, 390, 210, 14, 14);
+            RoundRect(hdc, 30, 170, 390, 210, 16, 16);
             DeleteObject(brush_green as _);
             DeleteObject(pen_green as _);
-            SetTextColor(hdc, 0x00FFFFFF);
+            SetTextColor(hdc, 0x00FFFBF3);
             let mut r_btn1 = RECT { left: 30, top: 170, right: 390, bottom: 210 };
             let btn1_txt: Vec<u16> = "▶ Start Hosting\0".encode_utf16().collect();
             DrawTextW(hdc, btn1_txt.as_ptr(), -1, &mut r_btn1, (DT_CENTER | DT_SINGLELINE | DT_VCENTER) as u32);
 
-            // Back button (gray)
-            let brush_gray = CreateSolidBrush(0x00D4CFC4) as *mut c_void;
-            let pen_gray = CreatePen(PS_SOLID, 1, 0x00D4CFC4);
+            let brush_gray = CreateSolidBrush(GRAY_COLOR) as *mut c_void;
+            let pen_gray = CreatePen(PS_SOLID, 1, GRAY_COLOR);
             SelectObject(hdc, brush_gray as _);
             SelectObject(hdc, pen_gray as _);
-            RoundRect(hdc, 30, 220, 390, 250, 10, 10);
+            RoundRect(hdc, 30, 220, 390, 250, 12, 12);
             DeleteObject(brush_gray as _);
             DeleteObject(pen_gray as _);
-            SetTextColor(hdc, 0x005F5A52);
+            SetTextColor(hdc, TEXT_DARK);
             let mut r_back = RECT { left: 30, top: 220, right: 390, bottom: 250 };
             let back_txt: Vec<u16> = "← Back\0".encode_utf16().collect();
             DrawTextW(hdc, back_txt.as_ptr(), -1, &mut r_back, (DT_CENTER | DT_SINGLELINE | DT_VCENTER) as u32);
         }
         MODE_JOIN => {
-            // Connect button (amber)
-            let brush_amber = CreateSolidBrush(0x00447ABD) as *mut c_void;
-            let pen_amber = CreatePen(PS_SOLID, 1, 0x00447ABD);
+            let brush_amber = CreateSolidBrush(AMBER_COLOR) as *mut c_void;
+            let pen_amber = CreatePen(PS_SOLID, 1, AMBER_COLOR);
             SelectObject(hdc, brush_amber as _);
             SelectObject(hdc, pen_amber as _);
-            RoundRect(hdc, 30, 170, 390, 210, 14, 14);
+            RoundRect(hdc, 30, 170, 390, 210, 16, 16);
             DeleteObject(brush_amber as _);
             DeleteObject(pen_amber as _);
-            SetTextColor(hdc, 0x00FFFFFF);
+            SetTextColor(hdc, 0x00FFFBF3);
             let mut r_btn2 = RECT { left: 30, top: 170, right: 390, bottom: 210 };
             let btn2_txt: Vec<u16> = "▶ Connect\0".encode_utf16().collect();
             DrawTextW(hdc, btn2_txt.as_ptr(), -1, &mut r_btn2, (DT_CENTER | DT_SINGLELINE | DT_VCENTER) as u32);
 
-            // Back button (gray)
-            let brush_gray = CreateSolidBrush(0x00D4CFC4) as *mut c_void;
-            let pen_gray = CreatePen(PS_SOLID, 1, 0x00D4CFC4);
+            let brush_gray = CreateSolidBrush(GRAY_COLOR) as *mut c_void;
+            let pen_gray = CreatePen(PS_SOLID, 1, GRAY_COLOR);
             SelectObject(hdc, brush_gray as _);
             SelectObject(hdc, pen_gray as _);
-            RoundRect(hdc, 30, 220, 390, 250, 10, 10);
+            RoundRect(hdc, 30, 220, 390, 250, 12, 12);
             DeleteObject(brush_gray as _);
             DeleteObject(pen_gray as _);
-            SetTextColor(hdc, 0x005F5A52);
+            SetTextColor(hdc, TEXT_DARK);
             let mut r_back = RECT { left: 30, top: 220, right: 390, bottom: 250 };
             let back_txt: Vec<u16> = "← Back\0".encode_utf16().collect();
             DrawTextW(hdc, back_txt.as_ptr(), -1, &mut r_back, (DT_CENTER | DT_SINGLELINE | DT_VCENTER) as u32);
@@ -475,26 +503,26 @@ unsafe fn paint_dialog(hwnd: HWND, state: &UIState) {
     }
     DeleteObject(font_btn as _);
 
-    // ── Players section header ──
+    // ── Players section header (game font) ──
     let header_y = if state.dialog_mode == MODE_IDLE { 215 } else { 260 };
-    let font_players = CreateFontW(15, 0, 0, 0, 700, 0, 0, 0, 1, 0, 0, 2, 0, font_name.as_ptr());
+    let font_players = make_font(18, 400);
     SelectObject(hdc, font_players as _);
-    SetTextColor(hdc, 0x0036312B);
+    SetTextColor(hdc, TEXT_DARK);
     let players_header: Vec<u16> = "Connected Players\0".encode_utf16().collect();
-    let mut r_ph = RECT { left: 30, top: header_y, right: 390, bottom: header_y + 20 };
+    let mut r_ph = RECT { left: 30, top: header_y, right: 390, bottom: header_y + 22 };
     DrawTextW(hdc, players_header.as_ptr(), -1, &mut r_ph, (DT_SINGLELINE | DT_VCENTER) as u32);
     DeleteObject(font_players as _);
 
-    // ── Player list ──
-    let font_player = CreateFontW(13, 0, 0, 0, 400, 0, 0, 0, 1, 0, 0, 2, 0, font_name.as_ptr());
+    // ── Player list (game font) ──
+    let font_player = make_font(16, 400);
     SelectObject(hdc, font_player as _);
     let players = state.network.get_player_list();
     let is_host = state.network.is_hosting();
     let local_name = state.network.get_local_name();
-    let list_top = header_y + 30;
+    let list_top = header_y + 32;
 
     if players.is_empty() {
-        SetTextColor(hdc, 0x009A948A);
+        SetTextColor(hdc, TEXT_MUTED);
         let no_players: Vec<u16> = "No players connected\0".encode_utf16().collect();
         let mut r_np = RECT { left: 30, top: list_top, right: 390, bottom: list_top + 20 };
         DrawTextW(hdc, no_players.as_ptr(), -1, &mut r_np, (DT_SINGLELINE | DT_VCENTER) as u32);
@@ -504,7 +532,7 @@ unsafe fn paint_dialog(hwnd: HWND, state: &UIState) {
             let y_bottom = y_top + PLAYER_ROW_H - 4;
 
             if i % 2 == 0 {
-                let row_brush = CreateSolidBrush(0x00F2EFE8) as *mut c_void;
+                let row_brush = CreateSolidBrush(ROW_ALT_COLOR) as *mut c_void;
                 let row_rect = RECT { left: 25, top: y_top - 2, right: 395, bottom: y_bottom + 2 };
                 FillRect(hdc, &row_rect, row_brush);
                 DeleteObject(row_brush as _);
@@ -516,13 +544,13 @@ unsafe fn paint_dialog(hwnd: HWND, state: &UIState) {
                 player.name.clone()
             };
             let name_wide: Vec<u16> = format!("{}\0", display_name).encode_utf16().collect();
-            SetTextColor(hdc, 0x0036312B);
+            SetTextColor(hdc, TEXT_DARK);
             let mut r_name = RECT { left: 35, top: y_top, right: 300, bottom: y_bottom };
             DrawTextW(hdc, name_wide.as_ptr(), -1, &mut r_name, (DT_SINGLELINE | DT_VCENTER) as u32);
 
             if is_host && !player.is_host && player.name != local_name {
                 let kick_wide: Vec<u16> = "[Kick]\0".encode_utf16().collect();
-                SetTextColor(hdc, 0x004444CC);
+                SetTextColor(hdc, KICK_COLOR);
                 let mut r_kick = RECT { left: 320, top: y_top, right: 385, bottom: y_bottom };
                 DrawTextW(hdc, kick_wide.as_ptr(), -1, &mut r_kick, (DT_CENTER | DT_SINGLELINE | DT_VCENTER) as u32);
             }
@@ -530,10 +558,10 @@ unsafe fn paint_dialog(hwnd: HWND, state: &UIState) {
     }
     DeleteObject(font_player as _);
 
-    // ── Status text ──
-    let font_stat = CreateFontW(13, 0, 0, 0, 600, 0, 0, 0, 1, 0, 0, 2, 0, font_name.as_ptr());
+    // ── Status text (game font) ──
+    let font_stat = make_font(15, 400);
     SelectObject(hdc, font_stat as _);
-    SetTextColor(hdc, 0x00706B60);
+    SetTextColor(hdc, TEXT_MUTED);
     let stat: Vec<u16> = format!("● Status: {}\0", state.status_text).encode_utf16().collect();
     let mut r_stat = RECT { left: 30, top: 425, right: 390, bottom: 455 };
     DrawTextW(hdc, stat.as_ptr(), -1, &mut r_stat, (DT_CENTER | DT_SINGLELINE | DT_VCENTER) as u32);
@@ -561,7 +589,7 @@ unsafe fn switch_to_opaque(hwnd: HWND, state: &mut UIState) {
     SetWindowRgn(hwnd, rgn, 1);
 
     ShowWindow(state.hwnd_pseudo, SW_SHOW);
-    update_field_visibility(hwnd, state);
+    update_field_visibility(state);
 
     InvalidateRect(hwnd, std::ptr::null(), 1);
 }
@@ -588,7 +616,7 @@ unsafe fn switch_to_layered(hwnd: HWND, state: &mut UIState) {
     render_star_button(hwnd, state);
 }
 
-unsafe fn update_field_visibility(hwnd: HWND, state: &mut UIState) {
+unsafe fn update_field_visibility(state: &mut UIState) {
     match state.dialog_mode {
         MODE_IDLE => {
             ShowWindow(state.hwnd_ip, SW_HIDE);
@@ -596,12 +624,10 @@ unsafe fn update_field_visibility(hwnd: HWND, state: &mut UIState) {
         }
         MODE_HOST => {
             ShowWindow(state.hwnd_ip, SW_HIDE);
-            // Center the port field for host mode
             MoveWindow(state.hwnd_port, 110, 133, 200, 28, 0);
             ShowWindow(state.hwnd_port, SW_SHOW);
         }
         MODE_JOIN => {
-            // Restore port field position to join layout
             MoveWindow(state.hwnd_ip, 30, 133, 240, 28, 0);
             MoveWindow(state.hwnd_port, 290, 133, 100, 28, 0);
             ShowWindow(state.hwnd_ip, SW_SHOW);
@@ -630,7 +656,6 @@ unsafe extern "system" fn wnd_proc(
             let edit_class: Vec<u16> = "EDIT\0".encode_utf16().collect();
             let inst = GetModuleHandleW(std::ptr::null());
 
-            // Pseudo input — no WS_BORDER, custom drawn background
             let default_pseudo: Vec<u16> = "Builder\0".encode_utf16().collect();
             let hwnd_pseudo = CreateWindowExW(
                 0,
@@ -644,7 +669,6 @@ unsafe extern "system" fn wnd_proc(
                 std::ptr::null(),
             );
 
-            // IP input — no WS_BORDER
             let default_ip: Vec<u16> = "127.0.0.1\0".encode_utf16().collect();
             let hwnd_ip = CreateWindowExW(
                 0,
@@ -658,7 +682,6 @@ unsafe extern "system" fn wnd_proc(
                 std::ptr::null(),
             );
 
-            // Port input — no WS_BORDER
             let default_port: Vec<u16> = "7777\0".encode_utf16().collect();
             let hwnd_port = CreateWindowExW(
                 0,
@@ -670,6 +693,18 @@ unsafe extern "system" fn wnd_proc(
                 ID_EDIT_PORT as *mut c_void,
                 inst,
                 std::ptr::null(),
+            );
+
+            // Apply the game font to the edit controls too
+            let edit_font = make_font(17, 400);
+            windows_sys::Win32::UI::WindowsAndMessaging::SendMessageW(
+                hwnd_pseudo, 0x0030 /* WM_SETFONT */, edit_font as usize, 1,
+            );
+            windows_sys::Win32::UI::WindowsAndMessaging::SendMessageW(
+                hwnd_ip, 0x0030, edit_font as usize, 1,
+            );
+            windows_sys::Win32::UI::WindowsAndMessaging::SendMessageW(
+                hwnd_port, 0x0030, edit_font as usize, 1,
             );
 
             let state = &mut *(state_ptr as *mut UIState);
@@ -708,7 +743,7 @@ unsafe extern "system" fn wnd_proc(
             if !sp.is_null() {
                 let state = &*sp;
                 let hdc = wparam as *mut c_void;
-                SetTextColor(hdc, 0x0036312B);
+                SetTextColor(hdc, TEXT_DARK);
                 SetBkColor(hdc, FIELD_BG_COLOR);
                 return state.edit_bg_brush as LRESULT;
             }
@@ -783,7 +818,6 @@ unsafe extern "system" fn wnd_proc(
                     switch_to_opaque(hwnd, &mut *sp);
                 }
             } else {
-                // Close [✕]
                 if x >= 375 && x <= 405 && y >= 15 && y <= 45 {
                     if !sp.is_null() {
                         IS_MENU_OPEN.store(false, Ordering::SeqCst);
@@ -797,25 +831,19 @@ unsafe extern "system" fn wnd_proc(
 
                     match state.dialog_mode {
                         MODE_IDLE => {
-                            // Host button (y: 115..155)
                             if x >= 30 && x <= 390 && y >= 115 && y <= 155 {
                                 state.dialog_mode = MODE_HOST;
-                                update_field_visibility(hwnd, state);
+                                update_field_visibility(state);
                                 InvalidateRect(hwnd, std::ptr::null(), 1);
-                            }
-                            // Join button (y: 165..205)
-                            else if x >= 30 && x <= 390 && y >= 165 && y <= 205 {
+                            } else if x >= 30 && x <= 390 && y >= 165 && y <= 205 {
                                 state.dialog_mode = MODE_JOIN;
-                                update_field_visibility(hwnd, state);
+                                update_field_visibility(state);
                                 InvalidateRect(hwnd, std::ptr::null(), 1);
-                            }
-                            // Kick buttons in player list
-                            else if y >= 240 && y <= PLAYER_LIST_BOTTOM && state.network.is_hosting() {
+                            } else if y >= 240 && y <= PLAYER_LIST_BOTTOM && state.network.is_hosting() {
                                 handle_kick_click(hwnd, state, x, y, 240);
                             }
                         }
                         MODE_HOST => {
-                            // Start Hosting button (y: 170..210)
                             if x >= 30 && x <= 390 && y >= 170 && y <= 210 {
                                 let mut pseudo_buf = [0u16; 32];
                                 GetWindowTextW(state.hwnd_pseudo, pseudo_buf.as_mut_ptr(), 32);
@@ -838,16 +866,13 @@ unsafe extern "system" fn wnd_proc(
                                     Err(e) => state.status_text = format!("Error: {}", e),
                                 }
                                 InvalidateRect(hwnd, std::ptr::null(), 1);
-                            }
-                            // Back button (y: 220..250)
-                            else if x >= 30 && x <= 390 && y >= 220 && y <= 250 {
+                            } else if x >= 30 && x <= 390 && y >= 220 && y <= 250 {
                                 state.dialog_mode = MODE_IDLE;
-                                update_field_visibility(hwnd, state);
+                                update_field_visibility(state);
                                 InvalidateRect(hwnd, std::ptr::null(), 1);
                             }
                         }
                         MODE_JOIN => {
-                            // Connect button (y: 170..210)
                             if x >= 30 && x <= 390 && y >= 170 && y <= 210 {
                                 let mut pseudo_buf = [0u16; 32];
                                 GetWindowTextW(state.hwnd_pseudo, pseudo_buf.as_mut_ptr(), 32);
@@ -888,11 +913,9 @@ unsafe extern "system" fn wnd_proc(
                                         InvalidateRect(h, std::ptr::null(), 1);
                                     }
                                 });
-                            }
-                            // Back button (y: 220..250)
-                            else if x >= 30 && x <= 390 && y >= 220 && y <= 250 {
+                            } else if x >= 30 && x <= 390 && y >= 220 && y <= 250 {
                                 state.dialog_mode = MODE_IDLE;
-                                update_field_visibility(hwnd, state);
+                                update_field_visibility(state);
                                 InvalidateRect(hwnd, std::ptr::null(), 1);
                             }
                         }
