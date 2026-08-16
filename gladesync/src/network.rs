@@ -1,6 +1,7 @@
 use crate::protocol::{NetMessage, PlayerInfo};
 use std::io::{BufRead, BufReader, Write};
 use std::net::{TcpListener, TcpStream};
+use socket2::{Socket, Domain, Type};
 use std::sync::atomic::{AtomicBool, AtomicU32, Ordering};
 use std::sync::{Arc, Mutex};
 use std::thread;
@@ -86,7 +87,16 @@ impl NetworkManager {
 
     pub fn start_host(self: &Arc<Self>, port: u16) -> Result<(), String> {
         let bind_addr = format!("0.0.0.0:{}", port);
-        let listener = TcpListener::bind(&bind_addr).map_err(|e| e.to_string())?;
+        // Use SO_REUSEADDR to avoid "address already in use" error
+        // when restarting the game after a crash or unclean shutdown
+        let socket = Socket::new(Domain::IPV4, Type::STREAM, None)
+            .map_err(|e| e.to_string())?;
+        socket.set_reuse_address(true).map_err(|e| e.to_string())?;
+        let addr: std::net::SocketAddr = bind_addr.parse()
+            .map_err(|e: std::net::AddrParseError| e.to_string())?;
+        socket.bind(&addr.into()).map_err(|e| e.to_string())?;
+        socket.listen(128).map_err(|e| e.to_string())?;
+        let listener: TcpListener = socket.into().map_err(|e| e.to_string())?;
         self.is_hosting.store(true, Ordering::SeqCst);
         self.local_id.store(1, Ordering::SeqCst);
         let host_name = self.get_local_name();
