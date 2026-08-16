@@ -67,6 +67,9 @@ const BTN_TEXT_COLOR: u32 = 0x00FFFBF3;
 const MODE_IDLE: u8 = 0;
 const MODE_HOST: u8 = 1;
 const MODE_JOIN: u8 = 2;
+const MODE_HOST_ACTIVE: u8 = 3;
+const MODE_JOIN_ACTIVE: u8 = 4;
+const TIMER_COUNTDOWN: usize = 2;
 
 // ── Layout constants ──
 const CLOSE_L: i32 = 372;
@@ -118,6 +121,7 @@ struct UIState {
     edit_bg_brush: *mut c_void,
     last_player_count: usize,
     dialog_mode: u8,
+    stop_countdown: i32,
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -255,6 +259,7 @@ pub fn start_ui_thread(network: Arc<NetworkManager>) {
             edit_bg_brush: CreateSolidBrush(FIELD_BG_COLOR) as *mut c_void,
             last_player_count: 0,
             dialog_mode: MODE_IDLE,
+            stop_countdown: 0,
         }));
 
         let hwnd = CreateWindowExW(
@@ -662,7 +667,7 @@ unsafe fn switch_to_layered(hwnd: HWND, state: &mut UIState) {
 
 unsafe fn update_field_visibility(state: &mut UIState) {
     match state.dialog_mode {
-        MODE_IDLE => {
+        MODE_IDLE | MODE_HOST_ACTIVE | MODE_JOIN_ACTIVE => {
             ShowWindow(state.hwnd_ip, SW_HIDE);
             ShowWindow(state.hwnd_port, SW_HIDE);
         }
@@ -813,6 +818,17 @@ unsafe extern "system" fn wnd_proc(
             if !sp.is_null() {
                 let st = &mut *sp;
 
+                if wparam == TIMER_COUNTDOWN {
+                    if st.stop_countdown > 0 {
+                        st.stop_countdown -= 1;
+                        if st.stop_countdown == 0 {
+                            st.stop_countdown = -1;
+                        }
+                        InvalidateRect(hwnd, std::ptr::null(), 1);
+                    }
+                    return 0;
+                }
+
                 if !st.game_hwnd.is_null() {
                     let is_minimized = IsIconic(st.game_hwnd) != 0;
                     if is_minimized {
@@ -910,6 +926,8 @@ unsafe extern "system" fn wnd_proc(
                                     Ok(_) => {
                                         state.status_text = format!("Host active on port {}", port);
                                         state.last_player_count = 0;
+                                        state.dialog_mode = MODE_HOST_ACTIVE;
+                                        update_field_visibility(state);
                                     }
                                     Err(e) => state.status_text = format!("Error: {}", e),
                                 }
@@ -955,6 +973,8 @@ unsafe extern "system" fn wnd_proc(
                                             Ok(_) => {
                                                 s.status_text = "Connected successfully!".to_string();
                                                 s.last_player_count = 0;
+                                                s.dialog_mode = MODE_JOIN_ACTIVE;
+                                                update_field_visibility(&mut *s);
                                             }
                                             Err(e) => s.status_text = format!("Connection failed: {}", e),
                                         }
@@ -962,6 +982,36 @@ unsafe extern "system" fn wnd_proc(
                                     }
                                 });
                             } else if x >= 30 && x <= 390 && y >= SETUP_BACK_BTN_T && y <= SETUP_BACK_BTN_B {
+                                state.dialog_mode = MODE_IDLE;
+                                update_field_visibility(state);
+                                InvalidateRect(hwnd, std::ptr::null(), 1);
+                            }
+                        }
+                        MODE_HOST_ACTIVE => {
+                            if x >= 30 && x <= 390 && y >= SETUP_ACTION_BTN_T && y <= SETUP_ACTION_BTN_B {
+                                if state.stop_countdown == 0 {
+                                    state.stop_countdown = 5;
+                                    SetTimer(hwnd, TIMER_COUNTDOWN, 1000, None);
+                                    InvalidateRect(hwnd, std::ptr::null(), 1);
+                                } else if state.stop_countdown == -1 {
+                                    state.network.disconnect();
+                                    state.stop_countdown = 0;
+                                    state.status_text = "Hosting stopped".to_string();
+                                    state.dialog_mode = MODE_IDLE;
+                                    update_field_visibility(state);
+                                    InvalidateRect(hwnd, std::ptr::null(), 1);
+                                }
+                            }
+                            let header_y = SETUP_BACK_BTN_B + 14;
+                            let list_top = header_y + PLAYERS_HEADER_H + 8;
+                            if y >= list_top && y <= PLAYER_LIST_HIT_BOTTOM && state.network.is_hosting() {
+                                handle_kick_click(hwnd, state, x, y, list_top);
+                            }
+                        }
+                        MODE_JOIN_ACTIVE => {
+                            if x >= 30 && x <= 390 && y >= SETUP_ACTION_BTN_T && y <= SETUP_ACTION_BTN_B {
+                                state.network.disconnect();
+                                state.status_text = "Disconnected".to_string();
                                 state.dialog_mode = MODE_IDLE;
                                 update_field_visibility(state);
                                 InvalidateRect(hwnd, std::ptr::null(), 1);
