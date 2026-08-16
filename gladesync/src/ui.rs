@@ -54,7 +54,7 @@ struct UIState {
     hwnd_port: HWND,
     status_text: String,
     last_game_pos: (i32, i32),
-    edit_bg_brush: isize, // persistent HBRUSH for edit controls (white)
+    edit_bg_brush: *mut c_void, // persistent HBRUSH for edit controls (white)
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -132,7 +132,7 @@ pub fn start_ui_thread(network: Arc<NetworkManager>) {
             hwnd_port: std::ptr::null_mut(),
             status_text: "Ready to play".to_string(),
             last_game_pos: (game_rect.left, game_rect.top),
-            edit_bg_brush: CreateSolidBrush(0x00FFFFFF),
+            edit_bg_brush: CreateSolidBrush(0x00FFFFFF) as *mut c_void,
         }));
 
         // Start as a layered popup (for the translucent star button)
@@ -416,7 +416,7 @@ unsafe fn switch_to_layered(hwnd: HWND, state: &mut UIState) {
     ShowWindow(state.hwnd_port, SW_HIDE);
 
     // 2. Remove window region
-    SetWindowRgn(hwnd, 0, 0);
+    SetWindowRgn(hwnd, std::ptr::null_mut(), 0);
 
     // 3. Add WS_EX_LAYERED back
     let ex = GetWindowLongPtrW(hwnd, GWL_EXSTYLE);
@@ -503,8 +503,8 @@ unsafe extern "system" fn wnd_proc(
         WM_ERASEBKGND => {
             // When dialog is open: fill with ivory to prevent black flash
             if IS_MENU_OPEN.load(Ordering::SeqCst) {
-                let hdc = wparam as isize;
-                let brush = CreateSolidBrush(BG_COLOR);
+                let hdc = wparam as *mut c_void;
+                let brush = CreateSolidBrush(BG_COLOR) as *mut c_void;
                 let mut rc: RECT = std::mem::zeroed();
                 GetClientRect(hwnd, &mut rc);
                 FillRect(hdc, &rc, brush);
@@ -519,7 +519,7 @@ unsafe extern "system" fn wnd_proc(
             let sp = GetWindowLongPtrW(hwnd, GWLP_USERDATA) as *mut UIState;
             if !sp.is_null() {
                 let state = &*sp;
-                let hdc = wparam as isize;
+                let hdc = wparam as *mut c_void;
                 SetTextColor(hdc, 0x0036312B);
                 SetBkColor(hdc, 0x00FFFFFF);
                 return state.edit_bg_brush as LRESULT;
