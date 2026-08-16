@@ -8,6 +8,8 @@ use windows_sys::Win32::System::LibraryLoader::GetModuleHandleA;
 use windows_sys::Win32::System::Memory::{
     MEMORY_BASIC_INFORMATION, MEM_COMMIT, PAGE_READWRITE, VirtualQuery,
 };
+use windows_sys::Win32::System::Threading::GetCurrentProcess;
+use windows_sys::Win32::System::Diagnostics::Debug::ReadProcessMemory;
 
 pub static BORDER_UNLOCKED: AtomicBool = AtomicBool::new(false);
 
@@ -27,7 +29,7 @@ impl HookEngine {
 
     pub fn start(&self) {
         println!("[GladeSync Engine] Game Base Address: 0x{:X}", self.base_address);
-        // self.start_camera_scanner(); // Disabled - causes crash
+        self.start_camera_scanner();
         self.start_transform_broadcast();
 
         let net = Arc::clone(&self.network);
@@ -41,22 +43,17 @@ impl HookEngine {
 
     pub fn read_camera_data() -> Option<(f32, f32, f32, f32, f32)> {
         let pos_addr = CAMERA_POS_ADDR.load(Ordering::SeqCst);
-        if pos_addr == 0 {
-            return None;
-        }
+        if pos_addr == 0 { return None; }
         unsafe {
             let p = pos_addr as *const f32;
             let x = std::ptr::read_unaligned(p);
             let y = std::ptr::read_unaligned(p.add(1));
             let z = std::ptr::read_unaligned(p.add(2));
-
             let rot_addr = CAMERA_ROT_ADDR.load(Ordering::SeqCst);
             let (yaw, pitch) = if rot_addr != 0 {
                 let r = rot_addr as *const f32;
                 (std::ptr::read_unaligned(r), std::ptr::read_unaligned(r.add(1)))
-            } else {
-                (0.0, 0.0)
-            };
+            } else { (0.0, 0.0) };
             Some((x, y, z, yaw, pitch))
         }
     }
@@ -74,6 +71,19 @@ impl HookEngine {
                 }
             }
         });
+    }
+
+    /// Safe memory read using ReadProcessMemory (won't crash on freed pages).
+    unsafe fn safe_read(addr: usize, buf: &mut [u8]) -> bool {
+        let handle = GetCurrentProcess();
+        let mut bytes_read: usize = 0;
+        ReadProcessMemory(
+            handle,
+            addr as *const std::ffi::c_void,
+            buf.as_mut_ptr() as *mut std::ffi::c_void,
+            buf.len(),
+            &mut bytes_read,
+        ) != 0
     }
 
     fn start_camera_scanner(&self) {
@@ -106,7 +116,7 @@ impl HookEngine {
             println!("[GladeSync] Camera candidates: {}", candidates.len());
 
             if candidates.is_empty() {
-                eprintln!("[GladeSync] No camera found. Make sure to move the camera during the scan!");
+                eprintln!("[GladeSync] No camera found. Try moving the camera more!");
                 return;
             }
 
@@ -117,9 +127,13 @@ impl HookEngine {
             unsafe {
                 for offset in 3..=16usize {
                     let test_addr = addr + offset * 4;
-                    let v1 = std::ptr::read_unaligned(test_addr as *const f32);
+                    let mut buf1 = [0u8; 4];
+                    let mut buf2 = [0u8; 4];
+                    if !Self::safe_read(test_addr, &mut buf1) { continue; }
                     thread::sleep(Duration::from_millis(100));
-                    let v2 = std::ptr::read_unaligned(test_addr as *const f32);
+                    if !Self::safe_read(test_addr, &mut buf2) { continue; }
+                    let v1 = f32::from_le_bytes(buf1);
+                    let v2 = f32::from_le_bytes(buf2);
                     if v1.is_finite() && v2.is_finite() && (v1 - v2).abs() > 0.001 {
                         CAMERA_ROT_ADDR.store(test_addr, Ordering::SeqCst);
                         println!("[GladeSync] Camera rotation found at 0x{:X} (+{})", test_addr, offset);
@@ -134,7 +148,7 @@ impl HookEngine {
 
     fn scan_writable_regions() -> Vec<(usize, usize)> {
         let mut regions = Vec::new();
-        let mut addr = 1usize;
+        let mut addr = 0x10000usize; // Skip null page
 
         loop {
             let mut mbi: MEMORY_BASIC_INFORMATION = unsafe { std::mem::zeroed() };
@@ -145,7 +159,8 @@ impl HookEngine {
 
             if mbi.State == (MEM_COMMIT as u32)
                 && (mbi.Protect as u32 & PAGE_READWRITE as u32) != 0
-                && mbi.RegionSize <= 16 * 1024 * 1024
+                && mbi.RegionSize >= 4096
+                && mbi.RegionSize <= 4 * 1024 * 1024
             {
                 regions.push((mbi.BaseAddress as usize, mbi.RegionSize));
             }
@@ -154,7 +169,6 @@ impl HookEngine {
             if next <= addr { break; }
             addr = next;
         }
-
         regions
     }
 
@@ -165,7 +179,11 @@ impl HookEngine {
         let mut off = 0usize;
         for (base, size) in regions {
             unsafe {
-                std::ptr::copy_nonoverlapping(*base as *const u8, buf.as_mut_ptr().add(off), *size);
+                // Use safe read instead of direct copy
+                if !Self::safe_read(*base, &mut buf[off..off + size]) {
+                    // If read fails, zero that section (already zeroed)
+                    println!("[GladeSync] Skip region 0x{:X} (read failed)", *base);
+                }
             }
             off += size;
         }
@@ -187,10 +205,7 @@ impl HookEngine {
 
                 let mut all_changed = true;
                 for j in 0..12 {
-                    if a_chunk[j] == b_chunk[j] {
-                        all_changed = false;
-                        break;
-                    }
+                    if a_chunk[j] == b_chunk[j] { all_changed = false; break; }
                 }
 
                 if all_changed {
@@ -226,14 +241,9 @@ impl HookEngine {
             .duration_since(UNIX_EPOCH)
             .unwrap_or_default()
             .as_millis() as u64;
-
         let payload = ActionPayload {
-            edit_category: category,
-            action_id: now,
-            timestamp: now,
-            data_hex: hex_data,
+            edit_category: category, action_id: now, timestamp: now, data_hex: hex_data,
         };
-
         self.network.broadcast_message(&NetMessage::BroadcastAction(payload));
     }
 }
