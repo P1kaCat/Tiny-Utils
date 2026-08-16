@@ -48,8 +48,14 @@ const WM_CTLCOLOREDIT: u32 = 0x0133;
 /// Background color: Ivory parchment F8F4EB → COLORREF (BGR) = 0x00EBF4F8
 const BG_COLOR: u32 = 0x00EBF4F8;
 
-/// Player list area Y range
-const PLAYER_LIST_TOP: i32 = 290;
+/// Dialog modes: 0=Idle, 1=HostSetup, 2=JoinSetup
+const MODE_IDLE: u8 = 0;
+const MODE_HOST: u8 = 1;
+const MODE_JOIN: u8 = 2;
+
+/// Player list area Y range (used in Idle mode where there's more space)
+const PLAYER_LIST_TOP_IDLE: i32 = 225;
+const PLAYER_LIST_TOP_SETUP: i32 = 270;
 const PLAYER_LIST_BOTTOM: i32 = 410;
 const PLAYER_ROW_H: i32 = 28;
 
@@ -63,6 +69,7 @@ struct UIState {
     last_game_pos: (i32, i32),
     edit_bg_brush: *mut c_void,
     last_player_count: usize,
+    dialog_mode: u8,
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -143,9 +150,9 @@ pub fn start_ui_thread(network: Arc<NetworkManager>) {
             last_game_pos: (game_rect.left, game_rect.top),
             edit_bg_brush: CreateSolidBrush(0x00FFFFFF) as *mut c_void,
             last_player_count: 0,
+            dialog_mode: MODE_IDLE,
         }));
 
-        // Start as a layered popup (for the translucent star button)
         let hwnd = CreateWindowExW(
             WS_EX_TOOLWINDOW | WS_EX_LAYERED,
             class_name.as_ptr(),
@@ -165,7 +172,6 @@ pub fn start_ui_thread(network: Arc<NetworkManager>) {
             return;
         }
 
-        // Render the initial star button
         render_star_button(hwnd, &*state);
         SetTimer(hwnd, TIMER_REFRESH, 30, None);
 
@@ -178,7 +184,7 @@ pub fn start_ui_thread(network: Arc<NetworkManager>) {
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
-// Star button renderer (layered mode only, via tiny-skia + UpdateLayeredWindow)
+// Star button renderer
 // ─────────────────────────────────────────────────────────────────────────────
 
 unsafe fn render_star_button(hwnd: HWND, state: &UIState) {
@@ -193,7 +199,6 @@ unsafe fn render_star_button(hwnd: HWND, state: &UIState) {
     let w_f = w as f32;
     let h_f = h as f32;
 
-    // Frosted glass rounded rectangle
     let r = 16.0f32;
     let mut pb = PathBuilder::new();
     pb.move_to(1.5 + r, 1.5);
@@ -208,13 +213,11 @@ unsafe fn render_star_button(hwnd: HWND, state: &UIState) {
     pb.close();
     let rect_path = pb.finish().unwrap();
 
-    // Frosted smoke-taupe fill
     let mut bg_paint = Paint::default();
     bg_paint.set_color_rgba8(85, 80, 75, 150);
     bg_paint.anti_alias = true;
     pixmap.fill_path(&rect_path, &bg_paint, FillRule::Winding, Transform::identity(), None);
 
-    // Soft highlight border
     let mut border_paint = Paint::default();
     border_paint.set_color_rgba8(210, 205, 195, 100);
     border_paint.anti_alias = true;
@@ -222,7 +225,6 @@ unsafe fn render_star_button(hwnd: HWND, state: &UIState) {
     stroke.width = 1.5;
     pixmap.stroke_path(&rect_path, &border_paint, &stroke, Transform::identity(), None);
 
-    // 4-pointed Bézier star icon
     let cx = w_f / 2.0;
     let cy = h_f / 2.0;
     let r_outer = 16.0f32;
@@ -241,7 +243,6 @@ unsafe fn render_star_button(hwnd: HWND, state: &UIState) {
         pixmap.fill_path(&star_path, &star_paint, FillRule::Winding, Transform::identity(), None);
     }
 
-    // Blit pixmap (RGBA premultiplied) → BGRA DIB → UpdateLayeredWindow
     let screen_dc = GetDC(std::ptr::null_mut());
     let mem_dc = CreateCompatibleDC(screen_dc);
 
@@ -266,21 +267,20 @@ unsafe fn render_star_button(hwnd: HWND, state: &UIState) {
     let hbitmap = CreateDIBSection(mem_dc, &bmi, DIB_RGB_COLORS, &mut bits, std::ptr::null_mut(), 0);
     SelectObject(mem_dc, hbitmap as _);
 
-    // RGBA → BGRA swap
     let src = pixmap.data();
     let dst = std::slice::from_raw_parts_mut(bits as *mut u8, (w * h * 4) as usize);
     for i in 0..(w * h) as usize {
-        dst[i * 4] = src[i * 4 + 2];     // B
-        dst[i * 4 + 1] = src[i * 4 + 1]; // G
-        dst[i * 4 + 2] = src[i * 4];     // R
-        dst[i * 4 + 3] = src[i * 4 + 3]; // A
+        dst[i * 4] = src[i * 4 + 2];
+        dst[i * 4 + 1] = src[i * 4 + 1];
+        dst[i * 4 + 2] = src[i * 4];
+        dst[i * 4 + 3] = src[i * 4 + 3];
     }
 
     let blend = windows_sys::Win32::Graphics::Gdi::BLENDFUNCTION {
         BlendOp: 0,
         BlendFlags: 0,
         SourceConstantAlpha: 255,
-        AlphaFormat: 1, // AC_SRC_ALPHA
+        AlphaFormat: 1,
     };
 
     let mut game_rect: RECT = std::mem::zeroed();
@@ -299,14 +299,13 @@ unsafe fn render_star_button(hwnd: HWND, state: &UIState) {
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
-// Dialog painter (opaque GDI, called from WM_PAINT when dialog is open)
+// Dialog painter
 // ─────────────────────────────────────────────────────────────────────────────
 
 unsafe fn paint_dialog(hwnd: HWND, state: &UIState) {
     let mut ps: PAINTSTRUCT = std::mem::zeroed();
     let hdc = BeginPaint(hwnd, &mut ps);
 
-    // Fill background with ivory parchment
     let bg_brush = CreateSolidBrush(BG_COLOR) as *mut c_void;
     let mut rc: RECT = std::mem::zeroed();
     GetClientRect(hwnd, &mut rc);
@@ -325,7 +324,7 @@ unsafe fn paint_dialog(hwnd: HWND, state: &UIState) {
     DrawTextW(hdc, title.as_ptr(), -1, &mut r_title, (DT_SINGLELINE | DT_VCENTER) as u32);
     DeleteObject(font_title as _);
 
-    // ── Close button [✕] ──
+    // ── Close [✕] ──
     let font_x = CreateFontW(20, 0, 0, 0, 700, 0, 0, 0, 1, 0, 0, 2, 0, font_name.as_ptr());
     SelectObject(hdc, font_x as _);
     SetTextColor(hdc, 0x00706B60);
@@ -334,7 +333,7 @@ unsafe fn paint_dialog(hwnd: HWND, state: &UIState) {
     DrawTextW(hdc, x_str.as_ptr(), -1, &mut r_close, (DT_CENTER | DT_SINGLELINE | DT_VCENTER) as u32);
     DeleteObject(font_x as _);
 
-    // ── Label "Pseudo:" ──
+    // ── "Pseudo:" label ──
     let font_label = CreateFontW(14, 0, 0, 0, 400, 0, 0, 0, 1, 0, 0, 2, 0, font_name.as_ptr());
     SelectObject(hdc, font_label as _);
     SetTextColor(hdc, 0x00706B60);
@@ -342,50 +341,118 @@ unsafe fn paint_dialog(hwnd: HWND, state: &UIState) {
     let mut r_lpseudo = RECT { left: 30, top: 52, right: 200, bottom: 72 };
     DrawTextW(hdc, label_pseudo.as_ptr(), -1, &mut r_lpseudo, (DT_SINGLELINE | DT_VCENTER) as u32);
 
-    // ── Labels "IP Address:" and "Port:" ──
-    let label_ip: Vec<u16> = "IP Address:\0".encode_utf16().collect();
-    let mut r_lip = RECT { left: 30, top: 110, right: 270, bottom: 130 };
-    DrawTextW(hdc, label_ip.as_ptr(), -1, &mut r_lip, (DT_SINGLELINE | DT_VCENTER) as u32);
-    let label_port: Vec<u16> = "Port:\0".encode_utf16().collect();
-    let mut r_lport = RECT { left: 290, top: 110, right: 390, bottom: 130 };
-    DrawTextW(hdc, label_port.as_ptr(), -1, &mut r_lport, (DT_SINGLELINE | DT_VCENTER) as u32);
+    // ── IP/Port labels (only in setup modes) ──
+    if state.dialog_mode == MODE_HOST {
+        let label_port: Vec<u16> = "Port:\0".encode_utf16().collect();
+        let mut r_lport = RECT { left: 30, top: 110, right: 390, bottom: 130 };
+        DrawTextW(hdc, label_port.as_ptr(), -1, &mut r_lport, (DT_SINGLELINE | DT_VCENTER) as u32);
+    } else if state.dialog_mode == MODE_JOIN {
+        let label_ip: Vec<u16> = "IP Address:\0".encode_utf16().collect();
+        let mut r_lip = RECT { left: 30, top: 110, right: 270, bottom: 130 };
+        DrawTextW(hdc, label_ip.as_ptr(), -1, &mut r_lip, (DT_SINGLELINE | DT_VCENTER) as u32);
+        let label_port: Vec<u16> = "Port:\0".encode_utf16().collect();
+        let mut r_lport = RECT { left: 290, top: 110, right: 390, bottom: 130 };
+        DrawTextW(hdc, label_port.as_ptr(), -1, &mut r_lport, (DT_SINGLELINE | DT_VCENTER) as u32);
+    }
     DeleteObject(font_label as _);
 
-    // ── Host button (green #568062 → BGR 0x00628056) ──
+    // ── Buttons ──
     let font_btn = CreateFontW(16, 0, 0, 0, 700, 0, 0, 0, 1, 0, 0, 2, 0, font_name.as_ptr());
     SelectObject(hdc, font_btn as _);
-    let brush_green = CreateSolidBrush(0x00628056) as *mut c_void;
-    let pen_green = CreatePen(PS_SOLID, 1, 0x00628056);
-    SelectObject(hdc, brush_green as _);
-    SelectObject(hdc, pen_green as _);
-    RoundRect(hdc, 30, 170, 390, 210, 14, 14);
-    DeleteObject(brush_green as _);
-    DeleteObject(pen_green as _);
-    SetTextColor(hdc, 0x00FFFFFF);
-    let mut r_btn1 = RECT { left: 30, top: 170, right: 390, bottom: 210 };
-    let btn1_txt: Vec<u16> = "Host Multiplayer Game\0".encode_utf16().collect();
-    DrawTextW(hdc, btn1_txt.as_ptr(), -1, &mut r_btn1, (DT_CENTER | DT_SINGLELINE | DT_VCENTER) as u32);
 
-    // ── Join button (amber #BD7A44 → BGR 0x00447ABD) ──
-    let brush_amber = CreateSolidBrush(0x00447ABD) as *mut c_void;
-    let pen_amber = CreatePen(PS_SOLID, 1, 0x00447ABD);
-    SelectObject(hdc, brush_amber as _);
-    SelectObject(hdc, pen_amber as _);
-    RoundRect(hdc, 30, 220, 390, 260, 14, 14);
-    DeleteObject(brush_amber as _);
-    DeleteObject(pen_amber as _);
-    SetTextColor(hdc, 0x00FFFFFF);
-    let mut r_btn2 = RECT { left: 30, top: 220, right: 390, bottom: 260 };
-    let btn2_txt: Vec<u16> = "Join Friend\0".encode_utf16().collect();
-    DrawTextW(hdc, btn2_txt.as_ptr(), -1, &mut r_btn2, (DT_CENTER | DT_SINGLELINE | DT_VCENTER) as u32);
+    match state.dialog_mode {
+        MODE_IDLE => {
+            // Host button (green)
+            let brush_green = CreateSolidBrush(0x00628056) as *mut c_void;
+            let pen_green = CreatePen(PS_SOLID, 1, 0x00628056);
+            SelectObject(hdc, brush_green as _);
+            SelectObject(hdc, pen_green as _);
+            RoundRect(hdc, 30, 115, 390, 155, 14, 14);
+            DeleteObject(brush_green as _);
+            DeleteObject(pen_green as _);
+            SetTextColor(hdc, 0x00FFFFFF);
+            let mut r_btn1 = RECT { left: 30, top: 115, right: 390, bottom: 155 };
+            let btn1_txt: Vec<u16> = "Host Multiplayer Game\0".encode_utf16().collect();
+            DrawTextW(hdc, btn1_txt.as_ptr(), -1, &mut r_btn1, (DT_CENTER | DT_SINGLELINE | DT_VCENTER) as u32);
+
+            // Join button (amber)
+            let brush_amber = CreateSolidBrush(0x00447ABD) as *mut c_void;
+            let pen_amber = CreatePen(PS_SOLID, 1, 0x00447ABD);
+            SelectObject(hdc, brush_amber as _);
+            SelectObject(hdc, pen_amber as _);
+            RoundRect(hdc, 30, 165, 390, 205, 14, 14);
+            DeleteObject(brush_amber as _);
+            DeleteObject(pen_amber as _);
+            SetTextColor(hdc, 0x00FFFFFF);
+            let mut r_btn2 = RECT { left: 30, top: 165, right: 390, bottom: 205 };
+            let btn2_txt: Vec<u16> = "Join Friend\0".encode_utf16().collect();
+            DrawTextW(hdc, btn2_txt.as_ptr(), -1, &mut r_btn2, (DT_CENTER | DT_SINGLELINE | DT_VCENTER) as u32);
+        }
+        MODE_HOST => {
+            // Start Hosting button (green)
+            let brush_green = CreateSolidBrush(0x00628056) as *mut c_void;
+            let pen_green = CreatePen(PS_SOLID, 1, 0x00628056);
+            SelectObject(hdc, brush_green as _);
+            SelectObject(hdc, pen_green as _);
+            RoundRect(hdc, 30, 170, 390, 210, 14, 14);
+            DeleteObject(brush_green as _);
+            DeleteObject(pen_green as _);
+            SetTextColor(hdc, 0x00FFFFFF);
+            let mut r_btn1 = RECT { left: 30, top: 170, right: 390, bottom: 210 };
+            let btn1_txt: Vec<u16> = "▶ Start Hosting\0".encode_utf16().collect();
+            DrawTextW(hdc, btn1_txt.as_ptr(), -1, &mut r_btn1, (DT_CENTER | DT_SINGLELINE | DT_VCENTER) as u32);
+
+            // Back button (gray, smaller)
+            let brush_gray = CreateSolidBrush(0x00D4CFC4) as *mut c_void;
+            let pen_gray = CreatePen(PS_SOLID, 1, 0x00D4CFC4);
+            SelectObject(hdc, brush_gray as _);
+            SelectObject(hdc, pen_gray as _);
+            RoundRect(hdc, 30, 220, 390, 250, 10, 10);
+            DeleteObject(brush_gray as _);
+            DeleteObject(pen_gray as _);
+            SetTextColor(hdc, 0x005F5A52);
+            let mut r_back = RECT { left: 30, top: 220, right: 390, bottom: 250 };
+            let back_txt: Vec<u16> = "← Back\0".encode_utf16().collect();
+            DrawTextW(hdc, back_txt.as_ptr(), -1, &mut r_back, (DT_CENTER | DT_SINGLELINE | DT_VCENTER) as u32);
+        }
+        MODE_JOIN => {
+            // Connect button (amber)
+            let brush_amber = CreateSolidBrush(0x00447ABD) as *mut c_void;
+            let pen_amber = CreatePen(PS_SOLID, 1, 0x00447ABD);
+            SelectObject(hdc, brush_amber as _);
+            SelectObject(hdc, pen_amber as _);
+            RoundRect(hdc, 30, 170, 390, 210, 14, 14);
+            DeleteObject(brush_amber as _);
+            DeleteObject(pen_amber as _);
+            SetTextColor(hdc, 0x00FFFFFF);
+            let mut r_btn2 = RECT { left: 30, top: 170, right: 390, bottom: 210 };
+            let btn2_txt: Vec<u16> = "▶ Connect\0".encode_utf16().collect();
+            DrawTextW(hdc, btn2_txt.as_ptr(), -1, &mut r_btn2, (DT_CENTER | DT_SINGLELINE | DT_VCENTER) as u32);
+
+            // Back button (gray, smaller)
+            let brush_gray = CreateSolidBrush(0x00D4CFC4) as *mut c_void;
+            let pen_gray = CreatePen(PS_SOLID, 1, 0x00D4CFC4);
+            SelectObject(hdc, brush_gray as _);
+            SelectObject(hdc, pen_gray as _);
+            RoundRect(hdc, 30, 220, 390, 250, 10, 10);
+            DeleteObject(brush_gray as _);
+            DeleteObject(pen_gray as _);
+            SetTextColor(hdc, 0x005F5A52);
+            let mut r_back = RECT { left: 30, top: 220, right: 390, bottom: 250 };
+            let back_txt: Vec<u16> = "← Back\0".encode_utf16().collect();
+            DrawTextW(hdc, back_txt.as_ptr(), -1, &mut r_back, (DT_CENTER | DT_SINGLELINE | DT_VCENTER) as u32);
+        }
+        _ => {}
+    }
     DeleteObject(font_btn as _);
 
     // ── Players section header ──
+    let header_y = if state.dialog_mode == MODE_IDLE { 215 } else { 260 };
     let font_players = CreateFontW(15, 0, 0, 0, 700, 0, 0, 0, 1, 0, 0, 2, 0, font_name.as_ptr());
     SelectObject(hdc, font_players as _);
     SetTextColor(hdc, 0x0036312B);
     let players_header: Vec<u16> = "Connected Players\0".encode_utf16().collect();
-    let mut r_ph = RECT { left: 30, top: 270, right: 390, bottom: 290 };
+    let mut r_ph = RECT { left: 30, top: header_y, right: 390, bottom: header_y + 20 };
     DrawTextW(hdc, players_header.as_ptr(), -1, &mut r_ph, (DT_SINGLELINE | DT_VCENTER) as u32);
     DeleteObject(font_players as _);
 
@@ -395,18 +462,18 @@ unsafe fn paint_dialog(hwnd: HWND, state: &UIState) {
     let players = state.network.get_player_list();
     let is_host = state.network.is_hosting();
     let local_name = state.network.get_local_name();
+    let list_top = header_y + 30;
 
     if players.is_empty() {
         SetTextColor(hdc, 0x009A948A);
         let no_players: Vec<u16> = "No players connected\0".encode_utf16().collect();
-        let mut r_np = RECT { left: 30, top: 295, right: 390, bottom: 315 };
+        let mut r_np = RECT { left: 30, top: list_top, right: 390, bottom: list_top + 20 };
         DrawTextW(hdc, no_players.as_ptr(), -1, &mut r_np, (DT_SINGLELINE | DT_VCENTER) as u32);
     } else {
         for (i, player) in players.iter().enumerate() {
-            let y_top = PLAYER_LIST_TOP + 5 + (i as i32 * PLAYER_ROW_H);
+            let y_top = list_top + (i as i32 * PLAYER_ROW_H);
             let y_bottom = y_top + PLAYER_ROW_H - 4;
 
-            // Alternating row background
             if i % 2 == 0 {
                 let row_brush = CreateSolidBrush(0x00F2EFE8) as *mut c_void;
                 let row_rect = RECT { left: 25, top: y_top - 2, right: 395, bottom: y_bottom + 2 };
@@ -414,7 +481,6 @@ unsafe fn paint_dialog(hwnd: HWND, state: &UIState) {
                 DeleteObject(row_brush as _);
             }
 
-            // Player name (with host crown)
             let display_name = if player.is_host {
                 format!("★ {} (Host)", player.name)
             } else {
@@ -425,10 +491,9 @@ unsafe fn paint_dialog(hwnd: HWND, state: &UIState) {
             let mut r_name = RECT { left: 35, top: y_top, right: 300, bottom: y_bottom };
             DrawTextW(hdc, name_wide.as_ptr(), -1, &mut r_name, (DT_SINGLELINE | DT_VCENTER) as u32);
 
-            // Kick button (only host, not for self, not for host player)
             if is_host && !player.is_host && player.name != local_name {
                 let kick_wide: Vec<u16> = "[Kick]\0".encode_utf16().collect();
-                SetTextColor(hdc, 0x004444CC); // red-ish
+                SetTextColor(hdc, 0x004444CC);
                 let mut r_kick = RECT { left: 320, top: y_top, right: 385, bottom: y_bottom };
                 DrawTextW(hdc, kick_wide.as_ptr(), -1, &mut r_kick, (DT_CENTER | DT_SINGLELINE | DT_VCENTER) as u32);
             }
@@ -452,61 +517,66 @@ unsafe fn paint_dialog(hwnd: HWND, state: &UIState) {
 // Mode switching helpers
 // ─────────────────────────────────────────────────────────────────────────────
 
-/// Switch from layered star button → opaque GDI dialog
 unsafe fn switch_to_opaque(hwnd: HWND, state: &mut UIState) {
-    // 1. Remove WS_EX_LAYERED so the window becomes opaque
     let ex = GetWindowLongPtrW(hwnd, GWL_EXSTYLE);
     SetWindowLongPtrW(hwnd, GWL_EXSTYLE, ex & !(WS_EX_LAYERED as isize));
-
-    // Force Windows to re-evaluate the extended style change
     SetWindowPos(hwnd, std::ptr::null_mut(), 0, 0, 0, 0, SWP_FRAMECHANGED | SWP_NOMOVE | SWP_NOSIZE | SWP_NOZORDER);
 
-    // 2. Resize + reposition to dialog dimensions
     let mut gr: RECT = std::mem::zeroed();
     if !state.game_hwnd.is_null() {
         GetWindowRect(state.game_hwnd, &mut gr);
     }
     MoveWindow(hwnd, gr.left + OFFSET_X, gr.top + OFFSET_Y, OPEN_W, OPEN_H, 0);
 
-    // 3. Rounded corners via region
     let rgn = CreateRoundRectRgn(0, 0, OPEN_W + 1, OPEN_H + 1, 24, 24);
-    SetWindowRgn(hwnd, rgn, 1); // system takes ownership of rgn
+    SetWindowRgn(hwnd, rgn, 1);
 
-    // 4. Show EDIT controls
+    // Show pseudo always, IP/Port only in setup modes
     ShowWindow(state.hwnd_pseudo, SW_SHOW);
-    ShowWindow(state.hwnd_ip, SW_SHOW);
-    ShowWindow(state.hwnd_port, SW_SHOW);
+    update_field_visibility(state);
 
-    // 5. Force repaint
     InvalidateRect(hwnd, std::ptr::null(), 1);
 }
 
-/// Switch from opaque dialog → layered star button
 unsafe fn switch_to_layered(hwnd: HWND, state: &mut UIState) {
-    // 1. Hide EDIT controls
     ShowWindow(state.hwnd_pseudo, SW_HIDE);
     ShowWindow(state.hwnd_ip, SW_HIDE);
     ShowWindow(state.hwnd_port, SW_HIDE);
 
-    // 2. Remove window region
+    // Reset to idle mode when closing
+    state.dialog_mode = MODE_IDLE;
+
     SetWindowRgn(hwnd, std::ptr::null_mut(), 0);
 
-    // 3. Add WS_EX_LAYERED back
     let ex = GetWindowLongPtrW(hwnd, GWL_EXSTYLE);
     SetWindowLongPtrW(hwnd, GWL_EXSTYLE, ex | WS_EX_LAYERED as isize);
-
-    // Force Windows to re-evaluate the extended style change
     SetWindowPos(hwnd, std::ptr::null_mut(), 0, 0, 0, 0, SWP_FRAMECHANGED | SWP_NOMOVE | SWP_NOSIZE | SWP_NOZORDER);
 
-    // 4. Resize to small button
     let mut gr: RECT = std::mem::zeroed();
     if !state.game_hwnd.is_null() {
         GetWindowRect(state.game_hwnd, &mut gr);
     }
     MoveWindow(hwnd, gr.left + OFFSET_X, gr.top + OFFSET_Y, CLOSED_W, CLOSED_H, 0);
 
-    // 5. Render the star button
     render_star_button(hwnd, state);
+}
+
+unsafe fn update_field_visibility(state: &mut UIState) {
+    match state.dialog_mode {
+        MODE_IDLE => {
+            ShowWindow(state.hwnd_ip, SW_HIDE);
+            ShowWindow(state.hwnd_port, SW_HIDE);
+        }
+        MODE_HOST => {
+            ShowWindow(state.hwnd_ip, SW_HIDE);
+            ShowWindow(state.hwnd_port, SW_SHOW);
+        }
+        MODE_JOIN => {
+            ShowWindow(state.hwnd_ip, SW_SHOW);
+            ShowWindow(state.hwnd_port, SW_SHOW);
+        }
+        _ => {}
+    }
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -528,7 +598,7 @@ unsafe extern "system" fn wnd_proc(
             let edit_class: Vec<u16> = "EDIT\0".encode_utf16().collect();
             let inst = GetModuleHandleW(std::ptr::null());
 
-            // Pseudo input (initially hidden)
+            // Pseudo input (y: 75, always shown when dialog open)
             let default_pseudo: Vec<u16> = "Builder\0".encode_utf16().collect();
             let hwnd_pseudo = CreateWindowExW(
                 0,
@@ -542,7 +612,7 @@ unsafe extern "system" fn wnd_proc(
                 std::ptr::null(),
             );
 
-            // IP input (initially hidden — shown when dialog opens)
+            // IP input (y: 133, hidden in Idle/Host mode)
             let default_ip: Vec<u16> = "127.0.0.1\0".encode_utf16().collect();
             let hwnd_ip = CreateWindowExW(
                 0,
@@ -556,7 +626,7 @@ unsafe extern "system" fn wnd_proc(
                 std::ptr::null(),
             );
 
-            // Port input (initially hidden)
+            // Port input (y: 133, hidden in Idle mode)
             let default_port: Vec<u16> = "7777\0".encode_utf16().collect();
             let hwnd_port = CreateWindowExW(
                 0,
@@ -589,7 +659,6 @@ unsafe extern "system" fn wnd_proc(
         }
 
         WM_ERASEBKGND => {
-            // When dialog is open: fill with ivory to prevent black flash
             if IS_MENU_OPEN.load(Ordering::SeqCst) {
                 let hdc = wparam as *mut c_void;
                 let brush = CreateSolidBrush(BG_COLOR) as *mut c_void;
@@ -603,7 +672,6 @@ unsafe extern "system" fn wnd_proc(
         }
 
         WM_CTLCOLOREDIT => {
-            // Set EDIT control colors: dark text on white background
             let sp = GetWindowLongPtrW(hwnd, GWLP_USERDATA) as *mut UIState;
             if !sp.is_null() {
                 let state = &*sp;
@@ -616,7 +684,6 @@ unsafe extern "system" fn wnd_proc(
         }
 
         WM_SETCURSOR => {
-            // Allow I-beam cursor in edit controls, arrow everywhere else
             let hit = wparam as HWND;
             let sp = GetWindowLongPtrW(hwnd, GWLP_USERDATA) as *mut UIState;
             if !sp.is_null() {
@@ -636,7 +703,6 @@ unsafe extern "system" fn wnd_proc(
                 let st = &mut *sp;
 
                 if !st.game_hwnd.is_null() {
-                    // Show/hide based on game focus
                     let is_minimized = IsIconic(st.game_hwnd) != 0;
                     if is_minimized {
                         ShowWindow(hwnd, SW_HIDE);
@@ -651,7 +717,6 @@ unsafe extern "system" fn wnd_proc(
                         }
                     }
 
-                    // Follow game window position
                     let mut gr: RECT = std::mem::zeroed();
                     GetWindowRect(st.game_hwnd, &mut gr);
                     if gr.left != st.last_game_pos.0 || gr.top != st.last_game_pos.1 {
@@ -664,9 +729,8 @@ unsafe extern "system" fn wnd_proc(
                         }
                     }
 
-                    // Refresh player list display if count changed
                     let current_count = st.network.get_player_list().len();
-                    if is_menu_open_safe() && current_count != st.last_player_count {
+                    if IS_MENU_OPEN.load(Ordering::SeqCst) && current_count != st.last_player_count {
                         st.last_player_count = current_count;
                         InvalidateRect(hwnd, std::ptr::null(), 1);
                     }
@@ -682,13 +746,12 @@ unsafe extern "system" fn wnd_proc(
             let sp = GetWindowLongPtrW(hwnd, GWLP_USERDATA) as *mut UIState;
 
             if !is_open {
-                // Click on star button → open dialog
                 if !sp.is_null() {
                     IS_MENU_OPEN.store(true, Ordering::SeqCst);
                     switch_to_opaque(hwnd, &mut *sp);
                 }
             } else {
-                // Close [✕] button
+                // Close [✕]
                 if x >= 375 && x <= 405 && y >= 15 && y <= 45 {
                     if !sp.is_null() {
                         IS_MENU_OPEN.store(false, Ordering::SeqCst);
@@ -700,106 +763,108 @@ unsafe extern "system" fn wnd_proc(
                 if !sp.is_null() {
                     let state = &mut *sp;
 
-                    // Host button (y: 170..210)
-                    if x >= 30 && x <= 390 && y >= 170 && y <= 210 {
-                        // Read pseudo
-                        let mut pseudo_buf = [0u16; 32];
-                        GetWindowTextW(state.hwnd_pseudo, pseudo_buf.as_mut_ptr(), 32);
-                        let pseudo = String::from_utf16_lossy(&pseudo_buf)
-                            .trim_matches('\0').trim().to_string();
-                        let pseudo = if pseudo.is_empty() { "Host".to_string() } else { pseudo };
-                        state.network.set_local_name(pseudo);
-
-                        let mut port_buf = [0u16; 16];
-                        GetWindowTextW(state.hwnd_port, port_buf.as_mut_ptr(), 16);
-                        let port_str = String::from_utf16_lossy(&port_buf)
-                            .trim_matches('\0').trim().to_string();
-                        let port = port_str.parse::<u16>().unwrap_or(7777);
-
-                        match state.network.start_host(port) {
-                            Ok(_) => {
-                                state.status_text = format!("Host active on port {}", port);
-                                state.last_player_count = 0; // force refresh
+                    match state.dialog_mode {
+                        MODE_IDLE => {
+                            // Host button (y: 115..155)
+                            if x >= 30 && x <= 390 && y >= 115 && y <= 155 {
+                                state.dialog_mode = MODE_HOST;
+                                update_field_visibility(state);
+                                InvalidateRect(hwnd, std::ptr::null(), 1);
                             }
-                            Err(e) => state.status_text = format!("Error: {}", e),
+                            // Join button (y: 165..205)
+                            else if x >= 30 && x <= 390 && y >= 165 && y <= 205 {
+                                state.dialog_mode = MODE_JOIN;
+                                update_field_visibility(state);
+                                InvalidateRect(hwnd, std::ptr::null(), 1);
+                            }
+                            // Kick buttons in player list
+                            else if y >= 240 && y <= PLAYER_LIST_BOTTOM && state.network.is_hosting() {
+                                handle_kick_click(hwnd, state, x, y, 240);
+                            }
                         }
-                        InvalidateRect(hwnd, std::ptr::null(), 1);
-                    }
+                        MODE_HOST => {
+                            // Start Hosting button (y: 170..210)
+                            if x >= 30 && x <= 390 && y >= 170 && y <= 210 {
+                                let mut pseudo_buf = [0u16; 32];
+                                GetWindowTextW(state.hwnd_pseudo, pseudo_buf.as_mut_ptr(), 32);
+                                let pseudo = String::from_utf16_lossy(&pseudo_buf)
+                                    .trim_matches('\0').trim().to_string();
+                                let pseudo = if pseudo.is_empty() { "Host".to_string() } else { pseudo };
+                                state.network.set_local_name(pseudo);
 
-                    // Join button (y: 220..260)
-                    if x >= 30 && x <= 390 && y >= 220 && y <= 260 {
-                        // Read pseudo
-                        let mut pseudo_buf = [0u16; 32];
-                        GetWindowTextW(state.hwnd_pseudo, pseudo_buf.as_mut_ptr(), 32);
-                        let pseudo = String::from_utf16_lossy(&pseudo_buf)
-                            .trim_matches('\0').trim().to_string();
-                        let pseudo = if pseudo.is_empty() { "Guest".to_string() } else { pseudo };
-                        state.network.set_local_name(pseudo);
+                                let mut port_buf = [0u16; 16];
+                                GetWindowTextW(state.hwnd_port, port_buf.as_mut_ptr(), 16);
+                                let port_str = String::from_utf16_lossy(&port_buf)
+                                    .trim_matches('\0').trim().to_string();
+                                let port = port_str.parse::<u16>().unwrap_or(7777);
 
-                        let mut ip_buf = [0u16; 64];
-                        let mut port_buf = [0u16; 16];
-                        GetWindowTextW(state.hwnd_ip, ip_buf.as_mut_ptr(), 64);
-                        GetWindowTextW(state.hwnd_port, port_buf.as_mut_ptr(), 16);
-
-                        let ip_str = String::from_utf16_lossy(&ip_buf)
-                            .trim_matches('\0').trim().to_string();
-                        let port_str = String::from_utf16_lossy(&port_buf)
-                            .trim_matches('\0').trim().to_string();
-
-                        let addr = format!("{}:{}", ip_str, port_str);
-                        state.status_text = format!("Connecting to {}...", addr);
-                        InvalidateRect(hwnd, std::ptr::null(), 1);
-
-                        let net_clone = Arc::clone(&state.network);
-                        let hwnd_raw = hwnd as usize;
-                        thread::spawn(move || unsafe {
-                            let res = net_clone.connect_to_host(&addr);
-                            let h = hwnd_raw as HWND;
-                            let stp = GetWindowLongPtrW(h, GWLP_USERDATA) as *mut UIState;
-                            if !stp.is_null() {
-                                let s = &mut *stp;
-                                match res {
+                                match state.network.start_host(port) {
                                     Ok(_) => {
-                                        s.status_text = "Connected successfully!".to_string();
-                                        s.last_player_count = 0; // force refresh
+                                        state.status_text = format!("Host active on port {}", port);
+                                        state.last_player_count = 0;
                                     }
-                                    Err(e) => s.status_text = format!("Connection failed: {}", e),
+                                    Err(e) => state.status_text = format!("Error: {}", e),
                                 }
-                                InvalidateRect(h, std::ptr::null(), 1);
+                                InvalidateRect(hwnd, std::ptr::null(), 1);
                             }
-                        });
-                    }
-
-                    // Kick buttons — check if click is in player list area
-                    if y >= PLAYER_LIST_TOP && y <= PLAYER_LIST_BOTTOM && state.network.is_hosting() {
-                        let players = state.network.get_player_list();
-                        let local_name = state.network.get_local_name();
-                        let row_index = ((y - PLAYER_LIST_TOP - 5) / PLAYER_ROW_H) as usize;
-
-                        if row_index < players.len() {
-                            let player = &players[row_index];
-                            // Only kick non-host players, not self
-                            if !player.is_host && player.name != local_name {
-                                // Check if click is on the [Kick] area (x: 320..385)
-                                if x >= 320 && x <= 385 {
-                                    let kicked_name = player.name.clone();
-                                    let kicked_name_clone = kicked_name.clone();
-                                    let net_clone = Arc::clone(&state.network);
-                                    let hwnd_raw = hwnd as usize;
-                                    thread::spawn(move || unsafe {
-                                        net_clone.kick_player(&kicked_name_clone);
-                                        let h = hwnd_raw as HWND;
-                                        let stp = GetWindowLongPtrW(h, GWLP_USERDATA) as *mut UIState;
-                                        if !stp.is_null() {
-                                            (*stp).last_player_count = 0;
-                                            InvalidateRect(h, std::ptr::null(), 1);
-                                        }
-                                    });
-                                    state.status_text = format!("Kicked {}", kicked_name);
-                                    InvalidateRect(hwnd, std::ptr::null(), 1);
-                                }
+                            // Back button (y: 220..250)
+                            else if x >= 30 && x <= 390 && y >= 220 && y <= 250 {
+                                state.dialog_mode = MODE_IDLE;
+                                update_field_visibility(state);
+                                InvalidateRect(hwnd, std::ptr::null(), 1);
                             }
                         }
+                        MODE_JOIN => {
+                            // Connect button (y: 170..210)
+                            if x >= 30 && x <= 390 && y >= 170 && y <= 210 {
+                                let mut pseudo_buf = [0u16; 32];
+                                GetWindowTextW(state.hwnd_pseudo, pseudo_buf.as_mut_ptr(), 32);
+                                let pseudo = String::from_utf16_lossy(&pseudo_buf)
+                                    .trim_matches('\0').trim().to_string();
+                                let pseudo = if pseudo.is_empty() { "Guest".to_string() } else { pseudo };
+                                state.network.set_local_name(pseudo);
+
+                                let mut ip_buf = [0u16; 64];
+                                let mut port_buf = [0u16; 16];
+                                GetWindowTextW(state.hwnd_ip, ip_buf.as_mut_ptr(), 64);
+                                GetWindowTextW(state.hwnd_port, port_buf.as_mut_ptr(), 16);
+
+                                let ip_str = String::from_utf16_lossy(&ip_buf)
+                                    .trim_matches('\0').trim().to_string();
+                                let port_str = String::from_utf16_lossy(&port_buf)
+                                    .trim_matches('\0').trim().to_string();
+
+                                let addr = format!("{}:{}", ip_str, port_str);
+                                state.status_text = format!("Connecting to {}...", addr);
+                                InvalidateRect(hwnd, std::ptr::null(), 1);
+
+                                let net_clone = Arc::clone(&state.network);
+                                let hwnd_raw = hwnd as usize;
+                                thread::spawn(move || unsafe {
+                                    let res = net_clone.connect_to_host(&addr);
+                                    let h = hwnd_raw as HWND;
+                                    let stp = GetWindowLongPtrW(h, GWLP_USERDATA) as *mut UIState;
+                                    if !stp.is_null() {
+                                        let s = &mut *stp;
+                                        match res {
+                                            Ok(_) => {
+                                                s.status_text = "Connected successfully!".to_string();
+                                                s.last_player_count = 0;
+                                            }
+                                            Err(e) => s.status_text = format!("Connection failed: {}", e),
+                                        }
+                                        InvalidateRect(h, std::ptr::null(), 1);
+                                    }
+                                });
+                            }
+                            // Back button (y: 220..250)
+                            else if x >= 30 && x <= 390 && y >= 220 && y <= 250 {
+                                state.dialog_mode = MODE_IDLE;
+                                update_field_visibility(state);
+                                InvalidateRect(hwnd, std::ptr::null(), 1);
+                            }
+                        }
+                        _ => {}
                     }
                 }
             }
@@ -815,6 +880,31 @@ unsafe extern "system" fn wnd_proc(
     }
 }
 
-fn is_menu_open_safe() -> bool {
-    IS_MENU_OPEN.load(Ordering::SeqCst)
+unsafe fn handle_kick_click(hwnd: HWND, state: &mut UIState, x: i32, y: i32, list_top_offset: i32) {
+    let players = state.network.get_player_list();
+    let local_name = state.network.get_local_name();
+    let row_index = ((y - list_top_offset) / PLAYER_ROW_H) as usize;
+
+    if row_index < players.len() {
+        let player = &players[row_index];
+        if !player.is_host && player.name != local_name {
+            if x >= 320 && x <= 385 {
+                let kicked_name = player.name.clone();
+                let kicked_name_clone = kicked_name.clone();
+                let net_clone = Arc::clone(&state.network);
+                let hwnd_raw = hwnd as usize;
+                thread::spawn(move || unsafe {
+                    net_clone.kick_player(&kicked_name_clone);
+                    let h = hwnd_raw as HWND;
+                    let stp = GetWindowLongPtrW(h, GWLP_USERDATA) as *mut UIState;
+                    if !stp.is_null() {
+                        (*stp).last_player_count = 0;
+                        InvalidateRect(h, std::ptr::null(), 1);
+                    }
+                });
+                state.status_text = format!("Kicked {}", kicked_name);
+                InvalidateRect(hwnd, std::ptr::null(), 1);
+            }
+        }
+    }
 }
