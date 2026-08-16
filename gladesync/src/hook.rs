@@ -46,7 +46,7 @@ impl HookEngine {
     }
 
     /// Read the local camera position and rotation from game memory.
-    fn read_camera_data() -> Option<(f32, f32, f32, f32, f32)> {
+    pub fn read_camera_data() -> Option<(f32, f32, f32, f32, f32)> {
         let pos_addr = CAMERA_POS_ADDR.load(Ordering::SeqCst);
         if pos_addr == 0 {
             return None;

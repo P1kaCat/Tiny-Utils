@@ -1,3 +1,4 @@
+pub mod avatars;
 pub mod console;
 pub mod hook;
 pub mod network;
@@ -20,17 +21,16 @@ pub unsafe extern "system" fn DllMain(
 ) -> BOOL {
     match fdw_reason {
         DLL_PROCESS_ATTACH => {
-            // Forward proxy to system DXGI first
             proxy::init_proxy();
 
-            // Spawn initialization in a detached thread to prevent blocking DllMain
             thread::spawn(move || {
                 let network = network::NetworkManager::new();
-                
-                // Spawn the native in-game GUI attached to Tiny Glade (No external console)
+
                 ui::start_ui_thread(Arc::clone(&network));
 
-                // Initialize the memory hook engine (infinite border & building tools)
+                // Start the avatar overlay (player visualization)
+                avatars::start_avatars_thread(Arc::clone(&network));
+
                 let hook_engine = hook::HookEngine::new(Arc::clone(&network));
                 hook_engine.start();
             });
