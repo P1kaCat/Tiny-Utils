@@ -27,7 +27,7 @@ impl HookEngine {
 
     pub fn start(&self) {
         println!("[GladeSync Engine] Game Base Address: 0x{:X}", self.base_address);
-        self.start_camera_scanner();
+        // self.start_camera_scanner(); // Disabled - causes crash
         self.start_transform_broadcast();
 
         let net = Arc::clone(&self.network);
