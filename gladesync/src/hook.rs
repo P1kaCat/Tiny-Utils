@@ -160,7 +160,7 @@ impl HookEngine {
             if mbi.State == (MEM_COMMIT as u32)
                 && (mbi.Protect as u32 & PAGE_READWRITE as u32) != 0
                 && mbi.RegionSize >= 4096
-                && mbi.RegionSize <= 4 * 1024 * 1024
+                && mbi.RegionSize <= 16 * 1024 * 1024
             {
                 regions.push((mbi.BaseAddress as usize, mbi.RegionSize));
             }
@@ -199,33 +199,31 @@ impl HookEngine {
             let region_b = &snap_b[off..off + size];
 
             let mut i = 0usize;
-            while i + 12 <= *size {
-                let a_chunk = &region_a[i..i + 12];
-                let b_chunk = &region_b[i..i + 12];
+            while i + 8 <= *size {
+                // Check 2 consecutive f32 values (8 bytes) that both changed
+                let a_chunk = &region_a[i..i + 8];
+                let b_chunk = &region_b[i..i + 8];
 
                 let mut all_changed = true;
-                for j in 0..12 {
+                for j in 0..8 {
                     if a_chunk[j] == b_chunk[j] { all_changed = false; break; }
                 }
 
                 if all_changed {
                     let f1a = f32::from_le_bytes([a_chunk[0], a_chunk[1], a_chunk[2], a_chunk[3]]);
                     let f2a = f32::from_le_bytes([a_chunk[4], a_chunk[5], a_chunk[6], a_chunk[7]]);
-                    let f3a = f32::from_le_bytes([a_chunk[8], a_chunk[9], a_chunk[10], a_chunk[11]]);
                     let f1b = f32::from_le_bytes([b_chunk[0], b_chunk[1], b_chunk[2], b_chunk[3]]);
                     let f2b = f32::from_le_bytes([b_chunk[4], b_chunk[5], b_chunk[6], b_chunk[7]]);
-                    let f3b = f32::from_le_bytes([b_chunk[8], b_chunk[9], b_chunk[10], b_chunk[11]]);
 
-                    if f1a.is_finite() && f2a.is_finite() && f3a.is_finite()
-                        && f1b.is_finite() && f2b.is_finite() && f3b.is_finite()
-                        && f1a.abs() < 100000.0 && f2a.abs() < 100000.0 && f3a.abs() < 100000.0
-                        && f1b.abs() < 100000.0 && f2b.abs() < 100000.0 && f3b.abs() < 100000.0
+                    if f1a.is_finite() && f2a.is_finite()
+                        && f1b.is_finite() && f2b.is_finite()
+                        && f1a.abs() < 100000.0 && f2a.abs() < 100000.0
+                        && f1b.abs() < 100000.0 && f2b.abs() < 100000.0
                         && (f1a - f1b).abs() > 0.01
                         && (f2a - f2b).abs() > 0.01
-                        && (f3a - f3b).abs() > 0.01
                     {
                         result.push(base + i);
-                        i += 12;
+                        i += 8;
                         continue;
                     }
                 }
