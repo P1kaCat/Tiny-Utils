@@ -47,6 +47,20 @@ pub struct PlayerInfo {
     pub is_host: bool,
 }
 
+/// Player transform: position + look direction in world space.
+/// Sent at ~20 Hz to all connected players for real-time avatar rendering.
+#[derive(Debug, Clone, Serialize, Deserialize)]
+pub struct PlayerTransform {
+    pub pseudo: String,
+    pub x: f32,
+    pub y: f32,
+    pub z: f32,
+    /// Yaw (horizontal look direction) in radians
+    pub yaw: f32,
+    /// Pitch (vertical look direction) in radians
+    pub pitch: f32,
+}
+
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub enum NetMessage {
     /// Initial connection handshake
@@ -82,6 +96,8 @@ pub enum NetMessage {
     YouKicked {
         reason: String,
     },
+    /// Real-time player position + look direction update (~20 Hz)
+    TransformUpdate(PlayerTransform),
     /// Keep-alive heartbeat
     Ping,
     Pong,
