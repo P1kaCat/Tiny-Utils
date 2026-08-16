@@ -1,13 +1,16 @@
 use crate::network::NetworkManager;
 use crate::protocol::{ActionPayload, EditCategory, NetMessage};
-use std::sync::atomic::{AtomicBool, Ordering};
+use std::sync::atomic::{AtomicBool, AtomicUsize, Ordering};
 use std::sync::Arc;
 use std::thread;
 use std::time::{Duration, SystemTime, UNIX_EPOCH};
 use windows_sys::Win32::System::LibraryLoader::GetModuleHandleA;
-use windows_sys::Win32::System::Memory::{VirtualAlloc, VirtualProtect, PAGE_EXECUTE_READWRITE};
+use windows_sys::Win32::System::Memory::{VirtualProtect, PAGE_EXECUTE_READWRITE};
 
 pub static BORDER_UNLOCKED: AtomicBool = AtomicBool::new(false);
+
+// Captured border struct pointer (written by the patched is_pos_inside, read from Rust)
+static BORDER_PTR: AtomicUsize = AtomicUsize::new(0);
 
 pub struct HookEngine {
     base_address: usize,
@@ -51,148 +54,101 @@ impl HookEngine {
         }
     }
 
-    /// Write an absolute jump (mov rax, addr; jmp rax) at the given address.
-    unsafe fn write_jump(from: usize, to: usize) -> bool {
-        let mut patch = [0u8; 12];
-        patch[0] = 0x48; // REX.W
-        patch[1] = 0xB8; // mov rax, imm64
-        patch[2..10].copy_from_slice(&(to as u64).to_le_bytes());
-        patch[10] = 0xFF; // jmp rax
-        patch[11] = 0xE0;
-        Self::write_raw(from, &patch)
-    }
-
-    /// Allocate executable memory using VirtualAlloc.
-    unsafe fn alloc_exec(size: usize) -> usize {
-        // MEM_COMMIT = 0x1000, MEM_RESERVE = 0x2000
-        let mem = VirtualAlloc(
-            std::ptr::null_mut(),
-            size,
-            0x1000 | 0x2000,
-            PAGE_EXECUTE_READWRITE,
-        );
-        if mem.is_null() {
-            0
-        } else {
-            // Zero the memory
-            std::ptr::write_bytes(mem as *mut u8, 0, size);
-            mem as usize
-        }
-    }
-
-    /// Build a code cave that doubles the border struct's float dimensions on first call,
-    /// then always returns true (mov al, 1; ret).
-    ///
-    /// Border struct (rcx):
-    ///   [0..4]   = i32 (kind)
-    ///   [4..12]  = f64 (half_width)
-    ///   [12..20] = f64 (half_height)
-    unsafe fn build_border_doubler_cave(flag_ptr: usize) -> usize {
-        let cave = Self::alloc_exec(256);
-        if cave == 0 {
-            return 0;
-        }
-
-        let mut code: Vec<u8> = Vec::with_capacity(128);
-
-        // mov r9, flag_ptr          ; 49 B8 <8 bytes>
-        code.push(0x49);
-        code.push(0xB8);
-        code.extend_from_slice(&(flag_ptr as u64).to_le_bytes());
-
-        // cmp byte [r9], 0          ; 41 80 39 00
-        code.extend_from_slice(&[0x41, 0x80, 0x39, 0x00]);
-
-        // jne .return_true          ; 75 xx  (short jump)
-        code.push(0x75);
-        let jne_rel_idx = code.len();
-        code.push(0x00); // placeholder
-
-        // mov byte [r9], 1          ; 41 C6 01 01
-        code.extend_from_slice(&[0x41, 0xC6, 0x01, 0x01]);
-
-        // --- Double the border dimensions ---
-        // movsd xmm0, [rcx+4]      ; F2 0F 10 41 04
-        code.extend_from_slice(&[0xF2, 0x0F, 0x10, 0x41, 0x04]);
-        // addsd xmm0, xmm0          ; F2 0F 58 C0
-        code.extend_from_slice(&[0xF2, 0x0F, 0x58, 0xC0]);
-        // movsd [rcx+4], xmm0       ; F2 0F 11 41 04
-        code.extend_from_slice(&[0xF2, 0x0F, 0x11, 0x41, 0x04]);
-        // movsd xmm0, [rcx+0Ch]     ; F2 0F 10 41 0C
-        code.extend_from_slice(&[0xF2, 0x0F, 0x10, 0x41, 0x0C]);
-        // addsd xmm0, xmm0          ; F2 0F 58 C0
-        code.extend_from_slice(&[0xF2, 0x0F, 0x58, 0xC0]);
-        // movsd [rcx+0Ch], xmm0     ; F2 0F 11 41 0C
-        code.extend_from_slice(&[0xF2, 0x0F, 0x11, 0x41, 0x0C]);
-
-        // .return_true:
-        let return_true_offset = code.len();
-        // Fix jne relative offset
-        code[jne_rel_idx] = (return_true_offset - (jne_rel_idx + 1)) as u8;
-
-        // mov al, 1                ; B0 01
-        code.push(0xB0);
-        code.push(0x01);
-        // ret                       ; C3
-        code.push(0xC3);
-
-        // Copy code to the executable memory
-        std::ptr::copy_nonoverlapping(code.as_ptr(), cave as *mut u8, code.len());
-
-        cave
-    }
-
     /// Unlock building borders by doubling the border dimensions (2x zone).
     ///
-    /// Installs code caves on is_pos_inside and is_shape_inside that intercept
-    /// the first call, double the border struct's float dimensions, then return true.
-    /// After 2 seconds, the original function bytes are restored. Now all systems
-    /// (placement, camera, deletion) check against the doubled border naturally.
+    /// Step 1: Patch is_pos_inside to capture the border struct pointer (rcx) into
+    ///         a global static, then return true (temporary, unlimited placement).
+    /// Step 2: A Rust thread polls for the captured pointer (up to 5 seconds).
+    /// Step 3: Once captured, the thread doubles the f64 dimensions at [ptr+4]
+    ///         and [ptr+12] (half_width * 2, half_height * 2).
+    /// Step 4: The thread restores the original bytes of is_pos_inside and
+    ///         is_shape_inside. Now all systems check against the 2x border.
     pub fn unlock_build_borders(&self) -> bool {
-        // Static flag bytes (one per function, in case they use different border structs)
-        static mut FLAG_POS: u8 = 0;
-        static mut FLAG_SHAPE: u8 = 0;
-
         unsafe {
-            let flag_pos = std::ptr::addr_of_mut!(FLAG_POS) as usize;
-            let flag_shape = std::ptr::addr_of_mut!(FLAG_SHAPE) as usize;
+            let border_ptr_addr = BORDER_PTR.as_ptr() as usize;
 
-            // Build code cave for is_pos_inside
-            let cave1 = Self::build_border_doubler_cave(flag_pos);
-            if cave1 == 0 {
-                eprintln!("[GladeSync] Failed to allocate code cave for is_pos_inside");
-                return false;
-            }
+            // --- Patch is_pos_inside to capture border struct pointer ---
+            // mov rax, <border_ptr_addr>   ; 48 B8 <8 bytes>
+            // mov [rax], rcx                ; 48 89 08
+            // mov al, 1                     ; B0 01
+            // ret                           ; C3
+            let mut patch: Vec<u8> = Vec::with_capacity(16);
+            patch.extend_from_slice(&[0x48, 0xB8]);
+            patch.extend_from_slice(&(border_ptr_addr as u64).to_le_bytes());
+            patch.extend_from_slice(&[0x48, 0x89, 0x08]);
+            patch.extend_from_slice(&[0xB0, 0x01]);
+            patch.push(0xC3);
 
-            // Build code cave for is_shape_inside
-            let cave2 = Self::build_border_doubler_cave(flag_shape);
-            if cave2 == 0 {
-                eprintln!("[GladeSync] Failed to allocate code cave for is_shape_inside");
-                return false;
-            }
-
-            // Install jump from is_pos_inside (RVA 0xAD2950) to cave1
-            if !Self::write_jump(self.base_address + 0xAD2950, cave1) {
+            if !Self::write_raw(self.base_address + 0xAD2950, &patch) {
                 eprintln!("[GladeSync] Failed to patch is_pos_inside");
                 return false;
             }
-            println!("\x1b[32m[GladeSync] Code cave installed on is_pos_inside\x1b[0m");
+            println!("\x1b[32m[GladeSync] is_pos_inside patched (capturing border ptr)\x1b[0m");
 
-            // Install jump from is_shape_inside (RVA 0xAD2970) to cave2
-            if !Self::write_jump(self.base_address + 0xAD2970, cave2) {
+            // --- Patch is_shape_inside with mov al,1; ret (temporary) ---
+            if !Self::write_raw(self.base_address + 0xAD2970, &[0xB0, 0x01, 0xC3]) {
                 eprintln!("[GladeSync] Failed to patch is_shape_inside");
                 return false;
             }
-            println!("\x1b[32m[GladeSync] Code cave installed on is_shape_inside\x1b[0m");
+            println!("\x1b[32m[GladeSync] is_shape_inside patched (temporary)\x1b[0m");
 
-            // Spawn thread to restore original function bytes after 2 seconds.
-            // By then, the game has called these functions at least once,
-            // so the border struct has been doubled.
+            // --- Spawn thread to capture pointer, double border, restore functions ---
             let base = self.base_address;
             thread::spawn(move || {
-                thread::sleep(Duration::from_secs(2));
+                // Wait for is_pos_inside to be called (border pointer captured)
+                let mut captured = false;
+                for i in 0..100 {
+                    thread::sleep(Duration::from_millis(50));
+                    let ptr = BORDER_PTR.load(Ordering::SeqCst);
+                    if ptr != 0 {
+                        println!("\x1b[32m[GladeSync] Border struct captured at 0x{:X}\x1b[0m", ptr);
+                        captured = true;
+                        break;
+                    }
+                    if i == 20 {
+                        println!("\x1b[33m[GladeSync] Waiting for border struct... (game not calling is_pos_inside yet)\x1b[0m");
+                    }
+                }
 
-                // Restore is_pos_inside original bytes (21 bytes from scan)
+                if !captured {
+                    eprintln!("\x1b[31m[GladeSync] Border struct pointer not captured after 5s\x1b[0m");
+                    eprintln!("\x1b[31m[GladeSync] Falling back to unlimited mode\x1b[0m");
+                    return;
+                }
+
+                let ptr = BORDER_PTR.load(Ordering::SeqCst) as *mut u8;
+
+                // Double the border dimensions
+                // [ptr+4] = f64 half_width, [ptr+12] = f64 half_height
+                let mut old = 0u32;
+                if VirtualProtect(ptr as _, 32, PAGE_EXECUTE_READWRITE, &mut old) != 0 {
+                    let w_ptr = ptr.add(4).cast::<f64>();
+                    let h_ptr = ptr.add(12).cast::<f64>();
+                    let w_val = w_ptr.read_unaligned();
+                    let h_val = h_ptr.read_unaligned();
+
+                    if w_val > 0.0 && h_val > 0.0 && w_val < 100000.0 && h_val < 100000.0 {
+                        w_ptr.write_unaligned(w_val * 2.0);
+                        h_ptr.write_unaligned(h_val * 2.0);
+                        println!(
+                            "\x1b[32m[GladeSync] Border DOUBLED: {:.2} x {:.2} -> {:.2} x {:.2}\x1b[0m",
+                            w_val, h_val, w_val * 2.0, h_val * 2.0
+                        );
+                    } else {
+                        eprintln!(
+                            "\x1b[33m[GladeSync] Border values look wrong: w={:.2} h={:.2}, skipping\x1b[0m",
+                            w_val, h_val
+                        );
+                    }
+                    VirtualProtect(ptr as _, 32, old, &mut old);
+                } else {
+                    eprintln!("\x1b[31m[GladeSync] VirtualProtect failed on border struct\x1b[0m");
+                }
+
+                // Small delay to ensure the doubled values are visible
+                thread::sleep(Duration::from_millis(100));
+
+                // Restore is_pos_inside original bytes (21 bytes from binary scan)
                 let pos_original: [u8; 21] = [
                     0x48, 0x89, 0xC8, 0x48, 0x83, 0xC1, 0x04, 0xF6,
                     0x00, 0x01, 0x0F, 0x85, 0xD0, 0x7C, 0x1C, 0x00,
@@ -202,7 +158,7 @@ impl HookEngine {
                     println!("\x1b[32m[GladeSync] is_pos_inside restored (2x border active)\x1b[0m");
                 }
 
-                // Restore is_shape_inside original bytes (12 bytes from scan)
+                // Restore is_shape_inside original bytes (12 bytes from binary scan)
                 let shape_original: [u8; 12] = [
                     0x41, 0x57, 0x41, 0x56, 0x56, 0x57, 0x53, 0x48,
                     0x81, 0xEC, 0xE0, 0x00,
@@ -210,6 +166,8 @@ impl HookEngine {
                 if Self::write_raw(base + 0xAD2970, &shape_original) {
                     println!("\x1b[32m[GladeSync] is_shape_inside restored (2x border active)\x1b[0m");
                 }
+
+                println!("\x1b[1;32m[GladeSync] ★ Zone 2x active ★\x1b[0m");
             });
         }
 
