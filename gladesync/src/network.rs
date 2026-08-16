@@ -96,7 +96,7 @@ impl NetworkManager {
             .map_err(|e: std::net::AddrParseError| e.to_string())?;
         socket.bind(&addr.into()).map_err(|e| e.to_string())?;
         socket.listen(128).map_err(|e| e.to_string())?;
-        let listener: TcpListener = socket.into().map_err(|e| e.to_string())?;
+        let listener: TcpListener = socket.into();
         self.is_hosting.store(true, Ordering::SeqCst);
         self.local_id.store(1, Ordering::SeqCst);
         let host_name = self.get_local_name();
