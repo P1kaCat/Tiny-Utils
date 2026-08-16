@@ -271,6 +271,7 @@ impl NetworkManager {
                         println!("[GladeSync] Disconnected from host.");
                         self_clone.is_connected.store(false, Ordering::SeqCst);
                         *self_clone.active_client.lock().unwrap() = None;
+                        *self_clone.player_list.lock().unwrap() = vec![];
                         break;
                     }
                 }
