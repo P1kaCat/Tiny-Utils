@@ -42,6 +42,7 @@ pub enum NetMessage {
     ChatMessage { sender: String, text: String },
     PlayerListUpdate { players: Vec<PlayerInfo> },
     YouKicked { reason: String },
+    YouBanned { reason: String },
     Ping,
     Pong,
 }

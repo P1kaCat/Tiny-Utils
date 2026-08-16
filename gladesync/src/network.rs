@@ -17,6 +17,7 @@ struct PeerConnection {
 pub struct NetworkManager {
     is_hosting: AtomicBool,
     is_connected: AtomicBool,
+    banned_addrs: Mutex<Vec<String>>,
     local_name: Mutex<String>,
     local_id: AtomicU32,
     peers: Arc<Mutex<Vec<PeerConnection>>>,
@@ -30,6 +31,7 @@ impl NetworkManager {
         Arc::new(Self {
             is_hosting: AtomicBool::new(false),
             is_connected: AtomicBool::new(false),
+            banned_addrs: Mutex::new(Vec::new()),
             local_name: Mutex::new("Builder".to_string()),
             local_id: AtomicU32::new(1),
             peers: Arc::new(Mutex::new(Vec::new())),
@@ -121,6 +123,13 @@ impl NetworkManager {
                     Ok((socket, peer_addr_sock)) => {
                         let _ = socket.set_nonblocking(false);
                         let peer_addr = peer_addr_sock.to_string();
+                        let peer_ip = peer_addr_sock.ip().to_string();
+                        // Reject banned IPs
+                        if self_clone.banned_addrs.lock().unwrap().iter().any(|a| *a == peer_ip) {
+                            println!("[GladeSync Server] Rejected banned IP: {}", peer_ip);
+                            drop(socket);
+                            continue;
+                        }
                         println!("[GladeSync Server] Player connected from: {}", peer_addr);
                         let assigned_id = self_clone.next_player_id.fetch_add(1, Ordering::SeqCst);
                         let ack = NetMessage::HandshakeAck {
@@ -287,6 +296,7 @@ impl NetworkManager {
         *self.active_client.lock().unwrap() = None;
         self.peers.lock().unwrap().clear();
         *self.player_list.lock().unwrap() = vec![];
+        self.banned_addrs.lock().unwrap().clear();
         println!("[GladeSync] Disconnected.");
     }
 
@@ -302,6 +312,27 @@ impl NetworkManager {
             drop(peers);
             self.rebuild_player_list_and_broadcast();
             println!("[GladeSync] Kicked player: {}", player_name);
+            return true;
+        }
+        false
+    }
+
+    pub fn ban_player(self: &Arc<Self>, player_name: &str) -> bool {
+        if !self.is_hosting.load(Ordering::SeqCst) { return false; }
+        let mut peers = self.peers.lock().unwrap();
+        if let Some(pos) = peers.iter().position(|p| p.name == player_name) {
+            let peer_addr = peers[pos].addr.clone();
+            // Extract IP only (strip port) for ban list
+            let peer_ip: String = peer_addr.split(':').next().unwrap_or('').to_string();
+            let ban_msg = NetMessage::YouBanned { reason: "Banned by host".to_string() };
+            if let Ok(json) = serde_json::to_string(&ban_msg) {
+                let _ = writeln!(peers[pos].stream, "{}", json);
+            }
+            peers.remove(pos);
+            drop(peers);
+            self.banned_addrs.lock().unwrap().push(peer_ip);
+            self.rebuild_player_list_and_broadcast();
+            println!("[GladeSync] Banned player: {} ({})", player_name, peer_ip);
             return true;
         }
         false
@@ -347,6 +378,13 @@ impl NetworkManager {
                 println!("[GladeSync] Kicked: {}", reason);
                 self.is_connected.store(false, Ordering::SeqCst);
                 *self.active_client.lock().unwrap() = None;
+                *self.player_list.lock().unwrap() = vec![];
+            }
+            NetMessage::YouBanned { reason } => {
+                println!("[GladeSync] Banned: {}", reason);
+                self.is_connected.store(false, Ordering::SeqCst);
+                *self.active_client.lock().unwrap() = None;
+                *self.player_list.lock().unwrap() = vec![];
             }
             NetMessage::Ping => {}
             NetMessage::Pong => {}

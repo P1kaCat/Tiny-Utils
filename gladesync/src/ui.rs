@@ -639,10 +639,14 @@ unsafe fn paint_dialog(hwnd: HWND, state: &UIState) {
             DrawTextW(hdc, name_wide.as_ptr(), -1, &mut r_name, (DT_SINGLELINE | DT_VCENTER) as u32);
 
             if is_host && !player.is_host && player.name != local_name {
-                let kick_wide: Vec<u16> = "[Kick]\0".encode_utf16().collect();
+                let kick_wide: Vec<u16> = "Kick\0".encode_utf16().collect();
                 SetTextColor(hdc, KICK_COLOR);
-                let mut r_kick = RECT { left: 300, top: y_top, right: 390, bottom: y_bottom };
+                let mut r_kick = RECT { left: 285, top: y_top, right: 340, bottom: y_bottom };
                 DrawTextW(hdc, kick_wide.as_ptr(), -1, &mut r_kick, (DT_CENTER | DT_SINGLELINE | DT_VCENTER) as u32);
+                let ban_wide: Vec<u16> = "Ban\0".encode_utf16().collect();
+                SetTextColor(hdc, 0x00A84D4D);
+                let mut r_ban = RECT { left: 345, top: y_top, right: 390, bottom: y_bottom };
+                DrawTextW(hdc, ban_wide.as_ptr(), -1, &mut r_ban, (DT_CENTER | DT_SINGLELINE | DT_VCENTER) as u32);
             }
         }
     }
@@ -947,7 +951,7 @@ unsafe extern "system" fn wnd_proc(
                                 let header_y = IDLE_JOIN_BTN_B + 14;
                                 let list_top = header_y + PLAYERS_HEADER_H + 8;
                                 if y >= list_top && y <= PLAYER_LIST_HIT_BOTTOM && state.network.is_hosting() {
-                                    handle_kick_click(hwnd, state, x, y, list_top);
+                                    handle_player_action_click(hwnd, state, x, y, list_top);
                                 }
                             }
                         }
@@ -1049,7 +1053,7 @@ unsafe extern "system" fn wnd_proc(
                             let header_y = ACTIVE_BTN_B + 14;
                             let list_top = header_y + PLAYERS_HEADER_H + 8;
                             if y >= list_top && y <= PLAYER_LIST_HIT_BOTTOM && state.network.is_hosting() {
-                                handle_kick_click(hwnd, state, x, y, list_top);
+                                handle_player_action_click(hwnd, state, x, y, list_top);
                             }
                         }
                         MODE_JOIN_ACTIVE => {
@@ -1077,7 +1081,7 @@ unsafe extern "system" fn wnd_proc(
     }
 }
 
-unsafe fn handle_kick_click(hwnd: HWND, state: &mut UIState, x: i32, y: i32, list_top: i32) {
+unsafe fn handle_player_action_click(hwnd: HWND, state: &mut UIState, x: i32, y: i32, list_top: i32) {
     let players = state.network.get_player_list();
     let local_name = state.network.get_local_name();
     let row_index = ((y - list_top) / PLAYER_ROW_H) as usize;
@@ -1085,7 +1089,8 @@ unsafe fn handle_kick_click(hwnd: HWND, state: &mut UIState, x: i32, y: i32, lis
     if row_index < players.len() {
         let player = &players[row_index];
         if !player.is_host && player.name != local_name {
-            if x >= 300 && x <= 390 {
+            // Kick button: x 285-340
+            if x >= 285 && x <= 340 {
                 let kicked_name = player.name.clone();
                 let kicked_name_clone = kicked_name.clone();
                 let net_clone = Arc::clone(&state.network);
@@ -1100,6 +1105,24 @@ unsafe fn handle_kick_click(hwnd: HWND, state: &mut UIState, x: i32, y: i32, lis
                     }
                 });
                 state.status_text = format!("Kicked {}", kicked_name);
+                InvalidateRect(hwnd, std::ptr::null(), 1);
+            }
+            // Ban button: x 345-390
+            else if x >= 345 && x <= 390 {
+                let banned_name = player.name.clone();
+                let banned_name_clone = banned_name.clone();
+                let net_clone = Arc::clone(&state.network);
+                let hwnd_raw = hwnd as usize;
+                thread::spawn(move || unsafe {
+                    net_clone.ban_player(&banned_name_clone);
+                    let h = hwnd_raw as HWND;
+                    let stp = GetWindowLongPtrW(h, GWLP_USERDATA) as *mut UIState;
+                    if !stp.is_null() {
+                        (*stp).last_player_count = 0;
+                        InvalidateRect(h, std::ptr::null(), 1);
+                    }
+                });
+                state.status_text = format!("Banned {}", banned_name);
                 InvalidateRect(hwnd, std::ptr::null(), 1);
             }
         }
