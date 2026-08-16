@@ -3,6 +3,7 @@ pub mod hook;
 pub mod network;
 pub mod protocol;
 pub mod proxy;
+pub mod ui;
 
 use std::ffi::c_void;
 use std::sync::Arc;
@@ -26,10 +27,10 @@ pub unsafe extern "system" fn DllMain(
             thread::spawn(move || {
                 let network = network::NetworkManager::new();
                 
-                // Spawn the interactive in-game console
-                console::start_console_thread(Arc::clone(&network));
+                // Spawn the native in-game GUI attached to Tiny Glade (No external console)
+                ui::start_ui_thread(Arc::clone(&network));
 
-                // Initialize the hook engine
+                // Initialize the memory hook engine (infinite border & building tools)
                 let hook_engine = hook::HookEngine::new(Arc::clone(&network));
                 hook_engine.start();
             });
