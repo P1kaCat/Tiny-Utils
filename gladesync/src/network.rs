@@ -5,6 +5,7 @@ use socket2::{Socket, Domain, Type};
 use std::sync::atomic::{AtomicBool, AtomicU32, Ordering};
 use std::sync::{Arc, Mutex};
 use std::thread;
+use std::time::Duration;
 
 struct PeerConnection {
     stream: TcpStream,
@@ -97,6 +98,12 @@ impl NetworkManager {
         socket.bind(&addr.into()).map_err(|e| e.to_string())?;
         socket.listen(128).map_err(|e| e.to_string())?;
         let listener: TcpListener = socket.into();
+        // Non-blocking so the accept loop can periodically check is_hosting
+        // and actually exit (and close the socket) when the host stops —
+        // otherwise the listener thread would keep accepting connections
+        // forever in the background even after "Stop Hosting".
+        listener.set_nonblocking(true).map_err(|e| e.to_string())?;
+
         self.is_hosting.store(true, Ordering::SeqCst);
         self.local_id.store(1, Ordering::SeqCst);
         let host_name = self.get_local_name();
@@ -105,10 +112,15 @@ impl NetworkManager {
 
         let self_clone = Arc::clone(self);
         thread::spawn(move || {
-            for stream in listener.incoming() {
-                match stream {
-                    Ok(socket) => {
-                        let peer_addr = socket.peer_addr().map(|a| a.to_string()).unwrap_or_default();
+            loop {
+                if !self_clone.is_hosting.load(Ordering::SeqCst) {
+                    println!("[GladeSync Server] Stop requested — closing listener on {}", bind_addr);
+                    break;
+                }
+                match listener.accept() {
+                    Ok((socket, peer_addr_sock)) => {
+                        let _ = socket.set_nonblocking(false);
+                        let peer_addr = peer_addr_sock.to_string();
                         println!("[GladeSync Server] Player connected from: {}", peer_addr);
                         let assigned_id = self_clone.next_player_id.fetch_add(1, Ordering::SeqCst);
                         let ack = NetMessage::HandshakeAck {
@@ -116,7 +128,7 @@ impl NetworkManager {
                             host_name: self_clone.get_local_name(),
                         };
                         if let Ok(json) = serde_json::to_string(&ack) {
-                            let mut s = socket.try_clone().unwrap();
+                            let mut s = match socket.try_clone() { Ok(s) => s, Err(_) => continue };
                             let _ = writeln!(s, "{}", json);
                         }
                         let read_stream = match socket.try_clone() { Ok(s) => s, Err(_) => continue };
@@ -127,6 +139,7 @@ impl NetworkManager {
                                 name: format!("Player {}", assigned_id), addr: peer_addr.clone(),
                             });
                         }
+                        self_clone.rebuild_player_list_and_broadcast();
                         let self_peer = Arc::clone(&self_clone);
                         let peer_id = assigned_id;
                         let peer_addr_clone = peer_addr.clone();
@@ -159,25 +172,83 @@ impl NetworkManager {
                             }
                         });
                     }
-                    Err(e) => { eprintln!("[GladeSync Server] Accept error: {}", e); }
+                    Err(ref e) if e.kind() == std::io::ErrorKind::WouldBlock => {
+                        thread::sleep(Duration::from_millis(100));
+                    }
+                    Err(e) => {
+                        eprintln!("[GladeSync Server] Accept error: {}", e);
+                        thread::sleep(Duration::from_millis(100));
+                    }
                 }
             }
+            // Listener drops here, actually releasing the port.
         });
         Ok(())
     }
 
     pub fn connect_to_host(self: &Arc<Self>, addr: &str) -> Result<(), String> {
         println!("[GladeSync Client] Connecting to {}...", addr);
-        let mut stream = TcpStream::connect(addr).map_err(|e| e.to_string())?;
+        // Use a short connect timeout so a dead/unreachable address fails fast
+        // instead of hanging.
+        let socket_addr: std::net::SocketAddr = addr
+            .parse()
+            .map_err(|_| "Invalid address".to_string())?;
+        let mut stream = TcpStream::connect_timeout(&socket_addr, Duration::from_secs(5))
+            .map_err(|e| format!("Could not reach host: {}", e))?;
+
         let player_name = self.get_local_name();
         let handshake = NetMessage::Handshake {
             client_version: "0.1.0".to_string(), player_name,
         };
         let json = serde_json::to_string(&handshake).map_err(|e| e.to_string())?;
         writeln!(stream, "{}", json).map_err(|e| e.to_string())?;
+
+        // ── Real verification: wait for the server's HandshakeAck before
+        // declaring the join successful. A raw TCP connect can "succeed"
+        // even when there's no real GladeSync host on the other end
+        // (e.g. a leftover socket) — we only trust an actual protocol ack.
+        stream.set_read_timeout(Some(Duration::from_secs(5))).map_err(|e| e.to_string())?;
+        let mut ack_reader = BufReader::new(stream.try_clone().map_err(|e| e.to_string())?);
+        let mut line = String::new();
+        let mut assigned_id: Option<u32> = None;
+        let mut host_name_recv: Option<String> = None;
+
+        loop {
+            line.clear();
+            match ack_reader.read_line(&mut line) {
+                Ok(0) => return Err("Host closed the connection — session may not exist.".to_string()),
+                Ok(_) => {
+                    let trimmed = line.trim();
+                    if trimmed.is_empty() { continue; }
+                    match serde_json::from_str::<NetMessage>(trimmed) {
+                        Ok(NetMessage::HandshakeAck { assigned_id: id, host_name, .. }) => {
+                            assigned_id = Some(id);
+                            host_name_recv = Some(host_name);
+                            break;
+                        }
+                        _ => continue,
+                    }
+                }
+                Err(ref e) if e.kind() == std::io::ErrorKind::WouldBlock || e.kind() == std::io::ErrorKind::TimedOut => {
+                    return Err("No response from host — the session doesn't exist or is unreachable.".to_string());
+                }
+                Err(e) => return Err(format!("Connection error: {}", e)),
+            }
+        }
+
+        let assigned_id = match assigned_id {
+            Some(id) => id,
+            None => return Err("Host did not confirm the connection.".to_string()),
+        };
+
+        // Verified — reset to blocking with no timeout for normal ongoing play.
+        stream.set_read_timeout(None).map_err(|e| e.to_string())?;
         let stream_clone = stream.try_clone().map_err(|e| e.to_string())?;
         if let Ok(mut client_slot) = self.active_client.lock() { *client_slot = Some(stream); }
         self.is_connected.store(true, Ordering::SeqCst);
+        self.local_id.store(assigned_id, Ordering::SeqCst);
+        self.update_self_in_player_list();
+        println!("[GladeSync] Connected! ID: #{} | Host: {}", assigned_id, host_name_recv.unwrap_or_default());
 
         let self_clone = Arc::clone(self);
         thread::spawn(move || {
@@ -211,6 +282,7 @@ impl NetworkManager {
     pub fn disconnect(&self) {
         self.is_hosting.store(false, Ordering::SeqCst);
         self.is_connected.store(false, Ordering::SeqCst);
+        self.local_id.store(1, Ordering::SeqCst);
         *self.active_client.lock().unwrap() = None;
         self.peers.lock().unwrap().clear();
         *self.player_list.lock().unwrap() = vec![];

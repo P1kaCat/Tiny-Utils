@@ -99,6 +99,10 @@ const IDLE_JOIN_BTN_B: i32 = 268;
 
 const SETUP_ACTION_BTN_T: i32 = 208;
 const SETUP_ACTION_BTN_B: i32 = 254;
+// Active (host/join) mode has no IP/port fields, so its action button
+// sits higher, right under the Pseudo field, to avoid dead space.
+const ACTIVE_BTN_T: i32 = 140;
+const ACTIVE_BTN_B: i32 = 186;
 const SETUP_BACK_BTN_T: i32 = 262;
 const SETUP_BACK_BTN_B: i32 = 298;
 
@@ -560,11 +564,11 @@ unsafe fn paint_dialog(hwnd: HWND, state: &UIState) {
             let pen_action = CreatePen(PS_SOLID, 1, btn_color);
             SelectObject(hdc, brush_action as _);
             SelectObject(hdc, pen_action as _);
-            RoundRect(hdc, 30, SETUP_ACTION_BTN_T, 390, SETUP_ACTION_BTN_B, 16, 16);
+            RoundRect(hdc, 30, ACTIVE_BTN_T, 390, ACTIVE_BTN_B, 16, 16);
             DeleteObject(brush_action as _);
             DeleteObject(pen_action as _);
             SetTextColor(hdc, BTN_TEXT_COLOR);
-            let mut r_btn1 = RECT { left: 30, top: SETUP_ACTION_BTN_T, right: 390, bottom: SETUP_ACTION_BTN_B };
+            let mut r_btn1 = RECT { left: 30, top: ACTIVE_BTN_T, right: 390, bottom: ACTIVE_BTN_B };
             let btn1_txt: Vec<u16> = btn_label.encode_utf16().collect();
             DrawTextW(hdc, btn1_txt.as_ptr(), -1, &mut r_btn1, (DT_CENTER | DT_SINGLELINE | DT_VCENTER) as u32);
         }
@@ -573,11 +577,11 @@ unsafe fn paint_dialog(hwnd: HWND, state: &UIState) {
             let pen_action = CreatePen(PS_SOLID, 1, KICK_COLOR);
             SelectObject(hdc, brush_action as _);
             SelectObject(hdc, pen_action as _);
-            RoundRect(hdc, 30, SETUP_ACTION_BTN_T, 390, SETUP_ACTION_BTN_B, 16, 16);
+            RoundRect(hdc, 30, ACTIVE_BTN_T, 390, ACTIVE_BTN_B, 16, 16);
             DeleteObject(brush_action as _);
             DeleteObject(pen_action as _);
             SetTextColor(hdc, BTN_TEXT_COLOR);
-            let mut r_btn1 = RECT { left: 30, top: SETUP_ACTION_BTN_T, right: 390, bottom: SETUP_ACTION_BTN_B };
+            let mut r_btn1 = RECT { left: 30, top: ACTIVE_BTN_T, right: 390, bottom: ACTIVE_BTN_B };
             let btn1_txt: Vec<u16> = "Leave\0".encode_utf16().collect();
             DrawTextW(hdc, btn1_txt.as_ptr(), -1, &mut r_btn1, (DT_CENTER | DT_SINGLELINE | DT_VCENTER) as u32);
         }
@@ -586,7 +590,11 @@ unsafe fn paint_dialog(hwnd: HWND, state: &UIState) {
     DeleteObject(font_btn as _);
 
     // ── Players section header ──
-    let header_y = if state.dialog_mode == MODE_IDLE { IDLE_JOIN_BTN_B + 14 } else { SETUP_BACK_BTN_B + 14 };
+    let header_y = match state.dialog_mode {
+        MODE_IDLE => IDLE_JOIN_BTN_B + 14,
+        MODE_HOST_ACTIVE | MODE_JOIN_ACTIVE => ACTIVE_BTN_B + 14,
+        _ => SETUP_BACK_BTN_B + 14,
+    };
     let font_players = make_font(21, 400);
     SelectObject(hdc, font_players as _);
     SetTextColor(hdc, TEXT_DARK);
@@ -1024,7 +1032,7 @@ unsafe extern "system" fn wnd_proc(
                             }
                         }
                         MODE_HOST_ACTIVE => {
-                            if x >= 30 && x <= 390 && y >= SETUP_ACTION_BTN_T && y <= SETUP_ACTION_BTN_B {
+                            if x >= 30 && x <= 390 && y >= ACTIVE_BTN_T && y <= ACTIVE_BTN_B {
                                 if state.stop_countdown == 0 {
                                     state.stop_countdown = 5;
                                     SetTimer(hwnd, TIMER_COUNTDOWN, 1000, None);
@@ -1038,14 +1046,14 @@ unsafe extern "system" fn wnd_proc(
                                     InvalidateRect(hwnd, std::ptr::null(), 1);
                                 }
                             }
-                            let header_y = SETUP_BACK_BTN_B + 14;
+                            let header_y = ACTIVE_BTN_B + 14;
                             let list_top = header_y + PLAYERS_HEADER_H + 8;
                             if y >= list_top && y <= PLAYER_LIST_HIT_BOTTOM && state.network.is_hosting() {
                                 handle_kick_click(hwnd, state, x, y, list_top);
                             }
                         }
                         MODE_JOIN_ACTIVE => {
-                            if x >= 30 && x <= 390 && y >= SETUP_ACTION_BTN_T && y <= SETUP_ACTION_BTN_B {
+                            if x >= 30 && x <= 390 && y >= ACTIVE_BTN_T && y <= ACTIVE_BTN_B {
                                 state.network.disconnect();
                                 state.status_text = "Disconnected".to_string();
                                 state.dialog_mode = MODE_IDLE;
