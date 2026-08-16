@@ -8,9 +8,25 @@ echo     Multijoueur + Zone Illimitee + Menu In-Game
 echo ======================================================
 echo.
 
+echo [INFO] Suppression de l'ancien build...
+if exist "gladesync\target\release\dxgi.dll" del /Q "gladesync\target\release\dxgi.dll"
+if exist "dxgi.dll" del /Q "dxgi.dll"
+
 echo [INFO] Recompilation de Tiny Utils en cours...
 cd gladesync
 cargo build --release
+if errorlevel 1 (
+    cd ..
+    echo.
+    echo ======================================================
+    echo   [ERREUR] La compilation a echoue !
+    echo   Verifie que tu as fait git pull pour recuperer les
+    echo   derniers fixes.
+    echo ======================================================
+    echo.
+    pause
+    exit /b 1
+)
 cd ..
 
 if exist "gladesync\target\release\dxgi.dll" (
@@ -26,8 +42,7 @@ if exist "gladesync\target\release\dxgi.dll" (
     echo 4. Pour rejoindre : entre l'IP et le port de ton ami.
     echo.
 ) else (
-    echo [ERREUR] Impossible de compiler dxgi.dll.
-    echo Verifie que Rust/Cargo est installe sur ta machine.
+    echo [ERREUR] dxgi.dll introuvable apres compilation.
 )
 
 echo.
