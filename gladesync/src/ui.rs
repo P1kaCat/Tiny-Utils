@@ -24,7 +24,7 @@ use windows_sys::Win32::UI::WindowsAndMessaging::{
     ES_AUTOHSCROLL, GWL_EXSTYLE, GWLP_USERDATA, IDC_ARROW, MSG, SW_HIDE, SW_SHOW,
     SWP_FRAMECHANGED, SWP_NOMOVE, SWP_NOSIZE, SWP_NOZORDER, ULW_ALPHA, WM_CREATE,
     WM_DESTROY, WM_ERASEBKGND, WM_LBUTTONDOWN, WM_PAINT, WM_SETCURSOR, WM_TIMER,
-    WNDCLASSEXW, WS_BORDER, WS_CHILD, WS_CLIPCHILDREN, WS_EX_LAYERED, WS_EX_TOOLWINDOW,
+    WNDCLASSEXW, WS_CHILD, WS_CLIPCHILDREN, WS_EX_LAYERED, WS_EX_TOOLWINDOW,
     WS_POPUP, WS_TABSTOP, WS_VISIBLE,
 };
 
@@ -45,19 +45,21 @@ const CLOSED_H: i32 = 56;
 /// WM_CTLCOLOREDIT = 0x0133
 const WM_CTLCOLOREDIT: u32 = 0x0133;
 
-/// Background color: Ivory parchment F8F4EB → COLORREF (BGR) = 0x00EBF4F8
+/// Dialog background: Ivory parchment F8F4EB → BGR = 0x00EBF4F8
 const BG_COLOR: u32 = 0x00EBF4F8;
+/// Input field background: warm off-white FDFBF6 → BGR = 0x00F6FBFD
+const FIELD_BG_COLOR: u32 = 0x00F6FBFD;
+/// Input field border: soft taupe D4CFC4 → BGR = 0x00C4CFD4
+const FIELD_BORDER_COLOR: u32 = 0x00C4CFD4;
 
 /// Dialog modes: 0=Idle, 1=HostSetup, 2=JoinSetup
 const MODE_IDLE: u8 = 0;
 const MODE_HOST: u8 = 1;
 const MODE_JOIN: u8 = 2;
 
-/// Player list area Y range (used in Idle mode where there's more space)
-const PLAYER_LIST_TOP_IDLE: i32 = 225;
-const PLAYER_LIST_TOP_SETUP: i32 = 270;
-const PLAYER_LIST_BOTTOM: i32 = 410;
+/// Player list
 const PLAYER_ROW_H: i32 = 28;
+const PLAYER_LIST_BOTTOM: i32 = 410;
 
 struct UIState {
     network: Arc<NetworkManager>,
@@ -148,7 +150,7 @@ pub fn start_ui_thread(network: Arc<NetworkManager>) {
             hwnd_port: std::ptr::null_mut(),
             status_text: "Ready to play".to_string(),
             last_game_pos: (game_rect.left, game_rect.top),
-            edit_bg_brush: CreateSolidBrush(0x00FFFFFF) as *mut c_void,
+            edit_bg_brush: CreateSolidBrush(FIELD_BG_COLOR) as *mut c_void,
             last_player_count: 0,
             dialog_mode: MODE_IDLE,
         }));
@@ -299,6 +301,23 @@ unsafe fn render_star_button(hwnd: HWND, state: &UIState) {
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
+// Helper: draw a themed input field background (rounded rect with subtle border)
+// ─────────────────────────────────────────────────────────────────────────────
+
+unsafe fn draw_field_bg(hdc: HDC_TYPE, x: i32, y: i32, w: i32, h: i32) {
+    // Fill with field background color
+    let brush = CreateSolidBrush(FIELD_BG_COLOR) as *mut c_void;
+    let pen = CreatePen(PS_SOLID, 1, FIELD_BORDER_COLOR);
+    SelectObject(hdc, brush as _);
+    SelectObject(hdc, pen as _);
+    RoundRect(hdc, x, y, x + w, y + h, 8, 8);
+    DeleteObject(brush as _);
+    DeleteObject(pen as _);
+}
+
+type HDC_TYPE = *mut c_void;
+
+// ─────────────────────────────────────────────────────────────────────────────
 // Dialog painter
 // ─────────────────────────────────────────────────────────────────────────────
 
@@ -341,11 +360,17 @@ unsafe fn paint_dialog(hwnd: HWND, state: &UIState) {
     let mut r_lpseudo = RECT { left: 30, top: 52, right: 200, bottom: 72 };
     DrawTextW(hdc, label_pseudo.as_ptr(), -1, &mut r_lpseudo, (DT_SINGLELINE | DT_VCENTER) as u32);
 
+    // ── Pseudo field background ──
+    draw_field_bg(hdc, 28, 74, 364, 32);
+
     // ── IP/Port labels (only in setup modes) ──
     if state.dialog_mode == MODE_HOST {
+        // Centered "Port:" label
         let label_port: Vec<u16> = "Port:\0".encode_utf16().collect();
-        let mut r_lport = RECT { left: 30, top: 110, right: 390, bottom: 130 };
-        DrawTextW(hdc, label_port.as_ptr(), -1, &mut r_lport, (DT_SINGLELINE | DT_VCENTER) as u32);
+        let mut r_lport = RECT { left: 100, top: 110, right: 320, bottom: 130 };
+        DrawTextW(hdc, label_port.as_ptr(), -1, &mut r_lport, (DT_CENTER | DT_SINGLELINE | DT_VCENTER) as u32);
+        // Centered port field background (x=110, w=200)
+        draw_field_bg(hdc, 108, 132, 204, 32);
     } else if state.dialog_mode == MODE_JOIN {
         let label_ip: Vec<u16> = "IP Address:\0".encode_utf16().collect();
         let mut r_lip = RECT { left: 30, top: 110, right: 270, bottom: 130 };
@@ -353,6 +378,10 @@ unsafe fn paint_dialog(hwnd: HWND, state: &UIState) {
         let label_port: Vec<u16> = "Port:\0".encode_utf16().collect();
         let mut r_lport = RECT { left: 290, top: 110, right: 390, bottom: 130 };
         DrawTextW(hdc, label_port.as_ptr(), -1, &mut r_lport, (DT_SINGLELINE | DT_VCENTER) as u32);
+        // IP field background (x=30, w=240)
+        draw_field_bg(hdc, 28, 132, 244, 32);
+        // Port field background (x=290, w=100)
+        draw_field_bg(hdc, 288, 132, 104, 32);
     }
     DeleteObject(font_label as _);
 
@@ -402,7 +431,7 @@ unsafe fn paint_dialog(hwnd: HWND, state: &UIState) {
             let btn1_txt: Vec<u16> = "▶ Start Hosting\0".encode_utf16().collect();
             DrawTextW(hdc, btn1_txt.as_ptr(), -1, &mut r_btn1, (DT_CENTER | DT_SINGLELINE | DT_VCENTER) as u32);
 
-            // Back button (gray, smaller)
+            // Back button (gray)
             let brush_gray = CreateSolidBrush(0x00D4CFC4) as *mut c_void;
             let pen_gray = CreatePen(PS_SOLID, 1, 0x00D4CFC4);
             SelectObject(hdc, brush_gray as _);
@@ -429,7 +458,7 @@ unsafe fn paint_dialog(hwnd: HWND, state: &UIState) {
             let btn2_txt: Vec<u16> = "▶ Connect\0".encode_utf16().collect();
             DrawTextW(hdc, btn2_txt.as_ptr(), -1, &mut r_btn2, (DT_CENTER | DT_SINGLELINE | DT_VCENTER) as u32);
 
-            // Back button (gray, smaller)
+            // Back button (gray)
             let brush_gray = CreateSolidBrush(0x00D4CFC4) as *mut c_void;
             let pen_gray = CreatePen(PS_SOLID, 1, 0x00D4CFC4);
             SelectObject(hdc, brush_gray as _);
@@ -531,9 +560,8 @@ unsafe fn switch_to_opaque(hwnd: HWND, state: &mut UIState) {
     let rgn = CreateRoundRectRgn(0, 0, OPEN_W + 1, OPEN_H + 1, 24, 24);
     SetWindowRgn(hwnd, rgn, 1);
 
-    // Show pseudo always, IP/Port only in setup modes
     ShowWindow(state.hwnd_pseudo, SW_SHOW);
-    update_field_visibility(state);
+    update_field_visibility(hwnd, state);
 
     InvalidateRect(hwnd, std::ptr::null(), 1);
 }
@@ -543,7 +571,6 @@ unsafe fn switch_to_layered(hwnd: HWND, state: &mut UIState) {
     ShowWindow(state.hwnd_ip, SW_HIDE);
     ShowWindow(state.hwnd_port, SW_HIDE);
 
-    // Reset to idle mode when closing
     state.dialog_mode = MODE_IDLE;
 
     SetWindowRgn(hwnd, std::ptr::null_mut(), 0);
@@ -561,7 +588,7 @@ unsafe fn switch_to_layered(hwnd: HWND, state: &mut UIState) {
     render_star_button(hwnd, state);
 }
 
-unsafe fn update_field_visibility(state: &mut UIState) {
+unsafe fn update_field_visibility(hwnd: HWND, state: &mut UIState) {
     match state.dialog_mode {
         MODE_IDLE => {
             ShowWindow(state.hwnd_ip, SW_HIDE);
@@ -569,9 +596,14 @@ unsafe fn update_field_visibility(state: &mut UIState) {
         }
         MODE_HOST => {
             ShowWindow(state.hwnd_ip, SW_HIDE);
+            // Center the port field for host mode
+            MoveWindow(state.hwnd_port, 110, 133, 200, 28, 0);
             ShowWindow(state.hwnd_port, SW_SHOW);
         }
         MODE_JOIN => {
+            // Restore port field position to join layout
+            MoveWindow(state.hwnd_ip, 30, 133, 240, 28, 0);
+            MoveWindow(state.hwnd_port, 290, 133, 100, 28, 0);
             ShowWindow(state.hwnd_ip, SW_SHOW);
             ShowWindow(state.hwnd_port, SW_SHOW);
         }
@@ -598,13 +630,13 @@ unsafe extern "system" fn wnd_proc(
             let edit_class: Vec<u16> = "EDIT\0".encode_utf16().collect();
             let inst = GetModuleHandleW(std::ptr::null());
 
-            // Pseudo input (y: 75, always shown when dialog open)
+            // Pseudo input — no WS_BORDER, custom drawn background
             let default_pseudo: Vec<u16> = "Builder\0".encode_utf16().collect();
             let hwnd_pseudo = CreateWindowExW(
                 0,
                 edit_class.as_ptr(),
                 default_pseudo.as_ptr(),
-                WS_CHILD | (ES_AUTOHSCROLL as u32) | WS_TABSTOP | WS_BORDER,
+                WS_CHILD | (ES_AUTOHSCROLL as u32) | WS_TABSTOP,
                 30, 75, 360, 28,
                 hwnd,
                 ID_EDIT_PSEUDO as *mut c_void,
@@ -612,13 +644,13 @@ unsafe extern "system" fn wnd_proc(
                 std::ptr::null(),
             );
 
-            // IP input (y: 133, hidden in Idle/Host mode)
+            // IP input — no WS_BORDER
             let default_ip: Vec<u16> = "127.0.0.1\0".encode_utf16().collect();
             let hwnd_ip = CreateWindowExW(
                 0,
                 edit_class.as_ptr(),
                 default_ip.as_ptr(),
-                WS_CHILD | (ES_AUTOHSCROLL as u32) | WS_TABSTOP | WS_BORDER,
+                WS_CHILD | (ES_AUTOHSCROLL as u32) | WS_TABSTOP,
                 30, 133, 240, 28,
                 hwnd,
                 ID_EDIT_IP as *mut c_void,
@@ -626,13 +658,13 @@ unsafe extern "system" fn wnd_proc(
                 std::ptr::null(),
             );
 
-            // Port input (y: 133, hidden in Idle mode)
+            // Port input — no WS_BORDER
             let default_port: Vec<u16> = "7777\0".encode_utf16().collect();
             let hwnd_port = CreateWindowExW(
                 0,
                 edit_class.as_ptr(),
                 default_port.as_ptr(),
-                WS_CHILD | (ES_AUTOHSCROLL as u32) | WS_TABSTOP | WS_BORDER,
+                WS_CHILD | (ES_AUTOHSCROLL as u32) | WS_TABSTOP,
                 290, 133, 100, 28,
                 hwnd,
                 ID_EDIT_PORT as *mut c_void,
@@ -677,7 +709,7 @@ unsafe extern "system" fn wnd_proc(
                 let state = &*sp;
                 let hdc = wparam as *mut c_void;
                 SetTextColor(hdc, 0x0036312B);
-                SetBkColor(hdc, 0x00FFFFFF);
+                SetBkColor(hdc, FIELD_BG_COLOR);
                 return state.edit_bg_brush as LRESULT;
             }
             DefWindowProcW(hwnd, msg, wparam, lparam)
@@ -768,13 +800,13 @@ unsafe extern "system" fn wnd_proc(
                             // Host button (y: 115..155)
                             if x >= 30 && x <= 390 && y >= 115 && y <= 155 {
                                 state.dialog_mode = MODE_HOST;
-                                update_field_visibility(state);
+                                update_field_visibility(hwnd, state);
                                 InvalidateRect(hwnd, std::ptr::null(), 1);
                             }
                             // Join button (y: 165..205)
                             else if x >= 30 && x <= 390 && y >= 165 && y <= 205 {
                                 state.dialog_mode = MODE_JOIN;
-                                update_field_visibility(state);
+                                update_field_visibility(hwnd, state);
                                 InvalidateRect(hwnd, std::ptr::null(), 1);
                             }
                             // Kick buttons in player list
@@ -810,7 +842,7 @@ unsafe extern "system" fn wnd_proc(
                             // Back button (y: 220..250)
                             else if x >= 30 && x <= 390 && y >= 220 && y <= 250 {
                                 state.dialog_mode = MODE_IDLE;
-                                update_field_visibility(state);
+                                update_field_visibility(hwnd, state);
                                 InvalidateRect(hwnd, std::ptr::null(), 1);
                             }
                         }
@@ -860,7 +892,7 @@ unsafe extern "system" fn wnd_proc(
                             // Back button (y: 220..250)
                             else if x >= 30 && x <= 390 && y >= 220 && y <= 250 {
                                 state.dialog_mode = MODE_IDLE;
-                                update_field_visibility(state);
+                                update_field_visibility(hwnd, state);
                                 InvalidateRect(hwnd, std::ptr::null(), 1);
                             }
                         }
