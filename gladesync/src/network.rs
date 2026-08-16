@@ -60,7 +60,7 @@ impl NetworkManager {
     }
 
     pub fn set_local_name(&self, name: String) {
-        *self.local_name.lock().unwrap() = name;
+        *self.local_name.lock().unwrap() = name.clone();
         self.local_transform.lock().unwrap().pseudo = name.clone();
         self.update_self_in_player_list();
     }
