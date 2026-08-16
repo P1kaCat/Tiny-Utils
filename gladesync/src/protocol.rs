@@ -41,6 +41,13 @@ pub struct ActionPayload {
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
+pub struct PlayerInfo {
+    pub id: u32,
+    pub name: String,
+    pub is_host: bool,
+}
+
+#[derive(Debug, Clone, Serialize, Deserialize)]
 pub enum NetMessage {
     /// Initial connection handshake
     Handshake {
@@ -51,6 +58,7 @@ pub enum NetMessage {
     HandshakeAck {
         assigned_id: u32,
         server_version: String,
+        host_name: String,
     },
     /// Full glade save state synchronization
     SyncSaveState {
@@ -65,6 +73,14 @@ pub enum NetMessage {
     ChatMessage {
         sender: String,
         text: String,
+    },
+    /// Player list update (host → all clients)
+    PlayerListUpdate {
+        players: Vec<PlayerInfo>,
+    },
+    /// You were kicked by the host
+    YouKicked {
+        reason: String,
     },
     /// Keep-alive heartbeat
     Ping,

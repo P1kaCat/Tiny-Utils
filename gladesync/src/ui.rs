@@ -30,6 +30,7 @@ use windows_sys::Win32::UI::WindowsAndMessaging::{
 
 static IS_MENU_OPEN: AtomicBool = AtomicBool::new(false);
 
+const ID_EDIT_PSEUDO: isize = 1000;
 const ID_EDIT_IP: isize = 1001;
 const ID_EDIT_PORT: isize = 1002;
 const TIMER_REFRESH: usize = 1;
@@ -37,7 +38,7 @@ const TIMER_REFRESH: usize = 1;
 const OFFSET_X: i32 = 20;
 const OFFSET_Y: i32 = 20;
 const OPEN_W: i32 = 420;
-const OPEN_H: i32 = 300;
+const OPEN_H: i32 = 470;
 const CLOSED_W: i32 = 56;
 const CLOSED_H: i32 = 56;
 
@@ -47,14 +48,21 @@ const WM_CTLCOLOREDIT: u32 = 0x0133;
 /// Background color: Ivory parchment F8F4EB → COLORREF (BGR) = 0x00EBF4F8
 const BG_COLOR: u32 = 0x00EBF4F8;
 
+/// Player list area Y range
+const PLAYER_LIST_TOP: i32 = 290;
+const PLAYER_LIST_BOTTOM: i32 = 410;
+const PLAYER_ROW_H: i32 = 28;
+
 struct UIState {
     network: Arc<NetworkManager>,
     game_hwnd: HWND,
+    hwnd_pseudo: HWND,
     hwnd_ip: HWND,
     hwnd_port: HWND,
     status_text: String,
     last_game_pos: (i32, i32),
-    edit_bg_brush: *mut c_void, // persistent HBRUSH for edit controls (white)
+    edit_bg_brush: *mut c_void,
+    last_player_count: usize,
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -128,11 +136,13 @@ pub fn start_ui_thread(network: Arc<NetworkManager>) {
         let state = Box::into_raw(Box::new(UIState {
             network: Arc::clone(&network),
             game_hwnd,
+            hwnd_pseudo: std::ptr::null_mut(),
             hwnd_ip: std::ptr::null_mut(),
             hwnd_port: std::ptr::null_mut(),
             status_text: "Ready to play".to_string(),
             last_game_pos: (game_rect.left, game_rect.top),
             edit_bg_brush: CreateSolidBrush(0x00FFFFFF) as *mut c_void,
+            last_player_count: 0,
         }));
 
         // Start as a layered popup (for the translucent star button)
@@ -297,7 +307,7 @@ unsafe fn paint_dialog(hwnd: HWND, state: &UIState) {
     let hdc = BeginPaint(hwnd, &mut ps);
 
     // Fill background with ivory parchment
-    let bg_brush = CreateSolidBrush(BG_COLOR);
+    let bg_brush = CreateSolidBrush(BG_COLOR) as *mut c_void;
     let mut rc: RECT = std::mem::zeroed();
     GetClientRect(hwnd, &mut rc);
     FillRect(hdc, &rc, bg_brush);
@@ -324,53 +334,114 @@ unsafe fn paint_dialog(hwnd: HWND, state: &UIState) {
     DrawTextW(hdc, x_str.as_ptr(), -1, &mut r_close, (DT_CENTER | DT_SINGLELINE | DT_VCENTER) as u32);
     DeleteObject(font_x as _);
 
-    // ── Labels "IP Address:" and "Port:" ──
+    // ── Label "Pseudo:" ──
     let font_label = CreateFontW(14, 0, 0, 0, 400, 0, 0, 0, 1, 0, 0, 2, 0, font_name.as_ptr());
     SelectObject(hdc, font_label as _);
     SetTextColor(hdc, 0x00706B60);
+    let label_pseudo: Vec<u16> = "Pseudo:\0".encode_utf16().collect();
+    let mut r_lpseudo = RECT { left: 30, top: 52, right: 200, bottom: 72 };
+    DrawTextW(hdc, label_pseudo.as_ptr(), -1, &mut r_lpseudo, (DT_SINGLELINE | DT_VCENTER) as u32);
+
+    // ── Labels "IP Address:" and "Port:" ──
     let label_ip: Vec<u16> = "IP Address:\0".encode_utf16().collect();
-    let mut r_lip = RECT { left: 30, top: 60, right: 270, bottom: 80 };
+    let mut r_lip = RECT { left: 30, top: 110, right: 270, bottom: 130 };
     DrawTextW(hdc, label_ip.as_ptr(), -1, &mut r_lip, (DT_SINGLELINE | DT_VCENTER) as u32);
     let label_port: Vec<u16> = "Port:\0".encode_utf16().collect();
-    let mut r_lport = RECT { left: 290, top: 60, right: 390, bottom: 80 };
+    let mut r_lport = RECT { left: 290, top: 110, right: 390, bottom: 130 };
     DrawTextW(hdc, label_port.as_ptr(), -1, &mut r_lport, (DT_SINGLELINE | DT_VCENTER) as u32);
     DeleteObject(font_label as _);
 
     // ── Host button (green #568062 → BGR 0x00628056) ──
     let font_btn = CreateFontW(16, 0, 0, 0, 700, 0, 0, 0, 1, 0, 0, 2, 0, font_name.as_ptr());
     SelectObject(hdc, font_btn as _);
-    let brush_green = CreateSolidBrush(0x00628056);
+    let brush_green = CreateSolidBrush(0x00628056) as *mut c_void;
     let pen_green = CreatePen(PS_SOLID, 1, 0x00628056);
     SelectObject(hdc, brush_green as _);
     SelectObject(hdc, pen_green as _);
-    RoundRect(hdc, 30, 135, 390, 180, 14, 14);
+    RoundRect(hdc, 30, 170, 390, 210, 14, 14);
     DeleteObject(brush_green as _);
     DeleteObject(pen_green as _);
     SetTextColor(hdc, 0x00FFFFFF);
-    let mut r_btn1 = RECT { left: 30, top: 135, right: 390, bottom: 180 };
+    let mut r_btn1 = RECT { left: 30, top: 170, right: 390, bottom: 210 };
     let btn1_txt: Vec<u16> = "Host Multiplayer Game\0".encode_utf16().collect();
     DrawTextW(hdc, btn1_txt.as_ptr(), -1, &mut r_btn1, (DT_CENTER | DT_SINGLELINE | DT_VCENTER) as u32);
 
     // ── Join button (amber #BD7A44 → BGR 0x00447ABD) ──
-    let brush_amber = CreateSolidBrush(0x00447ABD);
+    let brush_amber = CreateSolidBrush(0x00447ABD) as *mut c_void;
     let pen_amber = CreatePen(PS_SOLID, 1, 0x00447ABD);
     SelectObject(hdc, brush_amber as _);
     SelectObject(hdc, pen_amber as _);
-    RoundRect(hdc, 30, 195, 390, 240, 14, 14);
+    RoundRect(hdc, 30, 220, 390, 260, 14, 14);
     DeleteObject(brush_amber as _);
     DeleteObject(pen_amber as _);
     SetTextColor(hdc, 0x00FFFFFF);
-    let mut r_btn2 = RECT { left: 30, top: 195, right: 390, bottom: 240 };
+    let mut r_btn2 = RECT { left: 30, top: 220, right: 390, bottom: 260 };
     let btn2_txt: Vec<u16> = "Join Friend\0".encode_utf16().collect();
     DrawTextW(hdc, btn2_txt.as_ptr(), -1, &mut r_btn2, (DT_CENTER | DT_SINGLELINE | DT_VCENTER) as u32);
     DeleteObject(font_btn as _);
+
+    // ── Players section header ──
+    let font_players = CreateFontW(15, 0, 0, 0, 700, 0, 0, 0, 1, 0, 0, 2, 0, font_name.as_ptr());
+    SelectObject(hdc, font_players as _);
+    SetTextColor(hdc, 0x0036312B);
+    let players_header: Vec<u16> = "Connected Players\0".encode_utf16().collect();
+    let mut r_ph = RECT { left: 30, top: 270, right: 390, bottom: 290 };
+    DrawTextW(hdc, players_header.as_ptr(), -1, &mut r_ph, (DT_SINGLELINE | DT_VCENTER) as u32);
+    DeleteObject(font_players as _);
+
+    // ── Player list ──
+    let font_player = CreateFontW(13, 0, 0, 0, 400, 0, 0, 0, 1, 0, 0, 2, 0, font_name.as_ptr());
+    SelectObject(hdc, font_player as _);
+    let players = state.network.get_player_list();
+    let is_host = state.network.is_hosting();
+    let local_name = state.network.get_local_name();
+
+    if players.is_empty() {
+        SetTextColor(hdc, 0x009A948A);
+        let no_players: Vec<u16> = "No players connected\0".encode_utf16().collect();
+        let mut r_np = RECT { left: 30, top: 295, right: 390, bottom: 315 };
+        DrawTextW(hdc, no_players.as_ptr(), -1, &mut r_np, (DT_SINGLELINE | DT_VCENTER) as u32);
+    } else {
+        for (i, player) in players.iter().enumerate() {
+            let y_top = PLAYER_LIST_TOP + 5 + (i as i32 * PLAYER_ROW_H);
+            let y_bottom = y_top + PLAYER_ROW_H - 4;
+
+            // Alternating row background
+            if i % 2 == 0 {
+                let row_brush = CreateSolidBrush(0x00F2EFE8) as *mut c_void;
+                let row_rect = RECT { left: 25, top: y_top - 2, right: 395, bottom: y_bottom + 2 };
+                FillRect(hdc, &row_rect, row_brush);
+                DeleteObject(row_brush as _);
+            }
+
+            // Player name (with host crown)
+            let display_name = if player.is_host {
+                format!("★ {} (Host)", player.name)
+            } else {
+                player.name.clone()
+            };
+            let name_wide: Vec<u16> = format!("{}\0", display_name).encode_utf16().collect();
+            SetTextColor(hdc, 0x0036312B);
+            let mut r_name = RECT { left: 35, top: y_top, right: 300, bottom: y_bottom };
+            DrawTextW(hdc, name_wide.as_ptr(), -1, &mut r_name, (DT_SINGLELINE | DT_VCENTER) as u32);
+
+            // Kick button (only host, not for self, not for host player)
+            if is_host && !player.is_host && player.name != local_name {
+                let kick_wide: Vec<u16> = "[Kick]\0".encode_utf16().collect();
+                SetTextColor(hdc, 0x004444CC); // red-ish
+                let mut r_kick = RECT { left: 320, top: y_top, right: 385, bottom: y_bottom };
+                DrawTextW(hdc, kick_wide.as_ptr(), -1, &mut r_kick, (DT_CENTER | DT_SINGLELINE | DT_VCENTER) as u32);
+            }
+        }
+    }
+    DeleteObject(font_player as _);
 
     // ── Status text ──
     let font_stat = CreateFontW(13, 0, 0, 0, 600, 0, 0, 0, 1, 0, 0, 2, 0, font_name.as_ptr());
     SelectObject(hdc, font_stat as _);
     SetTextColor(hdc, 0x00706B60);
     let stat: Vec<u16> = format!("● Status: {}\0", state.status_text).encode_utf16().collect();
-    let mut r_stat = RECT { left: 30, top: 255, right: 390, bottom: 285 };
+    let mut r_stat = RECT { left: 30, top: 425, right: 390, bottom: 455 };
     DrawTextW(hdc, stat.as_ptr(), -1, &mut r_stat, (DT_CENTER | DT_SINGLELINE | DT_VCENTER) as u32);
     DeleteObject(font_stat as _);
 
@@ -402,6 +473,7 @@ unsafe fn switch_to_opaque(hwnd: HWND, state: &mut UIState) {
     SetWindowRgn(hwnd, rgn, 1); // system takes ownership of rgn
 
     // 4. Show EDIT controls
+    ShowWindow(state.hwnd_pseudo, SW_SHOW);
     ShowWindow(state.hwnd_ip, SW_SHOW);
     ShowWindow(state.hwnd_port, SW_SHOW);
 
@@ -412,6 +484,7 @@ unsafe fn switch_to_opaque(hwnd: HWND, state: &mut UIState) {
 /// Switch from opaque dialog → layered star button
 unsafe fn switch_to_layered(hwnd: HWND, state: &mut UIState) {
     // 1. Hide EDIT controls
+    ShowWindow(state.hwnd_pseudo, SW_HIDE);
     ShowWindow(state.hwnd_ip, SW_HIDE);
     ShowWindow(state.hwnd_port, SW_HIDE);
 
@@ -432,7 +505,7 @@ unsafe fn switch_to_layered(hwnd: HWND, state: &mut UIState) {
     }
     MoveWindow(hwnd, gr.left + OFFSET_X, gr.top + OFFSET_Y, CLOSED_W, CLOSED_H, 0);
 
-    // 5. Render star button via UpdateLayeredWindow
+    // 5. Render the star button
     render_star_button(hwnd, state);
 }
 
@@ -455,6 +528,20 @@ unsafe extern "system" fn wnd_proc(
             let edit_class: Vec<u16> = "EDIT\0".encode_utf16().collect();
             let inst = GetModuleHandleW(std::ptr::null());
 
+            // Pseudo input (initially hidden)
+            let default_pseudo: Vec<u16> = "Builder\0".encode_utf16().collect();
+            let hwnd_pseudo = CreateWindowExW(
+                0,
+                edit_class.as_ptr(),
+                default_pseudo.as_ptr(),
+                WS_CHILD | (ES_AUTOHSCROLL as u32) | WS_TABSTOP | WS_BORDER,
+                30, 75, 360, 28,
+                hwnd,
+                ID_EDIT_PSEUDO as *mut c_void,
+                inst,
+                std::ptr::null(),
+            );
+
             // IP input (initially hidden — shown when dialog opens)
             let default_ip: Vec<u16> = "127.0.0.1\0".encode_utf16().collect();
             let hwnd_ip = CreateWindowExW(
@@ -462,7 +549,7 @@ unsafe extern "system" fn wnd_proc(
                 edit_class.as_ptr(),
                 default_ip.as_ptr(),
                 WS_CHILD | (ES_AUTOHSCROLL as u32) | WS_TABSTOP | WS_BORDER,
-                30, 85, 240, 28,
+                30, 133, 240, 28,
                 hwnd,
                 ID_EDIT_IP as *mut c_void,
                 inst,
@@ -476,7 +563,7 @@ unsafe extern "system" fn wnd_proc(
                 edit_class.as_ptr(),
                 default_port.as_ptr(),
                 WS_CHILD | (ES_AUTOHSCROLL as u32) | WS_TABSTOP | WS_BORDER,
-                290, 85, 100, 28,
+                290, 133, 100, 28,
                 hwnd,
                 ID_EDIT_PORT as *mut c_void,
                 inst,
@@ -484,6 +571,7 @@ unsafe extern "system" fn wnd_proc(
             );
 
             let state = &mut *(state_ptr as *mut UIState);
+            state.hwnd_pseudo = hwnd_pseudo;
             state.hwnd_ip = hwnd_ip;
             state.hwnd_port = hwnd_port;
             0
@@ -533,7 +621,7 @@ unsafe extern "system" fn wnd_proc(
             let sp = GetWindowLongPtrW(hwnd, GWLP_USERDATA) as *mut UIState;
             if !sp.is_null() {
                 let st = &*sp;
-                if hit == st.hwnd_ip || hit == st.hwnd_port {
+                if hit == st.hwnd_pseudo || hit == st.hwnd_ip || hit == st.hwnd_port {
                     return DefWindowProcW(hwnd, msg, wparam, lparam);
                 }
             }
@@ -575,6 +663,13 @@ unsafe extern "system" fn wnd_proc(
                             render_star_button(hwnd, st);
                         }
                     }
+
+                    // Refresh player list display if count changed
+                    let current_count = st.network.get_player_list().len();
+                    if is_menu_open_safe() && current_count != st.last_player_count {
+                        st.last_player_count = current_count;
+                        InvalidateRect(hwnd, std::ptr::null(), 1);
+                    }
                 }
             }
             0
@@ -605,8 +700,16 @@ unsafe extern "system" fn wnd_proc(
                 if !sp.is_null() {
                     let state = &mut *sp;
 
-                    // Host button (y: 135..180)
-                    if x >= 30 && x <= 390 && y >= 135 && y <= 180 {
+                    // Host button (y: 170..210)
+                    if x >= 30 && x <= 390 && y >= 170 && y <= 210 {
+                        // Read pseudo
+                        let mut pseudo_buf = [0u16; 32];
+                        GetWindowTextW(state.hwnd_pseudo, pseudo_buf.as_mut_ptr(), 32);
+                        let pseudo = String::from_utf16_lossy(&pseudo_buf)
+                            .trim_matches('\0').trim().to_string();
+                        let pseudo = if pseudo.is_empty() { "Host".to_string() } else { pseudo };
+                        state.network.set_local_name(pseudo);
+
                         let mut port_buf = [0u16; 16];
                         GetWindowTextW(state.hwnd_port, port_buf.as_mut_ptr(), 16);
                         let port_str = String::from_utf16_lossy(&port_buf)
@@ -614,14 +717,25 @@ unsafe extern "system" fn wnd_proc(
                         let port = port_str.parse::<u16>().unwrap_or(7777);
 
                         match state.network.start_host(port) {
-                            Ok(_) => state.status_text = format!("Host active on port {}", port),
+                            Ok(_) => {
+                                state.status_text = format!("Host active on port {}", port);
+                                state.last_player_count = 0; // force refresh
+                            }
                             Err(e) => state.status_text = format!("Error: {}", e),
                         }
                         InvalidateRect(hwnd, std::ptr::null(), 1);
                     }
 
-                    // Join button (y: 195..240)
-                    if x >= 30 && x <= 390 && y >= 195 && y <= 240 {
+                    // Join button (y: 220..260)
+                    if x >= 30 && x <= 390 && y >= 220 && y <= 260 {
+                        // Read pseudo
+                        let mut pseudo_buf = [0u16; 32];
+                        GetWindowTextW(state.hwnd_pseudo, pseudo_buf.as_mut_ptr(), 32);
+                        let pseudo = String::from_utf16_lossy(&pseudo_buf)
+                            .trim_matches('\0').trim().to_string();
+                        let pseudo = if pseudo.is_empty() { "Guest".to_string() } else { pseudo };
+                        state.network.set_local_name(pseudo);
+
                         let mut ip_buf = [0u16; 64];
                         let mut port_buf = [0u16; 16];
                         GetWindowTextW(state.hwnd_ip, ip_buf.as_mut_ptr(), 64);
@@ -645,12 +759,47 @@ unsafe extern "system" fn wnd_proc(
                             if !stp.is_null() {
                                 let s = &mut *stp;
                                 match res {
-                                    Ok(_) => s.status_text = "Connected successfully!".to_string(),
+                                    Ok(_) => {
+                                        s.status_text = "Connected successfully!".to_string();
+                                        s.last_player_count = 0; // force refresh
+                                    }
                                     Err(e) => s.status_text = format!("Connection failed: {}", e),
                                 }
                                 InvalidateRect(h, std::ptr::null(), 1);
                             }
                         });
+                    }
+
+                    // Kick buttons — check if click is in player list area
+                    if y >= PLAYER_LIST_TOP && y <= PLAYER_LIST_BOTTOM && state.network.is_hosting() {
+                        let players = state.network.get_player_list();
+                        let local_name = state.network.get_local_name();
+                        let row_index = ((y - PLAYER_LIST_TOP - 5) / PLAYER_ROW_H) as usize;
+
+                        if row_index < players.len() {
+                            let player = &players[row_index];
+                            // Only kick non-host players, not self
+                            if !player.is_host && player.name != local_name {
+                                // Check if click is on the [Kick] area (x: 320..385)
+                                if x >= 320 && x <= 385 {
+                                    let kicked_name = player.name.clone();
+                                    let kicked_name_clone = kicked_name.clone();
+                                    let net_clone = Arc::clone(&state.network);
+                                    let hwnd_raw = hwnd as usize;
+                                    thread::spawn(move || unsafe {
+                                        net_clone.kick_player(&kicked_name_clone);
+                                        let h = hwnd_raw as HWND;
+                                        let stp = GetWindowLongPtrW(h, GWLP_USERDATA) as *mut UIState;
+                                        if !stp.is_null() {
+                                            (*stp).last_player_count = 0;
+                                            InvalidateRect(h, std::ptr::null(), 1);
+                                        }
+                                    });
+                                    state.status_text = format!("Kicked {}", kicked_name);
+                                    InvalidateRect(hwnd, std::ptr::null(), 1);
+                                }
+                            }
+                        }
                     }
                 }
             }
@@ -664,4 +813,8 @@ unsafe extern "system" fn wnd_proc(
 
         _ => DefWindowProcW(hwnd, msg, wparam, lparam),
     }
+}
+
+fn is_menu_open_safe() -> bool {
+    IS_MENU_OPEN.load(Ordering::SeqCst)
 }

@@ -1,15 +1,26 @@
-use crate::protocol::NetMessage;
+use crate::protocol::{NetMessage, PlayerInfo};
 use std::io::{BufRead, BufReader, Write};
 use std::net::{TcpListener, TcpStream};
-use std::sync::atomic::{AtomicBool, Ordering};
+use std::sync::atomic::{AtomicBool, AtomicU32, Ordering};
 use std::sync::{Arc, Mutex};
 use std::thread;
+
+struct PeerConnection {
+    stream: TcpStream,
+    id: u32,
+    name: String,
+    addr: String,
+}
 
 pub struct NetworkManager {
     is_hosting: AtomicBool,
     is_connected: AtomicBool,
-    peers: Arc<Mutex<Vec<TcpStream>>>,
+    local_name: Mutex<String>,
+    local_id: AtomicU32,
+    peers: Arc<Mutex<Vec<PeerConnection>>>,
     active_client: Arc<Mutex<Option<TcpStream>>>,
+    player_list: Arc<Mutex<Vec<PlayerInfo>>>,
+    next_player_id: AtomicU32,
 }
 
 impl NetworkManager {
@@ -17,13 +28,73 @@ impl NetworkManager {
         Arc::new(Self {
             is_hosting: AtomicBool::new(false),
             is_connected: AtomicBool::new(false),
+            local_name: Mutex::new("Builder".to_string()),
+            local_id: AtomicU32::new(1),
             peers: Arc::new(Mutex::new(Vec::new())),
             active_client: Arc::new(Mutex::new(None)),
+            player_list: Arc::new(Mutex::new(Vec::new())),
+            next_player_id: AtomicU32::new(2),
         })
     }
 
     pub fn is_active(&self) -> bool {
         self.is_hosting.load(Ordering::SeqCst) || self.is_connected.load(Ordering::SeqCst)
+    }
+
+    pub fn is_hosting(&self) -> bool {
+        self.is_hosting.load(Ordering::SeqCst)
+    }
+
+    pub fn set_local_name(&self, name: String) {
+        *self.local_name.lock().unwrap() = name;
+        self.update_self_in_player_list();
+    }
+
+    pub fn get_local_name(&self) -> String {
+        self.local_name.lock().unwrap().clone()
+    }
+
+    pub fn get_player_list(&self) -> Vec<PlayerInfo> {
+        self.player_list.lock().unwrap().clone()
+    }
+
+    fn update_self_in_player_list(&self) {
+        let name = self.get_local_name();
+        let id = self.local_id.load(Ordering::SeqCst);
+        let is_host = self.is_hosting.load(Ordering::SeqCst);
+
+        let mut list = self.player_list.lock().unwrap();
+        // Update or add self
+        if let Some(entry) = list.iter_mut().find(|p| p.id == id) {
+            entry.name = name.clone();
+            entry.is_host = is_host;
+        } else {
+            list.push(PlayerInfo { id, name, is_host });
+        }
+    }
+
+    fn rebuild_player_list_and_broadcast(&self) {
+        let name = self.get_local_name();
+        let host_id = self.local_id.load(Ordering::SeqCst);
+
+        let mut list = vec![PlayerInfo {
+            id: host_id,
+            name: name.clone(),
+            is_host: true,
+        }];
+
+        if let Ok(peers) = self.peers.lock() {
+            for peer in peers.iter() {
+                list.push(PlayerInfo {
+                    id: peer.id,
+                    name: peer.name.clone(),
+                    is_host: false,
+                });
+            }
+        }
+
+        *self.player_list.lock().unwrap() = list.clone();
+        self.broadcast_message(&NetMessage::PlayerListUpdate { players: list });
     }
 
     /// Start a multiplayer host server on the specified port
@@ -33,44 +104,86 @@ impl NetworkManager {
         listener.set_nonblocking(false).ok();
 
         self.is_hosting.store(true, Ordering::SeqCst);
+        self.local_id.store(1, Ordering::SeqCst);
+
+        // Initialize player list with host
+        let host_name = self.get_local_name();
+        *self.player_list.lock().unwrap() = vec![PlayerInfo {
+            id: 1,
+            name: host_name,
+            is_host: true,
+        }];
+
         println!("\x1b[32m[GladeSync Server] Listening on {} - Ready for players to join!\x1b[0m", bind_addr);
 
         let self_clone = Arc::clone(self);
         thread::spawn(move || {
             for stream in listener.incoming() {
                 match stream {
-                    Ok(mut socket) => {
+                    Ok(socket) => {
                         let peer_addr = socket.peer_addr().map(|a| a.to_string()).unwrap_or_default();
                         println!("\x1b[36m[GladeSync Server] Player connected from: {}\x1b[0m", peer_addr);
 
-                        // Send Handshake ACK
+                        let assigned_id = self_clone.next_player_id.fetch_add(1, Ordering::SeqCst);
+
+                        // Send Handshake ACK with host name
                         let ack = NetMessage::HandshakeAck {
-                            assigned_id: 2,
+                            assigned_id,
                             server_version: "0.1.0".to_string(),
+                            host_name: self_clone.get_local_name(),
                         };
                         if let Ok(json) = serde_json::to_string(&ack) {
-                            let _ = writeln!(socket, "{}", json);
+                            let mut s = socket.try_clone().unwrap();
+                            let _ = writeln!(s, "{}", json);
                         }
 
-                        if let Ok(mut peers) = self_clone.peers.lock() {
-                            if let Ok(clone_sock) = socket.try_clone() {
-                                peers.push(clone_sock);
-                            }
+                        // Clone socket: one for reading, one for broadcasting
+                        let read_stream = match socket.try_clone() {
+                            Ok(s) => s,
+                            Err(_) => continue,
+                        };
+
+                        // Store peer connection
+                        {
+                            let mut peers = self_clone.peers.lock().unwrap();
+                            peers.push(PeerConnection {
+                                stream: socket,
+                                id: assigned_id,
+                                name: format!("Player {}", assigned_id),
+                                addr: peer_addr.clone(),
+                            });
                         }
 
                         // Spawn receiver for this peer
                         let self_peer = Arc::clone(&self_clone);
+                        let peer_id = assigned_id;
+                        let peer_addr_clone = peer_addr.clone();
                         thread::spawn(move || {
-                            let reader = BufReader::new(socket);
+                            let reader = BufReader::new(read_stream);
                             for line in reader.lines() {
                                 match line {
                                     Ok(data) => {
                                         if let Ok(msg) = serde_json::from_str::<NetMessage>(&data) {
+                                            // If handshake, extract player name and update
+                                            if let NetMessage::Handshake { player_name, .. } = &msg {
+                                                let mut peers = self_peer.peers.lock().unwrap();
+                                                if let Some(p) = peers.iter_mut().find(|p| p.id == peer_id) {
+                                                    p.name = player_name.clone();
+                                                }
+                                                drop(peers);
+                                                self_peer.rebuild_player_list_and_broadcast();
+                                            }
                                             self_peer.handle_incoming_message(msg);
                                         }
                                     }
                                     Err(_) => {
-                                        println!("\x1b[33m[GladeSync Server] Player {} disconnected.\x1b[0m", peer_addr);
+                                        println!("\x1b[33m[GladeSync Server] Player {} (id={}) disconnected.\x1b[0m", peer_addr_clone, peer_id);
+                                        // Remove from peers
+                                        {
+                                            let mut peers = self_peer.peers.lock().unwrap();
+                                            peers.retain(|p| p.id != peer_id);
+                                        }
+                                        self_peer.rebuild_player_list_and_broadcast();
                                         break;
                                     }
                                 }
@@ -92,10 +205,11 @@ impl NetworkManager {
         println!("\x1b[33m[GladeSync Client] Connecting to host {}...\x1b[0m", addr);
         let mut stream = TcpStream::connect(addr).map_err(|e| e.to_string())?;
 
-        // Send handshake
+        // Send handshake with local name
+        let player_name = self.get_local_name();
         let handshake = NetMessage::Handshake {
             client_version: "0.1.0".to_string(),
-            player_name: "Guest Builder".to_string(),
+            player_name,
         };
         let json = serde_json::to_string(&handshake).map_err(|e| e.to_string())?;
         writeln!(stream, "{}", json).map_err(|e| e.to_string())?;
@@ -106,7 +220,6 @@ impl NetworkManager {
         }
 
         self.is_connected.store(true, Ordering::SeqCst);
-        println!("\x1b[32m[GladeSync Client] Connected successfully to host {}!\x1b[0m", addr);
 
         let self_clone = Arc::clone(self);
         thread::spawn(move || {
@@ -115,12 +228,34 @@ impl NetworkManager {
                 match line {
                     Ok(data) => {
                         if let Ok(msg) = serde_json::from_str::<NetMessage>(&data) {
+                            // Handle HandshakeAck to set our ID
+                            if let NetMessage::HandshakeAck { assigned_id, .. } = &msg {
+                                self_clone.local_id.store(*assigned_id, Ordering::SeqCst);
+                                self_clone.update_self_in_player_list();
+                            }
+                            // Handle PlayerListUpdate
+                            if let NetMessage::PlayerListUpdate { players } = &msg {
+                                *self_clone.player_list.lock().unwrap() = players.clone();
+                            }
+                            // Handle kick
+                            if let NetMessage::YouKicked { reason } = &msg {
+                                println!("\x1b[31m[GladeSync] You were kicked: {}\x1b[0m", reason);
+                                self_clone.is_connected.store(false, Ordering::SeqCst);
+                                if let Ok(mut client) = self_clone.active_client.lock() {
+                                    *client = None;
+                                }
+                                *self_clone.player_list.lock().unwrap() = Vec::new();
+                            }
                             self_clone.handle_incoming_message(msg);
                         }
                     }
                     Err(_) => {
                         println!("\x1b[31m[GladeSync Client] Disconnected from host.\x1b[0m");
                         self_clone.is_connected.store(false, Ordering::SeqCst);
+                        if let Ok(mut client) = self_clone.active_client.lock() {
+                            *client = None;
+                        }
+                        *self_clone.player_list.lock().unwrap() = Vec::new();
                         break;
                     }
                 }
@@ -130,13 +265,38 @@ impl NetworkManager {
         Ok(())
     }
 
+    /// Kick a player by name (host only)
+    pub fn kick_player(self: &Arc<Self>, player_name: &str) -> bool {
+        if !self.is_hosting.load(Ordering::SeqCst) {
+            return false;
+        }
+
+        let mut peers = self.peers.lock().unwrap();
+        if let Some(pos) = peers.iter().position(|p| p.name == player_name) {
+            // Send YouKicked message
+            let kick_msg = NetMessage::YouKicked {
+                reason: "Kicked by host".to_string(),
+            };
+            if let Ok(json) = serde_json::to_string(&kick_msg) {
+                let _ = writeln!(peers[pos].stream, "{}", json);
+            }
+            // Remove the peer
+            peers.remove(pos);
+            drop(peers);
+            self.rebuild_player_list_and_broadcast();
+            println!("\x1b[33m[GladeSync] Kicked player: {}\x1b[0m", player_name);
+            return true;
+        }
+        false
+    }
+
     /// Broadcast an action message to all connected peers
     pub fn broadcast_message(&self, msg: &NetMessage) {
         if let Ok(json) = serde_json::to_string(msg) {
             // If hosting, send to all connected peers
             if let Ok(mut peers) = self.peers.lock() {
-                peers.retain_mut(|socket| {
-                    writeln!(socket, "{}", json).is_ok()
+                peers.retain_mut(|peer| {
+                    writeln!(peer.stream, "{}", json).is_ok()
                 });
             }
 
@@ -154,8 +314,8 @@ impl NetworkManager {
             NetMessage::Handshake { player_name, .. } => {
                 println!("\x1b[35m[GladeSync] Handshake from player: {}\x1b[0m", player_name);
             }
-            NetMessage::HandshakeAck { assigned_id, .. } => {
-                println!("\x1b[32m[GladeSync] Handshake accepted! Assigned ID: #{}\x1b[0m", assigned_id);
+            NetMessage::HandshakeAck { assigned_id, host_name, .. } => {
+                println!("\x1b[32m[GladeSync] Handshake accepted! Assigned ID: #{} | Host: {}\x1b[0m", assigned_id, host_name);
             }
             NetMessage::BroadcastAction(action) => {
                 println!(
@@ -171,6 +331,14 @@ impl NetworkManager {
             }
             NetMessage::ChatMessage { sender, text } => {
                 println!("\x1b[34m[{}] {}\x1b[0m", sender, text);
+            }
+            NetMessage::PlayerListUpdate { players } => {
+                println!("\x1b[35m[GladeSync] Players online ({}): {}\x1b[0m",
+                    players.len(),
+                    players.iter().map(|p| p.name.clone()).collect::<Vec<_>>().join(", "));
+            }
+            NetMessage::YouKicked { reason } => {
+                println!("\x1b[31m[GladeSync] Kicked: {}\x1b[0m", reason);
             }
             NetMessage::Ping => {}
             NetMessage::Pong => {}
