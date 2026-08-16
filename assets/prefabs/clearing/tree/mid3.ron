@@ -1,0 +1,14 @@
+(
+    parts: {
+        "canopy": (
+            render: (
+                mesh: "mid_tree_v3",
+            ),
+        ),
+        "trunk": (
+            render: (
+                mesh: "mid_tree_v3_trunk",
+            ),
+        ),
+    },
+)

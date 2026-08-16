@@ -1,0 +1,24 @@
+((
+    draw: [Image(source: "menu/background", scaling: FitHeight)],
+    layout: [Expand, Horizontal, Align(Start), XAlign(Center), Padding(50.0), Gap(10.0)]
+), [
+    ((slot: "contents", /* draw: [FillColor(0xffffff40)],  */layout: [Vertical, Align(Center), XAlign(Center), Gap(20.0)])),
+
+    /* ((draw: [FillColor(0xff00ff40)], layout: [Size(Frac(0.25), 500), Vertical, Align(Center), XAlign(Center), Gap(10)]), [
+        ((draw: [FillColor(0xff000080)], layout: [Size(100, 100)])),
+        ((draw: [FillColor(0x00ff0080)], layout: [Size(200, 100)])),
+        ((draw: [FillColor(0x0000ff80)], layout: [Size(300, 100)])),
+    ]),
+
+    ((draw: [FillColor(0xff000040)], layout: [Size(Frac(0.25), 500), Vertical, Align(Start), XAlign(Start), Gap(10)]), [
+        ((draw: [FillColor(0xff000080)], layout: [Size(100, 100)])),
+        ((draw: [FillColor(0x00ff0080)], layout: [Size(200, 100)])),
+        ((draw: [FillColor(0x0000ff80)], layout: [Size(300, 100)])),
+    ]),
+
+    ((draw: [FillColor(0x00ff0040)], layout: [Size(Frac(0.25), 500), Vertical, Align(SpaceEvenly), XAlign(End), Gap(10)]), [
+        ((draw: [FillColor(0xff000080)], layout: [Size(100, 100)])),
+        ((draw: [FillColor(0x00ff0080)], layout: [Size(200, 100)])),
+        ((draw: [FillColor(0x0000ff80)], layout: [Size(300, 100)])),
+    ]), */
+])

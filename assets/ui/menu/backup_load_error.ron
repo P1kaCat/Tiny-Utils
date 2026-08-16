@@ -1,0 +1,16 @@
+((
+    draw: [FillColor(0x000000e0)],
+    layout: [Vertical, Expand, Align(Center), XAlign(Center), Padding((40, 40, 20, 20)), Gap(30)]
+), [
+    ((
+        slot: "header",
+        layout: [Vertical]
+    ), [
+    ]),
+
+    ((
+        slot: "error",
+        layout: [Vertical]
+    ), [
+    ]),
+])

@@ -1,0 +1,23 @@
+((
+    //draw: [FillColor(0xffff0028)],
+    layout: [Vertical, Expand, Align(Center), XAlign(Center), Padding((0, 40, 0, 100))]
+), [
+    ((
+        slot: "body",
+        draw: [Image(source: "menu/paper-bg", scaling: Nine)],
+        layout: [Vertical, Size(200, 200), XAlign(Center), Padding((40, 40, 70, 50)), Gap(10.0)]
+    ),
+        [
+        ((
+            slot: "notice",
+            layout: [Vertical, Align(Center), Gap(10.0)]
+        ), [
+        ]),
+        ((
+            slot: "answer",
+            layout: [Horizontal, Align(Center), Gap(50.0), Padding((50.0, 50.0, 20.0, 0.0))]
+        ), [
+        ])
+        ]
+    ),
+])

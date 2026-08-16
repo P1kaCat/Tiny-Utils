@@ -1,0 +1,10 @@
+(
+    parts: {
+        "canopy": (
+            render: (
+                mesh: "background_tree",
+                shader: "instanced_background_tree_shader",
+            ),
+        ),
+    },
+)

@@ -1,0 +1,38 @@
+((
+    //draw: [Image(source: "menu/settings/green", scaling: BlurExtend)],
+    //draw: [FillColor(0x0000ff40)],
+    layout: [Expand, Horizontal, Padding((0, 0, 120, 60))]
+), [
+    ((
+        //draw: [FillColor(0x0000ff20)],
+        layout: [Expand, Vertical, Align(Start), XAlign(Stretch), Gap(20.0)]
+    ), [
+        // Container for categories and the settings list
+        ((
+            //draw: [FillColor(0xff00ff40)],
+            layout: [Vertical, Gap(40), Align(Start), XAlign(Stretch)]
+        ), [
+            ((
+                layout: [Horizontal, Expand, Align(SpaceBetween), Gap(0)],
+                slot: "settings-and-info"
+            ), [
+                // The actual body of settings
+                ((
+                    // Color of the other panel is at 008b824c-dac5-469d-aa23-f210287f0182
+                    draw: [FillColor(0x080808f0), CornerRadius(10)],
+                    layout: [Vertical, Size(740, 0), Align(Start), XAlign(Stretch), Padding((30, 30, 20, 20)), Gap(40)]), [
+                    ((
+                        //draw: [FillColor(0x00ff0040)],
+                        layout: [Vertical, Align(Center), XAlign(Stretch), Gap(20.0)],
+                        slot: "settings"
+                    )),
+
+                    ((
+                        //layout: [Align(Start)],
+                        slot: "back",
+                    )),
+                ]),
+            ]),
+        ]),
+    ])
+])

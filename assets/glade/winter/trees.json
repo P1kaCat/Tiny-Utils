@@ -1,0 +1,55 @@
+[
+    {
+        "prefab": "clearing/tree/mid1",
+        "placements": "trees/mid_distance_trees_1.json"
+    },
+    {
+        "prefab": "clearing/tree/mid2",
+        "placements": "trees/mid_distance_trees_2.json"
+    },
+    {
+        "prefab": "clearing/tree/branchy1",
+        "placements": "trees/branchy_trees_1.json"
+    },
+    {
+        "prefab": "clearing/tree/branchy2",
+        "placements": "trees/branchy_trees_2.json"
+    },
+    {
+        "prefab": "clearing/tree/bush",
+        "placements": "trees/bushes.json",
+        "billboard_expansion_scale": 0.5
+    },
+    {
+        "prefab": "clearing/tree/mid3",
+        "placements": "trees/clearing_edge1.json"
+    },
+    {
+        "prefab": "clearing/tree/mid4",
+        "placements": "trees/clearing_edge2.json"
+    },
+    {
+        "prefab": "clearing/tree/mid5",
+        "placements": "trees/clearing_edge3.json"
+    },
+    {
+        "prefab": "clearing/tree/far",
+        "placements": "trees/bg_terrain_trees.json",
+        "billboard_expansion_scale": 2.2
+    },
+    {
+        "prefab": "clearing/naked_tree/naked2_no_mushrooms",
+        "placements": "trees/naked_trees.json",
+        "billboard_expansion_scale": 2.2
+    },
+    {
+        "prefab": "clearing/naked_tree/naked2_no_mushrooms",
+        "placements": "trees/clearing_edge_naked_trees.json",
+        "billboard_expansion_scale": 2.2
+    },
+    {
+        "prefab": "clearing/naked_tree/naked2_lowpoly",
+        "placements": "trees/bg_terrain_trees_2.json",
+        "billboard_expansion_scale": 2.2
+    }
+]

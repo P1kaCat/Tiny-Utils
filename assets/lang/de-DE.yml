@@ -1,0 +1,301 @@
+---
+AreYouSure: Bist du dir sicher?
+AreYouSure.ImSure: Ich bin mir sicher
+AreYouSure.No: Abbrechen
+Cancel: Abbrechen
+Continue.Nope: Nein
+Continue.Question: Fortfahren?
+Continue.Yep: Ja
+Crash.Advice.CheckIntegrity: "Es gibt ein Problem mit der Installation von Tiny Glade, das zum Absturz geführt haben könnte."
+Crash.Advice.ClickForAdvice: Klicke hier für weitere Informationen
+Crash.Advice.CorruptOrModifiedFiles: Fehlerhafte oder modifizierte Dateien
+Crash.Advice.FilesLookIncorrect: Einige Dateien von Tiny Glade sehen falsch aus
+Crash.Advice.IveTriedThat: Habe ich versucht und es hat nicht geholfen.
+Crash.Advice.MissingOrUnreadableFiles: Fehlende oder nicht lesbare Dateien
+Crash.Advice.RemoveDozen: "Wir vermuten, dass \"VulkanOn12\", das versehentlich auf deinem System vorinstalliert wurde, diesen Absturz verursacht haben könnte."
+Crash.Advice.ShowInstallationErrors: Initialisierungsfehler anzeigen
+Crash.Advice.SteamFileIntegrityCheck: Steams Dateiintegrität prüfen
+Crash.Advice.TroubleshootGraphics: Dies sieht nach einem GPU- oder Grafiktreiberfehler aus.
+Crash.Advice.TryUpdateDriver: "Dies sieht nach einem Absturz deines Grafiktreibers aus. Wir vermuten, dass er fehlerhaft ist. Bitte prüfe, ob eine neue Version verfügbar ist 🧡"
+Crash.Advice.UpdateDriver: Dies sieht nach einem Grafikabsturz aus. Dein Grafiktreiber ist veraltet und könnte diesen Absturz verursacht haben. Bitte aktualisiere ihn 🧡
+Crash.Advice.UpdateObs: "Dies sieht nach einem Absturz durch OBS (Open Broadcaster Software) aus.\nÄltere Versionen von OBS sind dafür bekannt, Tiny Glade zum Absturz zu bringen. Bitte versuche, deine OBS zu aktualisieren 🧡"
+Crash.Advice.VerifyIntegrityOrReinstall: "Bitte nutze {link} oder installiere Tiny Glade neu."
+Crash.AdviceDismissed: "Es tut uns leid, das zu hören, aber vielen Dank, dass du es versucht hast!"
+Crash.AskConsent: "Wir würden gerne wissen, was passiert ist, und den Fehler beheben 🕵\nKannst du bitte deinen Absturzbericht mit uns teilen? 🙏"
+Crash.Clipboard.Copied: Kopiert
+Crash.Clipboard.Copy: In Zwischenablage kopieren
+Crash.Clipboard.Error: Zwischenablagefehler
+Crash.DeliveryFailed: "Oh nein, der Absturzbericht ist leider nicht bei uns angekommen. Danke für den Versuch! Beim nächsten Mal wird es bestimmt klappen ^^;"
+Crash.DeliveryOk: "Wir haben den Absturzbericht erhalten.\nDanke 💗"
+Crash.Discuss: "Wenn du diesen Absturz melden möchtest, nenne bitte folgenden Code:"
+Crash.FixDriver: "Offenbar stimmt etwas mit deinem Grafiktreiber nicht. Er ist abgestürzt, bevor wir ihn initialisieren konnten."
+Crash.GameHasCrashed: Ups! Das tut uns leid ... Tiny Glade hatte ein Problem und ist abgestürzt 😢
+Crash.MsgBoxTitle: Tiny Glade-Fehler
+Crash.PrivacyPolicy: Datenschutzerklärung
+Crash.RecoveryFailed: "Wir haben versucht, dein Spiel nach dem Absturz wiederherzustellen, aber leider waren die Daten fehlerhaft 😣\nBitte starte Tiny Glade neu und setze dein Spiel mit dem letzten automatisch generierten Spielstand fort."
+Crash.RecoveryOk: "Keine Sorge, dein Spiel wurde gespeichert. Starte Tiny Glade einfach neu und setze dein Spiel fort."
+Crash.ShowDetails: Daten ...
+Crash.Signature: "Beste Grüße, Ana & Tom"
+Crash.TroubleshootingGuide: Leitfaden zur Problembehebung
+Crash.Under13: "Du musst mindestens 13 Jahre alt sein, um diesen Bericht zu senden.\nSolltest du jünger als 13 Jahren alt sein, wähle bitte {nope}."
+Daily.DownloadError: Downloadfehler
+Daily.Downloading: Download läuft ...
+Daily.NextThemeIn: Nächstes Thema in
+Daily.NoCurrentTheme: Kein aktuelles Thema
+Daily.ThemeNotAvailable: Thema nicht verfügbar
+Daily.TodaysTheme: Heutiges Thema
+Daily.Welcome.Author: "Autor der Startlichtung:"
+Daily.Welcome.Header: "Willkommen zu #TinyDaily"
+Daily.Welcome.Inspiration: "Startlichtung inspiriert von:"
+Daily.Welcome.Intro: "Aus eigener Erfahrung wissen wir, dass manchmal etwas Inspiration wichtig ist, um ins Rollen zu kommen."
+Daily.Welcome.Intro2: "Darum teilen wir jeden Tag ein neues Thema und eine Startlichtung mit euch. Das heutige Thema ist:"
+Daily.Welcome.Prompt: "Wir sind gespannt, was du daraus machst!"
+Daily.Welcome.Socials: "PS: Wenn du dein Werk auf Social Media teilst, nutze #TinyDaily, damit wir (und andere) es finden!"
+Driver.DeviceType.DiscreteGpu: Dedizierte Grafikkarte
+Driver.DeviceType.Integrated: Integrierte Grafikkarte
+Driver.DeviceType.OldIntegratedGpu: Alte integrierte Grafikkarte
+Driver.DeviceType.Virtual: Virtuelles Gerät
+Driver.DriverVersion: Version
+Driver.EmulatedDriver: Emulierter Vulkan-Treiber
+Driver.Header.PleaseConfirm: "Bestätige bitte deine bevorzugte Grafikkarte:"
+Driver.Header.Reason.Changed: Offenbar haben sich deine Grafikkarten oder Grafiktreiber geändert.
+Driver.Header.Reason.PrimaryUnsupported: Bitte prüfe deinen Grafiktreiber.
+Driver.Header.Reason.Requested: "Du hast darum gebeten, die Grafikkarte auszuwählen."
+Driver.Header.Reason.UnavailableDetected: Es könnte ein Problem mit einigen deiner Grafiktreiber geben.
+Driver.Header.Reason.WhichOne: "Wir sind uns nicht sicher, welche deiner Grafikkarten wir verwenden sollen."
+Driver.IgnoreAndPlay: Ignorieren & spielen
+Driver.InsufficientVideoMemory: Unzureichender Grafikspeicher
+Driver.LikelyTooSlow: ist wahrscheinlich zu langsam
+Driver.MemoryAmountRequired: "{amount} erforderlich"
+Driver.MightBeSlow: könnte zu langsam sein
+Driver.MinimumSupportedVersionIs: "Unterstützte Minimalversion:"
+Driver.RecommendedChoice: Empfohlene Wahl
+Driver.ShowLogFiles: Logdateien anzeigen
+Driver.SupportedDriver: Unterstützte Treiber
+Driver.UnknownVendor: Wir kennen diesen Anbieter nicht
+Driver.UnsupportedDriver: "Nicht unterstützter Treiber: Tiny Glade könnte fehlerhaft laufen oder abstürzen"
+Driver.VulkanBroken: "Wir haben dieses Gerät entdeckt, doch die Unterstützung für Vulkan ist defekt oder fehlt.\nWenn du dieses Gerät verwenden willst, installiere den Treiber bitte neu (auch dann, wenn andere Spiele funktionieren)."
+ExceedDemoLimit.Notice: "Sieht aus, als würdest du das DEMO-Limit von 3 Lichtungen überschreiten."
+ExceedDemoLimit.Notice2: "Wenn du eine neue Lichtung erschaffst, ist die älteste nicht mehr verfügbar."
+ExceedDemoLimit.Notice3: (Sie ist nach wie vor gespeichert und du kannst sie in der Vollversion laden!)
+FailedToLoad.Notice1: Dein letzter Spielstand konnte nicht geladen werden 😨 Er könnte fehlerhaft sein. Bitte lade ein Backup 🙏
+FailedToLoad.Notice2: Wir haben eine neue Sitzung für dich erstellt.
+Feedback.AttachBenchmark: Benchmark anhängen
+Feedback.AttachSaveFile: Spielstand anhängen
+Feedback.AttachScreenshot: Screenshot anhängen
+Feedback.Default: Ich habe im Sumpf ein Schloss gebaut und ...
+Feedback.Header: Feedback senden
+Feedback.HotkeyHint: "Tipp: Du kannst dieses Menü überall mit {key} öffnen."
+Feedback.Send: Senden
+Feedback.SendError: "Oh, nein, da ist was schiefgelaufen!"
+Feedback.SentOk: Feedback erhalten. Vielen Dank!
+GraphicsInitError.InternalError: Interner Fehler
+GraphicsInitError.NoCompatibleDevices: "Deinem System fehlen Grafikfunktionen, die für die Ausführung von Tiny Glade erforderlich sind."
+GraphicsInitError.NoDriver: Dein Grafiktreiber unterstützt Vulkan nicht.
+GraphicsInitError.OutOfVideoMemory: Nicht genügend freier Grafikspeicher
+GraphicsInitError.OutOfVideoMemoryRecommendation: Schließe andere Anwendungen oder reduziere die Bildschirmauflösung.
+GraphicsInitError.PleaseUpdateDrivers: "Stelle bitte sicher, dass dein Computer die Mindestvoraussetzungen erfüllt, und installiere die neuesten Grafiktreiber für deine Grafikkarte."
+GraphicsInitError.Prelude: Tiny Glade hat ein Problem mit dem Initialisieren von Grafiken
+GraphicsInitError.SeeLogFile: "Weitere Informationen findest du unter {logfile} 🙏"
+GraphicsInitError.SwapchainError: Fenster-Initialisierungsfehler
+GraphicsInitError.SwapchainErrorTip: "Stelle bitte sicher, dass dein Monitor physisch mit dieser Grafikkarte verbunden ist."
+GraphicsInitError.UnsupportedWindowingSystem: Dein Betriebssystem oder deine Desktop-Umgebung wird nicht unterstützt.
+Hint.CameraPan: Kamera bewegen
+Hint.CameraRotate: Kamera drehen
+Hint.CameraZoom: Kamera zoomen
+Hint.Deselect: Werkzeug abwählen
+Hint.DisableSnapping: Einschnappen deaktivieren
+Hint.FocusEdit: Bearbeitungssteuerung anzeigen
+Hint.RoofShape: Form ändern
+Hint.StairsContinue: "Klicke, um die Treppe fortzusetzen."
+Hint.StairsCreateFinish: Treppe abschließen
+Hint.StairsCreateStart: "Klicke, um die Treppe zu erstellen."
+Hint.StairsDetachFromWall: Lösen
+Hint.Terrain: Bestehendes Gelände übermalen
+Hint.TerrainSteepness: Steilheit ändern
+Hint.UnlinkWindows: Fenster trennen
+KeyBindings.DisableSnapping: Einschnappen deaktivieren
+KeyBindings.FocusOrDeselect: Fokus oder abwählen
+KeyBindings.HideUiInPhotoMode: Spielanzeigen verbergen (im Fotomodus)
+KeyBindings.Move: Bewegen
+KeyBindings.MoveDown: Nach unten
+KeyBindings.MoveDownUp: Nach unten/oben
+KeyBindings.MoveUp: Nach oben
+KeyBindings.Redo: Wiederherstellen
+KeyBindings.ResetToDefaults: Auf Standard zurücksetzen
+KeyBindings.Rotate: Drehen
+KeyBindings.SendFeedback: Feedback senden
+KeyBindings.TakeScreenshot: Screenshot machen
+KeyBindings.Undo: Rückgängig
+KeyBindings.UndoRedo: Rückgängig/Wiederherstellen
+KeyBindings.ZoomIn: Reinzoomen
+KeyBindings.ZoomInOut: Rein-/rauszoomen
+KeyBindings.ZoomOut: Rauszoomen
+Menu.Back: Zurück
+Menu.Continue: Fortsetzen
+Menu.Credits: Mitwirkende
+Menu.Credits.Licenses: Lizenzen
+Menu.Goodbye.ButWaitTheresMore: "Es wird noch mehr Lichtungen zum Spielen geben sowie neue Werkzeuge zum Dekorieren, mehr Platz zum Bauen und mehr. Deine Demo-Spielstände sind kompatibel mit der Hauptversion und du kannst dort weitermachen, wo du aufgehört hast."
+Menu.Goodbye.ComeBack: "Wir hoffen, dass es dir gefallen hat und und du dir die Vollversion von Tiny Glade holst."
+Menu.Goodbye.Release: Tiny Glade erscheint am 23. September
+Menu.Goodbye.Thanks: "Danke, dass du unsere Demo gespielt hast!"
+Menu.Load: Laden
+Menu.New: Neu
+Menu.New.Header: Neue Lichtung
+Menu.New.TryNew: Eine neue Lichtung ausprobieren?
+Menu.Quit: Verlassen
+Menu.QuitToDesktop: Zurück zum Desktop?
+Menu.Settings: Einstellungen
+Menu.Settings.Audio: Audio
+Menu.Settings.Audio.AmbienceVolume: Umgebungslautstärke
+Menu.Settings.Audio.EffectsVolume: Effektlautstärke
+Menu.Settings.Audio.MasterVolume: Gesamtlautstärke
+Menu.Settings.Audio.MusicVolume: Musiklautstärke
+Menu.Settings.CameraRotationPivot.CenterPoint: Zentriert
+Menu.Settings.CameraRotationPivot.CenterRegion: Zentriert (Bereich)
+Menu.Settings.CameraRotationPivot.CenterTerrain: Zentriert (Gelände)
+Menu.Settings.CameraRotationPivot.CursorPoint: Cursor
+Menu.Settings.CameraRotationPivot.CursorRegion: Cursor (Bereich)
+Menu.Settings.CameraRotationPivot.CursorTerrain: Cursor (Gelände)
+Menu.Settings.Controls: Steuerung
+Menu.Settings.Controls.Camera: Kamera
+Menu.Settings.Controls.CameraPivotRegionSize: Rotationsbereichsgröße
+Menu.Settings.Controls.CameraRotationPivot: Kamera-Rotationsmittelpunkt
+Menu.Settings.Controls.CameraZoomPivot: Kamera-Zoommittelpunkt
+Menu.Settings.Controls.Confirm: Bestätigen
+Menu.Settings.Controls.ControllerBindings: Controller-Belegung
+Menu.Settings.Controls.Down: Unten
+Menu.Settings.Controls.InvertX: X-Achse umkehren
+Menu.Settings.Controls.InvertY: Y-Achse umkehren
+Menu.Settings.Controls.KeyBindings: Tastenbelegung
+Menu.Settings.Controls.Left: Links
+Menu.Settings.Controls.MovementSpeed: Bewegungstempo
+Menu.Settings.Controls.Other: Sonstiges
+Menu.Settings.Controls.PressAKey: Taste drücken
+Menu.Settings.Controls.Reset: Zurücksetzen
+Menu.Settings.Controls.Right: Rechts
+Menu.Settings.Controls.RotationSpeed: Rotationstempo
+Menu.Settings.Controls.TabNext: Nächster Tab
+Menu.Settings.Controls.TabPrevious: Vorheriger Tab
+Menu.Settings.Controls.Toolbar: Werkzeugleiste
+Menu.Settings.Controls.Up: Oben
+Menu.Settings.DeleteGlade: Diese Lichtung löschen?
+Menu.Settings.Game: Spiel
+Menu.Settings.Game.CompleteHints: Alle abgeschlossen
+Menu.Settings.Game.CompleteHintsHint: Alle Tipps werden als abgeschlossen markiert. Sie tauchen nicht erneut auf.
+Menu.Settings.Game.ContextualControlHints: Kontextbezogene Tutorials
+Menu.Settings.Game.ControlHints: Steuerungstipps
+Menu.Settings.Game.ControlHintsHint: Diese Tipps sind vom Kontext abhängig und erscheinen je nach Bedarf.
+Menu.Settings.Game.GladeBorderOutline: Umrandung verbergen
+Menu.Settings.Game.HintsResetDone: Fertig! Tutorials wurden zurückgesetzt.
+Menu.Settings.Game.OldTimberframe: Alte Grafik für Fachwerktürme
+Menu.Settings.Game.OldTimberframeDescription: "Die Grafik für Fachwerktürme wurde in Version 1.14.0 aktualisiert. Die alte Version wird nicht länger unterstützt. Wenn du die alte Version trotzdem haben willst, kannst du sie hier aktivieren."
+Menu.Settings.Game.ResetHintsHint: Alle Steuerungstipps und die Begrüßungsnachricht werden erneut angezeigt.
+Menu.Settings.Game.ResetTutorial: Zurücksetzen
+Menu.Settings.Game.ScreenshotFormat: Screenshot-Format
+Menu.Settings.Game.Tutorial: Tutorial
+Menu.Settings.Ui: Spielanzeigen
+Menu.Settings.Ui.AutoHideToolbar: Werkzeugleiste automatisch verbergen
+Menu.Settings.Ui.AutoHideToolbarHint: "Die Werkzeugleiste erscheint nur, wenn dein Cursor in ihrer Nähe ist."
+Menu.Settings.Ui.IconSize: Symbolgröße
+Menu.Settings.Ui.InputLagReduction: Verringerung der Eingabeverzögerung
+Menu.Settings.Ui.InputLagReductionHint: (Experimentell) Verbessert die Reaktionsgeschwindigkeit des Spiels bei langsameren Computern.
+Menu.Settings.Ui.Logo: Logo in Screenshots
+Menu.Settings.Ui.ToolbarAlignment: Ausrichtung der Werkzeugleiste
+Menu.Settings.Ui.ToolbarAlignment.Bottom: Unten
+Menu.Settings.Ui.ToolbarAlignment.Left: Links
+Menu.Settings.Ui.ToolbarAlignment.Right: Rechts
+Menu.Settings.Ui.ToolbarAlignment.Top: Oben
+Menu.Settings.Video: Grafik
+Menu.Settings.Video.Apply: Anwenden
+Menu.Settings.Video.Borderless: Randlos
+Menu.Settings.Video.Brightness: Helligkeit
+Menu.Settings.Video.Device: Gerät
+Menu.Settings.Video.DeviceError: Es wurde ein Problem festgestellt und die Karte konnte nicht genutzt werden.
+Menu.Settings.Video.DeviceHint: "Die Grafikkarte, die zum Rendern verwendet wird."
+Menu.Settings.Video.Display: Anzeige
+Menu.Settings.Video.DisplayMode: Anzeigemodus
+Menu.Settings.Video.DisplayModeHint: Vollbild für die beste Leistung und die beste Animation.
+Menu.Settings.Video.DoF: Schärfentiefe
+Menu.Settings.Video.FpsUnlimited: Unbegrenzt
+Menu.Settings.Video.FrameRateLimit: Bildratenlimit
+Menu.Settings.Video.FrameRateLimitHint: Begrenzung sorgt für weniger Verbrauch zulasten der Animationsglätte.
+Menu.Settings.Video.Fullscreen: Vollbild
+Menu.Settings.Video.Gamma: Gamma
+Menu.Settings.Video.Image: Bild
+Menu.Settings.Video.ImageSettings: Bildeinstellungen
+Menu.Settings.Video.Monitor: Monitor
+Menu.Settings.Video.QualityPreset: Qualitätsvoreinstellung
+Menu.Settings.Video.RefreshRate: Bildwiederholrate
+Menu.Settings.Video.RenderScale: Rendering-Skala
+Menu.Settings.Video.RenderScaleHint: Multiplikator über Bildschirmauflösung. Keinen Einfluss auf Spielanzeige.
+Menu.Settings.Video.Resolution: Auflösung
+Menu.Settings.Video.RestartToChangeDevice: "Starte Tiny Glade neu, um die Grafikänderungen anzuwenden."
+Menu.Settings.Video.Sharpen: Bildschärfe
+Menu.Settings.Video.SharpenHint: "Nachbearbeitung des Bildes, damit es schärfer aussieht (aber auch körniger)."
+Menu.Settings.Video.Upscaling: Hochskalierung
+Menu.Settings.Video.UpscalingHint: "Beim Hochskalierung von Bildern werden Informationen aus mehreren Frames, die mit einer geringeren Auflösung gerendert wurden, zu einem Bild mit voller Auflösung kombiniert. Dadurch wird die Effizienz des Rendering erheblich verbessert, es kann jedoch die Bildqualität beeinträchtigen."
+Menu.Settings.Video.UpscalingPreset: Hochskalierungsvoreinstellung
+Menu.Settings.Video.VSync: V-Sync
+Menu.Settings.Video.VSyncHint: Vertikale Synchronisation verhindert Tearing und spart Energie.
+Menu.Settings.Video.Windowed: Fenstermodus
+Menu.Wishlist: Wunschliste
+Menu.YourGameIsSaved: (dein Spiel wurde gespeichert)
+New.ErrorLoadingSave: Fehler beim Laden der Lichtung
+New.Glade.Autumn: Herbst
+New.Glade.Daily: Tägliches Thema
+New.Glade.Flowery: Blumen
+New.Glade.Olden: Alte Zeiten
+New.Glade.Summer: Sommer
+New.Glade.ThisWeeksTheme: Thema dieser Woche
+New.Glade.Weekly: Wöchentliches Thema
+New.Glade.Winter: Winter
+New.LoadGladeBackup: Backup der Lichtung laden?
+NotInDemo: Nicht in Demo
+Ok: OK
+PhotoMode: Fotomodus
+PhotoMode.ComingInTheFullGame: In der Vollversion verfügbar
+PhotoMode.FieldOfView: Sichtfeld
+PhotoMode.Filters: Filter
+PhotoMode.HideUi: Spielanzeigen verbergen
+Play: Spielen
+Quality.Balanced: Ausgeglichen
+Quality.Custom: Benutzerdefiniert
+Quality.Performance: Leistung
+Quality.Quality: Qualität
+Quality.UltraPerformance: Ultraleistung
+Quality.UltraQuality: Ultraqualität
+Rollercoaster.Ride: Im Wagen fahren
+SaveError.Advice.FreeUpSpace: Schaffe Platz auf deiner Festplatte
+SaveError.Advice.Generic: Diagnostiziere das Problem auf deiner Festplatte
+SaveError.AffectedFile: Betroffene Datei
+SaveError.DontPanic: Nur keine Panik
+SaveError.GladeHasBackups: "Diese Lichtung hat {count} Backup(s)"
+SaveError.HeresThePlan: Hier ist der Plan
+SaveError.KeepTheGameRunning: Lass das Spiel weiterlaufen
+SaveError.MostRecentBackup: Neuestes Backup
+SaveError.StorageFull: Speicher voll
+SaveError.SwitchApps: "Alt + Tab wechselt Anwendungen, F11 aktiviert/deaktiviert Vollbild"
+SaveError.ThereIsAProblem: Beim Speichern deiner Lichtung ist ein Problem aufgetreten
+SaveError.WillSave: Deine Lichtung wird automatisch gespeichert
+Theme.SuggestionBy: Themenvorschlag
+Theme.Weekly.Welcome.Intro2: "Darum teilen wir jede Woche ein neues Thema und eine Startlichtung mit euch. Das heutige Thema ist:"
+TimeOfDay: Tageszeit
+TimeOfDay.PassageOfTime: Zeitfluss
+TimeOfDay.Speed: Geschwindigkeit des Zeitverlaufs
+TimeOfDay.SunAngle: Sonnenwinkel
+TimeOfDay.TimeNow: Aktuelle Zeit
+Timelapse: Zeitraffer
+Timelapse.Header: Sieh dir einen animierten Zeitraffer deiner Schöpfung an.
+Timelapse.Play: Abspielen
+Timelapse.Speed: Geschwindigkeit
+Tweaker.No: Nein
+Tweaker.Yes: Ja
+Welcome.Chemistry: "In Tiny Glade interagieren Bauelemente miteinander. Hier ein Beispiel:"
+Welcome.Greeting: Herzlich willkommen!
+Welcome.HaveFun: "Sieh nach, was du alles entdecken kannst.\nWir hoffen, dass du Spaß hast!"
+Welcome.LetsGo: Los!
+Welcome.Pitch: "Tiny Glade ist ein kleiner Diorama-Builder, bei dem du verspielte Burgen, gemütliche Häuschen und romantische Ruinen baust. Alles ganz ohne Management, Kampf und Ziele. Lehn dich einfach zurück und verwandle vergessene Wiese in liebevolle Dioramen."
+Welcome.Prompt: "Versuche, einen Weg durch die Wand zu zeichnen."
+Welcome.Thanks: "Danke, dass du unsere Demo spielst 💞"
+YourGladeHasBeenSaved: Deine Lichtung wurde gespeichert.

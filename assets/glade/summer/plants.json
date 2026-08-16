@@ -1,0 +1,22 @@
+[
+    {
+        "shader": "meadow_plant_shader",
+        "mesh": "plant_thistle",
+        "placements": "plants/flowers.json"
+    },
+    {
+        "shader": "meadow_plant_shader",
+        "mesh": "plant_leafy",
+        "placements": "plants/leafy_plants.json"
+    },
+ {
+        "shader": "meadow_plant_shader",
+        "mesh": "plant_thistle",
+        "placements": "plants/terrain_plant1.json"
+    },
+    {
+        "shader": "meadow_plant_shader",
+        "mesh": "plant_leafy",
+        "placements": "plants/terrain_plant2.json"
+    }
+]

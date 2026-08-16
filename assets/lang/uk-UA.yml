@@ -1,0 +1,301 @@
+---
+AreYouSure: Точно?
+AreYouSure.ImSure: Точно
+AreYouSure.No: Скасувати
+Cancel: Скасувати
+Continue.Nope: Ні
+Continue.Question: Продовжити?
+Continue.Yep: Так
+Crash.Advice.CheckIntegrity: "Виникла проблема під час інсталяції Tiny Glade, яка, ймовірно, стала причиною збою."
+Crash.Advice.ClickForAdvice: "Натисни тут, щоб дізнатися більше"
+Crash.Advice.CorruptOrModifiedFiles: Пошкоджені або змінені файли
+Crash.Advice.FilesLookIncorrect: Деякі файли Tiny Glade є невірними
+Crash.Advice.IveTriedThat: "Так і було зроблено, але нічого не змінилося"
+Crash.Advice.MissingOrUnreadableFiles: Відсутні або непідтримувані файли
+Crash.Advice.RemoveDozen: "Припускаємо, що збій був викликаний VulkanOn12, який, імовірно, було помилково передвстановлено на твій ПК."
+Crash.Advice.ShowInstallationErrors: Показати помилки інсталяції
+Crash.Advice.SteamFileIntegrityCheck: Перевірка цілісності файлу в Steam
+Crash.Advice.TroubleshootGraphics: Схоже на проблеми з графічним процесором або збій у роботі графічного драйвера.
+Crash.Advice.TryUpdateDriver: "Схоже на збій у роботі графічного драйвера. Припускаємо, що в ньому є помилки. Будь ласка, перевір наявність нової версії 🧡"
+Crash.Advice.UpdateDriver: "Схоже на збій, пов'язаний із графікою. У тебе графічний драйвер старої версії, що може бути причиною збою. Будь ласка, онови його 🧡"
+Crash.Advice.UpdateObs: "Схоже на збій, спричинений OBS (Open Broadcaster Software).\nВідомо, що старіші версії OBS можуть спричинити збої Tiny Glade. Будь ласка, онови OBS 🧡"
+Crash.Advice.VerifyIntegrityOrReinstall: "Перейди за посиланням {link} або повторно інсталюй Tiny Glade."
+Crash.AdviceDismissed: "Шкода це чути, але дякуємо за твій час!"
+Crash.AskConsent: "Ми б хотіли дізнатися, що трапилося, щоб виправити це 🕵\nПоділишся з нами звітом про збій? 🙏"
+Crash.Clipboard.Copied: Скопійовано
+Crash.Clipboard.Copy: Скопіювати в буфер обміну
+Crash.Clipboard.Error: Помилка буфера обміну
+Crash.DeliveryFailed: "О ні, надіслати звіт про збій не вдалося. Дякуємо за спробу, сподіваємося, що це вдасться зробити іншим разом ^^;"
+Crash.DeliveryOk: "Звіт про збій отримали.\nДякуємо 💗"
+Crash.Discuss: "Якщо хочете розповісти про збій нам, вкажіть цей код:"
+Crash.FixDriver: "Схоже, що є проблеми з графічним драйвером, але він припинив роботу до спроби його ініціалізації."
+Crash.GameHasCrashed: Ой! Просимо вибачення... Tiny Glade припинила свою роботу через помилку 😢
+Crash.MsgBoxTitle: Помилка Tiny Glade
+Crash.PrivacyPolicy: Політика конфіденційності
+Crash.RecoveryFailed: "Ми намагалися відновити твою гру після збою, але, на жаль, дані пошкоджено 😣\nБудь ласка, перезапусти Tiny Glade, щоб продовжити грати з останнього автозбереження."
+Crash.RecoveryOk: "Не хвилюйся, твою гру збережено. Просто перезапусти Tiny Glade, щоб продовжити грати."
+Crash.ShowDetails: Докладніше...
+Crash.Signature: "З любов'ю, Анна й Том"
+Crash.TroubleshootingGuide: Посібник з усунення несправностей
+Crash.Under13: "Тобі має бути щонайменше 13 років для відправлення звіту.\nЯкщо тобі менше 13, обери {nope}."
+Daily.DownloadError: Помилка завантаження
+Daily.Downloading: Завантажуємо...
+Daily.NextThemeIn: Наступна тема через
+Daily.NoCurrentTheme: Немає теми
+Daily.ThemeNotAvailable: Тема недоступна
+Daily.TodaysTheme: Сьогоднішня тема
+Daily.Welcome.Author: "Автор початкової галявини:"
+Daily.Welcome.Header: "Ласкаво просимо до #TinyDaily"
+Daily.Welcome.Inspiration: "Стартова галявина натхнена:"
+Daily.Welcome.Intro: "Ми з власного досвіду знаємо, що інколи для роботи потрібне натхнення."
+Daily.Welcome.Intro2: "Щодня ми ділитимемося новою темою й початковою галявиною. Сьогоднішня тема така:"
+Daily.Welcome.Prompt: "Подивимося, що у вас вийде!"
+Daily.Welcome.Socials: "P.S.: якщо захочете поділитися творчістю у соціальних мережах, вкажіть тег #TinyDaily, щоб ми (й інші) могли її знайти!"
+Driver.DeviceType.DiscreteGpu: Дискретний графічний процесор
+Driver.DeviceType.Integrated: Вбудований графічний процесор
+Driver.DeviceType.OldIntegratedGpu: Старий вбудований графічний процесор
+Driver.DeviceType.Virtual: Віртуальний пристрій
+Driver.DriverVersion: Версія
+Driver.EmulatedDriver: Емульований драйвер Vulkan
+Driver.Header.PleaseConfirm: "Підтвердь свій вибір:"
+Driver.Header.Reason.Changed: "Схоже, змінилися твій драйвер чи відеокарта."
+Driver.Header.Reason.PrimaryUnsupported: Перевір свій графічний драйвер.
+Driver.Header.Reason.Requested: Вибір відеокарти на твій запит.
+Driver.Header.Reason.UnavailableDetected: "Схоже, є проблема з графічними драйверами."
+Driver.Header.Reason.WhichOne: "Ми не впевнені, яку відеокарту обрати."
+Driver.IgnoreAndPlay: Ігнорувати й продовжити
+Driver.InsufficientVideoMemory: "Недостатньо відеопам'яті"
+Driver.LikelyTooSlow: надто повільна
+Driver.MemoryAmountRequired: "потрібно {amount}"
+Driver.MightBeSlow: може працювати повільно
+Driver.MinimumSupportedVersionIs: "Мінімальна підтримувана версія:"
+Driver.RecommendedChoice: Рекомендований вибір
+Driver.ShowLogFiles: Показати журнал
+Driver.SupportedDriver: Підтримувані драйвери
+Driver.UnknownVendor: Ми не знаємо цього постачальника
+Driver.UnsupportedDriver: "Непідтримуваний драйвер: Tiny Glade може працювати некоректно чи призводити до помилок"
+Driver.VulkanBroken: "Ми виявили пристрій, але його підтримка Vulkan працює некоректно чи відсутня.\nЯкщо бажаєш використовувати пристрій, перевстанови драйвер (навіть якщо інші ігри працюють)."
+ExceedDemoLimit.Notice: "Схоже, тобою майже перевищено ліміт на 3 галявини в DEMO-версії."
+ExceedDemoLimit.Notice2: "Якщо ти створиш нову галявину, то найстаріша стане недоступною."
+ExceedDemoLimit.Notice3: "(Вона залишиться збереженою, тож ти зможеш завантажити її в повній версії!)"
+FailedToLoad.Notice1: "Завантажити останній файл збереження не вдалося 😨 Можливо, він пошкоджений. Будь ласка, спробуй завантажити резервну копію 🙏"
+FailedToLoad.Notice2: Ми створили для тебе новий сеанс гри.
+Feedback.AttachBenchmark: Прикріпити бенчмарк
+Feedback.AttachSaveFile: Прикріпити файл збереження
+Feedback.AttachScreenshot: Прикріпити скріншот
+Feedback.Default: Замок на болоті побудовано й...
+Feedback.Header: Надіслати відгук
+Feedback.HotkeyHint: "Порада: увійди в це меню, натиснувши {key}"
+Feedback.Send: Надіслати
+Feedback.SendError: "О ні, щось пішло не так!"
+Feedback.SentOk: Відгук отримали. Дякуємо!
+GraphicsInitError.InternalError: Внутрішня помилка
+GraphicsInitError.NoCompatibleDevices: "Твоїй системі бракує графічних можливостей, необхідних для роботи Tiny Glade."
+GraphicsInitError.NoDriver: Твій графічний драйвер не підтримує графіку Vulkan.
+GraphicsInitError.OutOfVideoMemory: "Недостатньо вільної відеопам'яті"
+GraphicsInitError.OutOfVideoMemoryRecommendation: Спробуй закрити інші додатки чи зменшити роздільну здатність екрана
+GraphicsInitError.PleaseUpdateDrivers: "Будь ласка, перевір, чи відповідає твій комп'ютер мінімальним вимогам, і спробуй обновити драйвери для своєї відеокарти до останньої версії."
+GraphicsInitError.Prelude: Tiny Glade зіткнувся з проблемою під час ініціалізації графіки
+GraphicsInitError.SeeLogFile: "Для додаткової інформації переглянь {logfile} 🙏"
+GraphicsInitError.SwapchainError: Помилка ініціалізації вікна
+GraphicsInitError.SwapchainErrorTip: "Перевір, чи під'єднано монітор до основної відеокарти фізично."
+GraphicsInitError.UnsupportedWindowingSystem: Твоя операційна система чи середовище стільниці не підтримується.
+Hint.CameraPan: Перемістити камеру
+Hint.CameraRotate: Повернути камеру
+Hint.CameraZoom: Наближення/віддалення камери
+Hint.Deselect: Скасувати вибір інструмента
+Hint.DisableSnapping: Вимкнути прив’язку
+Hint.FocusEdit: Показати всі засоби редагування
+Hint.RoofShape: Змінити форму
+Hint.StairsContinue: "Натисніть, щоб подовжити сходи"
+Hint.StairsCreateFinish: Закінчити сходи
+Hint.StairsCreateStart: "Натисніть, щоб почати створення сходів"
+Hint.StairsDetachFromWall: Від’єднати
+Hint.Terrain: Малювати по місцевості
+Hint.TerrainSteepness: Змінити холмистість
+Hint.UnlinkWindows: "Від'єднати вікна"
+KeyBindings.DisableSnapping: Вимкнути прив’язку
+KeyBindings.FocusOrDeselect: Увійти в режим фокусування чи скасувати вибір
+KeyBindings.HideUiInPhotoMode: Згорнути інтерфейс користувача (у режимі фото)
+KeyBindings.Move: Перемістити
+KeyBindings.MoveDown: Перемістити вниз
+KeyBindings.MoveDownUp: Перемістити вниз / вгору
+KeyBindings.MoveUp: Перемістити вгору
+KeyBindings.Redo: Повторити
+KeyBindings.ResetToDefaults: Відновити типові значення
+KeyBindings.Rotate: Повернути
+KeyBindings.SendFeedback: Надіслати відгук
+KeyBindings.TakeScreenshot: Зробити скріншот
+KeyBindings.Undo: Скасувати
+KeyBindings.UndoRedo: Скасувати / повторити
+KeyBindings.ZoomIn: Наблизити
+KeyBindings.ZoomInOut: Наблизити / віддалити
+KeyBindings.ZoomOut: Віддалити
+Menu.Back: Назад
+Menu.Continue: Продовжити
+Menu.Credits: Титри
+Menu.Credits.Licenses: Ліцензії
+Menu.Goodbye.ButWaitTheresMore: "На тебе чекає більше галявин, нові інструменти для декорування, просторіші місця для будівництва й багато іншого. Твої файли збережень із демо-версії сумісні з повною версією, тож ти зможеш продовжити гру з того місця, на якому зупинилася гра!"
+Menu.Goodbye.ComeBack: "Сподіваємося, тобі сподобалося, і ти повернешся за повною версією Tiny Glade."
+Menu.Goodbye.Release: Tiny Glade виходить 23 вересня
+Menu.Goodbye.Thanks: Дякуємо за гру в нашій демо-версії!
+Menu.Load: Завантажити
+Menu.New: Нова
+Menu.New.Header: Нова Glade
+Menu.New.TryNew: Зазирнеш на іншу галявину?
+Menu.Quit: Вийти
+Menu.QuitToDesktop: Вийти на стільницю?
+Menu.Settings: Налаштування
+Menu.Settings.Audio: Аудіо
+Menu.Settings.Audio.AmbienceVolume: Гучність середовища
+Menu.Settings.Audio.EffectsVolume: Гучність ефектів
+Menu.Settings.Audio.MasterVolume: Загальна гучність
+Menu.Settings.Audio.MusicVolume: Гучність музики
+Menu.Settings.CameraRotationPivot.CenterPoint: Відцентрувати по точці
+Menu.Settings.CameraRotationPivot.CenterRegion: Відцентрувати по регіону
+Menu.Settings.CameraRotationPivot.CenterTerrain: Відцентрувати по місцевості
+Menu.Settings.CameraRotationPivot.CursorPoint: Обертання навколо точки наведення
+Menu.Settings.CameraRotationPivot.CursorRegion: Обертання навколо регіону наведення
+Menu.Settings.CameraRotationPivot.CursorTerrain: Обертання навколо місцевості наведення
+Menu.Settings.Controls: Елементи керування
+Menu.Settings.Controls.Camera: Камера
+Menu.Settings.Controls.CameraPivotRegionSize: Розмір області обертання
+Menu.Settings.Controls.CameraRotationPivot: Центр обертання камери
+Menu.Settings.Controls.CameraZoomPivot: Центр масштабування камери
+Menu.Settings.Controls.Confirm: Підтвердити
+Menu.Settings.Controls.ControllerBindings: "Прив'язка контролера"
+Menu.Settings.Controls.Down: Вниз
+Menu.Settings.Controls.InvertX: Інвертувати X (горизонтальну) вісь
+Menu.Settings.Controls.InvertY: Інвертувати Y (вертикальну) вісь
+Menu.Settings.Controls.KeyBindings: "Прив'язка клавіш"
+Menu.Settings.Controls.Left: Вліво
+Menu.Settings.Controls.MovementSpeed: Швидкість переміщення
+Menu.Settings.Controls.Other: Інше
+Menu.Settings.Controls.PressAKey: Натисніть клавішу
+Menu.Settings.Controls.Reset: Відновлення
+Menu.Settings.Controls.Right: Вправо
+Menu.Settings.Controls.RotationSpeed: Швидкість обертання
+Menu.Settings.Controls.TabNext: Наступна вкладка
+Menu.Settings.Controls.TabPrevious: Попередня вкладка
+Menu.Settings.Controls.Toolbar: Панель інструментів
+Menu.Settings.Controls.Up: Вверх
+Menu.Settings.DeleteGlade: Видалити цю галявину?
+Menu.Settings.Game: Гра
+Menu.Settings.Game.CompleteHints: Виконати усе
+Menu.Settings.Game.CompleteHintsHint: "Позначає підказки як виконані, вони більше не показуватимуться."
+Menu.Settings.Game.ContextualControlHints: Контекстні уроки
+Menu.Settings.Game.ControlHints: Підказки з керування
+Menu.Settings.Game.ControlHintsHint: "Підказки контекстні й мають з'являтися, коли потрібні."
+Menu.Settings.Game.GladeBorderOutline: Приховати контур межі галявини
+Menu.Settings.Game.HintsResetDone: Готово! Уроки відновлено.
+Menu.Settings.Game.OldTimberframe: Старий вигляд фахверкових веж
+Menu.Settings.Game.OldTimberframeDescription: "У версії 1.14.0 оновлено фахверкові вежі. Стара версія більше не підтримується. Проте якщо ви однаково хочете користуватися старою версією, увімкніть цю опцію."
+Menu.Settings.Game.ResetHintsHint: Знов показувати підказки з керування й вітальне повідомлення.
+Menu.Settings.Game.ResetTutorial: Відновлення
+Menu.Settings.Game.ScreenshotFormat: Формат скриншотів
+Menu.Settings.Game.Tutorial: Навчання
+Menu.Settings.Ui: Інтерфейс користувача
+Menu.Settings.Ui.AutoHideToolbar: Автоматично згортати панель інструментів
+Menu.Settings.Ui.AutoHideToolbarHint: "Панель інструментів з'являтиметься лише при наближенні до неї курсора."
+Menu.Settings.Ui.IconSize: Розмір іконок
+Menu.Settings.Ui.InputLagReduction: Зменшення затримки введення
+Menu.Settings.Ui.InputLagReductionHint: "(Експериментально) Покращує реакцію гри на повільних комп'ютерах."
+Menu.Settings.Ui.Logo: Логотип на скріншотах
+Menu.Settings.Ui.ToolbarAlignment: Розміщення панелі інструментів
+Menu.Settings.Ui.ToolbarAlignment.Bottom: Знизу
+Menu.Settings.Ui.ToolbarAlignment.Left: Зліва
+Menu.Settings.Ui.ToolbarAlignment.Right: Справа
+Menu.Settings.Ui.ToolbarAlignment.Top: Зверху
+Menu.Settings.Video: Відео
+Menu.Settings.Video.Apply: Застосувати
+Menu.Settings.Video.Borderless: Без рамок
+Menu.Settings.Video.Brightness: Яскравість
+Menu.Settings.Video.Device: Відеокарта
+Menu.Settings.Video.DeviceError: "У нас виникли проблема з тим, щоб використовувати цю відеокарту."
+Menu.Settings.Video.DeviceHint: Відеокарта використовується для візуалізації.
+Menu.Settings.Video.Display: Дисплей
+Menu.Settings.Video.DisplayMode: Режим відображення
+Menu.Settings.Video.DisplayModeHint: Для максимальної продуктивності й плавної анімації використовуйте повноекранний режим.
+Menu.Settings.Video.DoF: Глибина різкості
+Menu.Settings.Video.FpsUnlimited: Необмежено
+Menu.Settings.Video.FrameRateLimit: Обмеження частоти кадрів
+Menu.Settings.Video.FrameRateLimitHint: Обмеження зменшує споживання електроенергії за рахунок погіршення плавності анімації.
+Menu.Settings.Video.Fullscreen: Повноекранний
+Menu.Settings.Video.Gamma: Гама
+Menu.Settings.Video.Image: Зображення
+Menu.Settings.Video.ImageSettings: Налаштування зображення
+Menu.Settings.Video.Monitor: Монітор
+Menu.Settings.Video.QualityPreset: Шаблон якості
+Menu.Settings.Video.RefreshRate: Частота оновлення
+Menu.Settings.Video.RenderScale: Рівень візуалізації
+Menu.Settings.Video.RenderScaleHint: Множник роздільної здатності. Не впливає на елементи інтерфейсу.
+Menu.Settings.Video.Resolution: Роздільна здатність
+Menu.Settings.Video.RestartToChangeDevice: "Перезапусти Tiny Glade, щоби застосувати зміни відеокарти"
+Menu.Settings.Video.Sharpen: Різкість
+Menu.Settings.Video.SharpenHint: Здійсни пост-обробку зображення. Це зробить його чіткішим (але й більш зернистим)
+Menu.Settings.Video.Upscaling: Масштабування
+Menu.Settings.Video.UpscalingHint: "Масштабування зображення об'єднує інформацію з кількох кадрів, оброблених зі зменшеною роздільною здатністю, для отримання зображення з повною роздільною здатністю. Це значно підвищує ефективність візуалізації, але може погіршити якість зображення."
+Menu.Settings.Video.UpscalingPreset: Якість масштабування
+Menu.Settings.Video.VSync: Вертикальна синхронізація
+Menu.Settings.Video.VSyncHint: Вертикальна синхронізація запобігає розривам екрана й економить енергію.
+Menu.Settings.Video.Windowed: Віконний
+Menu.Wishlist: Додати до бажаного
+Menu.YourGameIsSaved: (гру збережено)
+New.ErrorLoadingSave: Помилка при завантаженні галявини
+New.Glade.Autumn: Осіння
+New.Glade.Daily: Тема дня
+New.Glade.Flowery: Квіткова
+New.Glade.Olden: Стародавня
+New.Glade.Summer: Літня
+New.Glade.ThisWeeksTheme: Тема цього тижня
+New.Glade.Weekly: Тема тижня
+New.Glade.Winter: Зимова
+New.LoadGladeBackup: Завантажити резервну копію галявини?
+NotInDemo: У демо-версії недоступно
+Ok: ОК
+PhotoMode: Режим фото
+PhotoMode.ComingInTheFullGame: У повній версії гри!
+PhotoMode.FieldOfView: Огляд
+PhotoMode.Filters: Фільтри
+PhotoMode.HideUi: Згорнути інтерфейс користувача
+Play: Грати
+Quality.Balanced: Збалансована
+Quality.Custom: Користувацька
+Quality.Performance: Швидкодія
+Quality.Quality: Якість
+Quality.UltraPerformance: Найвища швидкодія
+Quality.UltraQuality: Найвища якість
+Rollercoaster.Ride: Проїхатися на візку
+SaveError.Advice.FreeUpSpace: Звільніть трохи місця на диску
+SaveError.Advice.Generic: Визначте проблему з диском
+SaveError.AffectedFile: Поточний файл
+SaveError.DontPanic: Не панікуйте
+SaveError.GladeHasBackups: "Резервних копій галявини: {count}"
+SaveError.HeresThePlan: Ось як ми зробимо
+SaveError.KeepTheGameRunning: Не виходьте з гри
+SaveError.MostRecentBackup: Найновіша
+SaveError.StorageFull: Немає вільного місця
+SaveError.SwitchApps: "Alt+Tab — перемикання програм, F11 — повноекранний режим"
+SaveError.ThereIsAProblem: Виникла помилка під час збереження галявини
+SaveError.WillSave: Галявина збережеться автоматично
+Theme.SuggestionBy: Запропоновані теми
+Theme.Weekly.Welcome.Intro2: "Щотижня ми ділитимемося новою темою й початковою галявиною. Тема цього тижня така:"
+TimeOfDay: Час доби
+TimeOfDay.PassageOfTime: Хід часу
+TimeOfDay.Speed: Швидкість плину часу
+TimeOfDay.SunAngle: Кут сонця (довгота)
+TimeOfDay.TimeNow: Поточний час
+Timelapse: Сповільнена зйомка
+Timelapse.Header: Насолоджуйся сповільненою анімованою зйомкою свого будівництва
+Timelapse.Play: Грати
+Timelapse.Speed: Швидкість
+Tweaker.No: Вимкнути
+Tweaker.Yes: Увімкнути
+Welcome.Chemistry: "У Tiny Glade засоби будівництва взаємодіють один з одним. Наприклад,"
+Welcome.Greeting: Вітаємо!
+Welcome.HaveFun: "Поглянь, що ще цікавого ти зможеш для себе відкрити.\nСподіваємося, тобі сподобається!"
+Welcome.LetsGo: Погнали!
+Welcome.Pitch: "Tiny Glade — це конструктор невеликих діорам, у якому ти малюєш химерні замки, затишні котеджі й романтичні руїни. Тут немає ні управління, ні боїв, ні цілей. Просто розслабся й перетворюй забуті галявини на чарівні діорами."
+Welcome.Prompt: спробуй прокласти стежку крізь стіну.
+Welcome.Thanks: "Дякуємо, що обрали нашу демо-версію 💞"
+YourGladeHasBeenSaved: Галявину збережено.

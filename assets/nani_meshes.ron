@@ -1,0 +1,354 @@
+[
+    (
+        subset: SolidVertexColor,
+        attribs: (
+            remove: ["soft_normal", "Vertex_UV"],
+            add: [
+                (name: "flags", ty: I32),
+            ],
+        ),
+        meshes: [
+            (name: "clutter/plant_pot_v1"),
+            (name: "clutter/plant_pot_v2"),
+            (name: "clutter/sunflower"),
+            (name: "clutter/ladder"),
+            (name: "clutter/box_w_stuff"),
+            (name: "clutter/watering_can"),
+            (name: "clutter/birdnest"),
+            (name: "clutter/wheel"),
+            (name: "clutter/pitchfork"),
+            (name: "clutter/shovel"),
+            (name: "clutter/firewood"),
+            (name: "clutter/bucket"),
+            (name: "clutter/window_flowerpot"),
+            (name: "clutter/window_flower_bed_1"),
+            (name: "clutter/window_flower_bed_2"),
+            (name: "clutter/window_flower_bed_3"),
+            (name: "clutter/window_flower_bed_4"),
+            (name: "clutter/window_flower_bed_5"),
+            (name: "clutter/window_flower_bed_6"),
+
+            (name: "decorators/chimney_roof"),
+            (name: "decorators/chimney_side"),
+            (name: "decorators/vent_pipe"),
+            (name: "decorators/door"),
+            (name: "decorators/flag_roof_beam"),
+            (name: "decorators/flag_wall_beam"),
+            (name: "decorators/flag_corner_beam"),
+            (name: "decorators/flag_wall_beam_no_connection"),
+            (name: "decorators/flag_corner_beam_no_connection"),
+            
+            (name: "decorators/lantern_terrain"),
+            (name: "decorators/lantern_terrain_inside"),
+            (name: "decorators/lantern_wall"),
+            (name: "decorators/lantern_wall_inside"),
+            (name: "decorators/lantern_flat_roof"),
+            (name: "decorators/lantern_flat_roof_inside"),
+            (name: "decorators/setdressing_clothline_thread"),
+            (name: "decorators/setdressing_clothline_beam"),
+            (name: "decorators/setdressing_flower_bed"),
+            (name: "decorators/setdressing_flower_pot"),
+            (name: "decorators/setdressing_flower_pot_2"),
+            (name: "decorators/setdressing_flower_pot_hanging_1"),
+            (name: "decorators/setdressing_flower_pot_hanging_2"),
+            (name: "decorators/setdressing_flower_pot_purple"),
+            (name: "decorators/setdressing_flower_pot_red"),
+
+            (name: "decorators/window_cottage_1x1_glass_broken_0"),
+            (name: "decorators/window_cottage_1x1_glass_broken_1"),
+            (name: "decorators/window_cottage_1x1_glass_broken_2"),
+
+            (name: "sewage_gate_bar"),
+            (name: "wooden_gate/door_handle_circle"),
+
+            (name: "fish"),
+
+            (name: "clutter/fabric_rolls", skip_in_demo: true),
+            (name: "clutter/door_bell", skip_in_demo: true),
+            (name: "clutter/door_krans", skip_in_demo: true),
+            (name: "clutter/door_krans_autumn", skip_in_demo: true),
+        ],
+    ),
+    (
+        subset: SolidVertexColorWindow,
+        attribs: (
+            remove: ["tangent", "bitangent"],
+        ),
+        meshes: [
+            (name: "clutter/window_shutter"),
+
+            (name: "decorators/setdressing_window_lintel"),
+            (name: "decorators/setdressing_window_sill"),
+            (name: "decorators/window_cottage_1x1"),
+            (name: "decorators/window_cottage_1x1_corner"),
+            (name: "decorators/window_cottage_1x1_dormer"),
+            (name: "decorators/window_cottage_1x1_dormer_frame"),
+            (name: "decorators/window_cottage_1x1_full_dormer"),
+            (name: "decorators/window_cottage_1x1_full_dormer_corner"),
+            (name: "decorators/window_cottage_1x1_halfdormer_frame"),
+            (name: "decorators/window_cottage_2x1"),
+            (name: "decorators/window_cottage_2x1_full_dormer"),
+            (name: "decorators/window_cottage_2x1_halfdormer_frame"),
+            (name: "decorators/window_cottage_3x1"),
+            (name: "decorators/window_cottage_3x1_full_dormer"),
+            (name: "decorators/window_cottage_3x1_halfdormer_frame"),
+            (name: "decorators/window_cottage_corner_1x1"),
+            (name: "decorators/window_cottage_corner_1x1_sill"),
+            (name: "decorators/window_cottage_corner_2x1"),
+            (name: "decorators/window_cottage_corner_3x1"),
+
+            (name: "decorators/window_gothic_1x1", skip_in_demo: true),
+            (name: "decorators/window_gothic_2x1", skip_in_demo: true),
+            (name: "decorators/window_gothic_3x1", skip_in_demo: true),
+
+            (name: "decorators/window_gothic_1x1_dormer", skip_in_demo: true),
+            (name: "decorators/window_gothic_2x1_dormer", skip_in_demo: true),
+            (name: "decorators/window_gothic_3x1_dormer", skip_in_demo: true),
+
+            (name: "decorators/balcony_door_rank1_rails", skip_in_demo: false),
+            (name: "decorators/balcony_door_rank2_rails", skip_in_demo: false),
+            (name: "decorators/balcony_door_rank3_rails", skip_in_demo: false),
+
+            (name: "decorators/gothic_balcony_door_rank1_rails", skip_in_demo: true),
+            (name: "decorators/gothic_balcony_door_rank2_rails", skip_in_demo: true),
+            (name: "decorators/gothic_balcony_door_rank3_rails", skip_in_demo: true),
+
+            (name: "decorators/arrow_slit_1x1", skip_in_demo: true),
+            (name: "decorators/arrow_slit_1x2", skip_in_demo: true),
+            (name: "decorators/arrow_slit_1x3", skip_in_demo: true),
+            (name: "decorators/arrow_slit_1x3_halfdormer", skip_in_demo: true),
+        ],
+    ),
+    (
+        subset: SolidVertexColorWindowGlass,
+        attribs: (
+            // Legacy
+            remove: ["tangent", "bitangent"],
+
+            // Gothic windows use textures to drive "is_glass"
+            add: [
+                (name: "Vertex_UV", ty: F32x3),
+                (name: "is_glass", ty: I32),
+            ],
+        ),
+        meshes: [
+            (name: "decorators/window_cottage_1x1_dormer_glass"),
+            (name: "decorators/window_cottage_1x1_glass"),
+            (name: "decorators/window_cottage_2x1_glass"),
+            (name: "decorators/window_cottage_3x1_glass"),
+            (name: "decorators/window_cottage_corner_1x1_glass"),
+            (name: "decorators/window_cottage_corner_2x1_glass"),
+            (name: "decorators/window_cottage_corner_3x1_glass"),
+
+            (name: "decorators/window_gothic_1x1_glass", skip_in_demo: true),
+            (name: "decorators/window_gothic_2x1_glass", skip_in_demo: true),
+            (name: "decorators/window_gothic_3x1_glass", skip_in_demo: true),
+
+            (name: "decorators/window_gothic_1x1_dormer_glass", skip_in_demo: true),
+            (name: "decorators/window_gothic_2x1_dormer_glass", skip_in_demo: true),
+            (name: "decorators/window_gothic_3x1_dormer_glass", skip_in_demo: true),
+
+            (name: "decorators/arrow_slit_1x1_glass", skip_in_demo: true),
+            (name: "decorators/arrow_slit_1x2_glass", skip_in_demo: true),
+            (name: "decorators/arrow_slit_1x3_glass", skip_in_demo: true),
+        ]
+    ),
+    (
+        subset: SolidVertexColorBricks,
+        attribs: (
+            // The hats declare extra attributes that aren't used
+            remove: ["bbx_x", "brick_id", "is_bevel"],
+        ),
+        meshes: [
+            (name: "decorators/arrow_slit_1x1", skip_in_demo: true),
+            (name: "decorators/arrow_slit_1x2", skip_in_demo: true),
+            (name: "decorators/arrow_slit_1x3", skip_in_demo: true),
+            (name: "decorators/arrow_slit_1x3_halfdormer", skip_in_demo: true),
+
+            (name: "decorators/window_gothic_1x1_dormer", skip_in_demo: true),
+            (name: "decorators/window_gothic_2x1_dormer", skip_in_demo: true),
+            (name: "decorators/window_gothic_3x1_dormer", skip_in_demo: true),
+
+            (name: "decorators/window_gothic_1x1", skip_in_demo: true),
+            (name: "decorators/window_gothic_2x1", skip_in_demo: true),
+            (name: "decorators/window_gothic_3x1", skip_in_demo: true),
+
+            (name: "decorators/window_gothic_1x1_hat_full", skip_in_demo: true),
+            (name: "decorators/window_gothic_1x1_hat", skip_in_demo: true),
+        ]
+    ),
+    (
+        subset: GothicWindowBricks,
+        meshes: [
+            (name: "decorators/arrow_slit_1x2_hat", skip_in_demo: true),
+            (name: "decorators/arrow_slit_1x3_hat", skip_in_demo: true),
+
+            (name: "decorators/balcony_door_gothic_rank1_hat", skip_in_demo: true),
+            (name: "decorators/balcony_door_gothic_rank2_hat", skip_in_demo: true),
+            (name: "decorators/balcony_door_gothic_rank3_hat", skip_in_demo: true),
+
+            (name: "decorators/window_gothic_2x1_hat_full", skip_in_demo: true),
+            (name: "decorators/window_gothic_3x1_hat_full", skip_in_demo: true),
+
+            (name: "decorators/window_gothic_2x1_hat", skip_in_demo: true),
+            (name: "decorators/window_gothic_3x1_hat", skip_in_demo: true),
+        ]
+    ),
+    (
+        subset: RoofTile,
+        meshes: [
+            (name: "roof_tile"),
+            (name: "roof_tile_lod1"),
+            (name: "roof_tile_backface"),
+        ],
+    ),
+    (
+        subset: Plant,
+        meshes: [
+            (name: "clutter/reed"),
+            (name: "clutter/lilypad"),
+            (name: "fallen_leaves"),
+            (name: "fallen_petals"),
+        ],
+    ),
+    (
+        subset: Flower,
+        // 2137facc-3aaa-433e-b1cc-7629d1b17084
+        meshes: [
+            (name: "garden_flower_01_lavender"),
+            (name: "garden_flower_02"),
+            (name: "bush_flowers"),
+        ],
+    ),
+    (
+        subset: Bush,
+        meshes: [
+            (name: "bush_body"),
+        ],
+    ),
+    (
+        subset: WoodenPlank,
+        attribs: (
+            add: [
+                (name: "Vertex_UV", ty: F32x2),
+                (name: "Vertex_Normal", ty: F32x3),
+                (name: "is_bevel", ty: I32),
+            ],
+        ),
+        meshes: [
+            // dims: [1.0; 1.0; 1.0] (5bf89e43-96e2-47ea-b7fd-1aa8be44a6d8)
+            (name: "wooden_plank"),
+            (name: "wooden_plank_lod1"),
+            (name: "wooden_plank_straight"),
+        ],
+    ),
+    (
+        subset: PreplacedFlower,
+        meshes: [
+             (name: "flowery_lavender"),
+        ],
+    ),
+    (
+        subset: SolidAlbedoMap,
+        attribs: (
+            add: [
+                (name: "flags", ty: I32),
+            ],
+        ),
+        meshes: [
+             (name: "tree_log", skip_in_demo: true),
+             (name: "tree_stump", skip_in_demo: true),
+             (name: "olden_glade_rock", skip_in_demo: true),
+             (name: "clutter/bench", skip_in_demo: true),
+             (name: "clutter/bench_short", skip_in_demo: true),
+             (name: "clutter/bench_w_basket", skip_in_demo: true),
+             (name: "clutter/barrel", skip_in_demo: true),
+             (name: "clutter/haystack", skip_in_demo: true),
+             (name: "clutter/birdhouse", skip_in_demo: true),
+             (name: "clutter/basket", skip_in_demo: true),
+             (name: "clutter/basket_w_food", skip_in_demo: true),
+             (name: "clutter/barrel_w_food_basket", skip_in_demo: true),
+             (name: "clutter/potato_sack", skip_in_demo: true),
+             (name: "clutter/road_sign", skip_in_demo: true),
+             (name: "clutter/cart", skip_in_demo: true),
+             (name: "clutter/cart2", skip_in_demo: true),
+             (name: "clutter/crates_w_tools", skip_in_demo: true),
+             (name: "clutter/crates_w_flowers", skip_in_demo: true),
+             (name: "clutter/pumpkin", skip_in_demo: true),
+             (name: "clutter/pumpkin2", skip_in_demo: true),
+             (name: "clutter/anvil", skip_in_demo: true),
+             (name: "clutter/stall_bread", skip_in_demo: true),
+             (name: "clutter/stall_veggies", skip_in_demo: true),
+             (name: "clutter/crate_fish", skip_in_demo: true),
+             (name: "clutter/rack_brooms", skip_in_demo: true),
+             (name: "clutter/flowerbox", skip_in_demo: true),
+             (name: "clutter/crates_w_pumpkins_regular", skip_in_demo: true),
+             (name: "clutter/cart_w_pumpkins_regular", skip_in_demo: true),
+        ],
+    ),
+    (
+        subset: SolidAlbedoMapEmissive,
+        meshes: [
+             (name: "clutter/pumpkin_w_face", skip_in_demo: true),
+             (name: "clutter/cart_w_pumpkins", skip_in_demo: true),
+             (name: "clutter/crates_w_pumpkins", skip_in_demo: true),
+             (name: "clutter/barrel_w_candles", skip_in_demo: true),
+        ]
+    ),
+    (
+        subset: Wren,
+        meshes: [
+             (name: "small_bird"),
+        ],
+    ),
+    (
+        subset: LanternEmissive,
+        meshes: [
+             (name: "decorators/lantern_wall_inside"),
+             (name: "decorators/lantern_terrain_inside"),
+             (name: "decorators/lantern_flat_roof_inside"),
+        ],
+    ),
+    (
+        subset: Cloth,
+        meshes: [
+             (name: "decorators/setdressing_clothline_cloth"),
+             (name: "decorators/setdressing_clothline_cloth_2"),
+        ],
+    ),
+    (
+        subset: BalconyDoor,
+        attribs: (
+            remove: ["tangent", "bitangent"],
+        ),
+        meshes: [
+             (name: "decorators/balcony_door_rank1"),
+             (name: "decorators/balcony_door_rank2"),
+             (name: "decorators/balcony_door_rank3"),
+             (name: "decorators/balcony_door_gothic_rank1"),
+             (name: "decorators/balcony_door_gothic_rank2"),
+             (name: "decorators/balcony_door_gothic_rank3"),
+             (name: "decorators/trap_door_cottage"),
+             (name: "decorators/trap_door_gothic"),
+        ],
+    ),
+    (
+        subset: Uber,
+        meshes: [
+             (name: "decorators/flag_terrain_support"),
+             (name: "decorators/lantern_terrain_support"),
+        ],
+    ),
+    (
+        subset: VelocityOnly,
+        attribs: (
+            remove: ["Vertex_Color", "Vertex_Normal", "Vertex_UV", "flags"],
+        ),
+        meshes: [
+             (name: "clutter/cart", skip_in_demo: true),
+             (name: "clutter/cart2", skip_in_demo: true),
+             (name: "clutter/cart_w_pumpkins_regular", skip_in_demo: true),
+             (name: "clutter/cart_w_pumpkins", skip_in_demo: true),
+        ],
+    ),
+]

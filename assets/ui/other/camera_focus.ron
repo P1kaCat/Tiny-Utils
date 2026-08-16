@@ -1,0 +1,4 @@
+((
+    draw: [Image(source: "camera_focus", scaling: Nine)],
+    layout: [Expand]
+))

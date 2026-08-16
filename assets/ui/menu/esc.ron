@@ -1,0 +1,47 @@
+((
+    //draw: [FillColor(0xfefcefff)],
+    layout: [Horizontal, Expand, Align(Start), Padding((50, 50, 120, 90))]
+), [
+    ((
+        layout: [Vertical, Gap(0.0), Align(SpaceBetween)]
+    ), [
+        ((slot: "logo")),
+        ((slot: "contents", /* draw: [FillColor(0xffffff40)],  */layout: [Vertical, Align(Center), XAlign(Center), Gap(30.0)])),
+        ((slot: "bottom", layout: [Vertical]),
+        [
+            // Placeholder for icons (quit, settings, photo mode)
+            ((
+                //draw: [FillColor(0xffffff08)],
+                slot: "buttons",
+                layout: [Horizontal, Align(Center), Gap(20)]),
+            [
+                /* ((slot: "quit", draw: [FillColor(0xffffff20), CornerRadius(10)], layout: [Size(80, 60), Align(Center), XAlign(Center)]), [
+                    ((layout: [Size(50, 50)], draw: [Image(source: "icon_cross", scaling: FitHeight)]))
+                ]),
+                ((slot: "settings", draw: [FillColor(0xffffff20), CornerRadius(10)], layout: [Size(80, 60)]), [
+                    ((layout: [Size(50, 50)], draw: [Image(source: "thistle_flower", scaling: FitHeight)]))
+                ]),
+                ((draw: [FillColor(0xffffff20), CornerRadius(10)], layout: [Size(80, 60)])), 
+
+                ((slot: "settings", draw: [FillColor(0xffffff20), CornerRadius(10)], layout: [Size(80, 60)]), [
+                    ((layout: [Size(50, 50)], draw: [Image(source: "thistle_flower", scaling: FitHeight)]))
+                ]),*/
+            ]),
+
+            ((slot: "credits", layout: [Size(50, 50), Padding(30.0), Align(Center), XAlign(Start)]))
+        ]),
+    ]),
+])
+
+// Social media icons section
+/* ((
+    layout: [Vertical, Align(End)],// draw: [FillColor(0xff00ff80)]
+), [
+    ((
+        //draw: [FillColor(0xffffff10)],
+        layout: [Gap(40)]
+    ), [
+        ((draw: [FillColor(0xffffff20), CornerRadius(40)], layout: [Size(80, 80)])),
+        ((draw: [FillColor(0xffffff20), CornerRadius(40)], layout: [Size(80, 80)])),
+    ]),
+]) */

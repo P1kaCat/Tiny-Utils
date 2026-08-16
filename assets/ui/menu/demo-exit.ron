@@ -1,0 +1,154 @@
+((
+    //draw: [FillColor(0xfefcefff)],
+    layout: [Horizontal, Expand, Align(Start), Padding((50, 50, 120, 120))]
+), [
+    ((
+        layout: [Vertical, Gap(0.0), Align(SpaceBetween)]
+    ), [
+        ((
+            layout: [Vertical, XAlign(Center)],
+            slot: "logo",
+        )),
+
+        /* ((
+            layout: [Vertical, XAlign(Center), Gap(30)],
+            slot: "question",
+        )), */
+
+            ((
+                layout: [Vertical, XAlign(Center), Gap(30)],
+            ), [
+
+                (Label:(
+                    text: "t!(Menu.QuitToDesktop)",
+                    color: 0xffffffe0,
+                    align: Center,
+                    size: 60,
+                    weight: Bold,
+                    font: MenuButton,
+                    max_width: 450,
+                )),
+
+                (Label:(
+                    text: "t!(Menu.YourGameIsSaved)",
+                    color: 0xffffffe0,
+                    align: Center,
+                    size: 28,
+                    font: MenuButton,
+                )),
+            ]),
+
+        ((
+            //draw: [FillColor(0xff000080), CornerRadius(20)],
+            //draw: [Image(source: "menu/paper-bg", scaling: Nine)],
+            layout: [Vertical, XAlign(Center), Padding((50, 50, 0, 0))]
+        ), [
+            ((slot: "buttons", /* draw: [FillColor(0xffffff40)],  */layout: [Vertical, Align(Center), XAlign(Center), Gap(25.0)])),
+        ]),
+    ]),
+
+    // Canvas-centering container
+    ((
+        layout: [Horizontal, Expand, XAlign(Center), Padding((50, 0, 25 /* lower to perceptually align with the logo*/, 0))]
+    ), [
+        // Canvas
+        ((
+            //draw: [FillColor(0x00000050), CornerRadius(20)],
+            draw: [Image(source: "menu/paper-bg", scaling: Nine)],
+            layout: [Vertical, Align(Center), XAlign(Center), Padding((60, 50, 30, 40)), Gap(25)]
+        ), [
+            ((
+                //draw: [FillColor(0x00000050), CornerRadius(20)],
+                //draw: [Image(source: "menu/decorative-corners", scaling: Nine)],
+                layout: [Vertical, Align(Center), XAlign(Center), Padding((45, 45, 30, 0)), Gap(20)]
+            ), [
+                // Row
+                ((
+                    layout: [Horizontal, Align(Center), XAlign(Center), Expand, Gap(25)]
+                ), [
+                    ((
+                        layout: [Size(400, 240)],
+                        draw: [Image(source: "demo_goodbye/1", scaling: FitHeight), CornerRadius(13)],
+                    )),
+
+                    ((
+                        layout: [Size(400, 240)],
+                        draw: [Image(source: "demo_goodbye/3", scaling: FitHeight), CornerRadius(13)],
+                    )),
+                ]),
+
+
+                // Row
+                ((
+                    layout: [Horizontal, Align(Center), XAlign(Center), Expand, Gap(25)]
+                ), [
+                    ((
+                        layout: [Size(400, 240)],
+                        draw: [Image(source: "demo_goodbye/5", scaling: FitHeight), CornerRadius(13)],
+                    )),
+
+                    ((
+                        layout: [Size(400, 240)],
+                        draw: [Image(source: "demo_goodbye/4", scaling: FitHeight), CornerRadius(13)],
+                    )),
+                ]),
+            ]),
+            (Label:(
+                text: "t!(Menu.Goodbye.Thanks)",
+                color: 0x7b5a51ff,
+                align: Center,
+                size: 22,
+                font: Hand,
+                max_width: 700,
+            )),
+            (Label:(
+                text: "t!(Menu.Goodbye.Release)",
+                color: 0x7b5a51ff,
+                align: Center,
+                size: 22,
+                weight: Bold,
+                font: Hand,
+                max_width: 700,
+            )),
+            (Label:(
+                text: "t!(Menu.Goodbye.ButWaitTheresMore)",
+                color: 0x7b5a51ff,
+                align: Center,
+                size: 18,
+                font: Hand,
+                max_width: 700,
+            )),
+            ((
+                slot: "wishlist&discord",
+                //draw: [FillColor(0x00000050), CornerRadius(10)],
+                layout: [Horizontal, Gap(05.0), Padding(5.0)]
+            ), [
+                 ((
+                slot: "wishlist",
+                draw: [FillColor(0x00000050), CornerRadius(10)],
+                layout: [Horizontal, Gap(5.0), Padding(5.0)]
+                ), [
+                ]),
+                ((
+                    slot: "discord",
+                    //draw: [FillColor(0x00000050), CornerRadius(10)],
+                    layout: [Horizontal, Gap(5.0), Padding(5.0)]
+                ), [
+                ]),
+            ]),
+        ]),
+    ]),
+])
+
+// Social media icons section
+/* ((
+    layout: [Vertical, Align(End)],// draw: [FillColor(0xff00ff80)]
+), [
+    ((
+        //draw: [FillColor(0xffffff10)],
+        layout: [Gap(40)]
+    ), [
+        ((draw: [FillColor(0xffffff20), CornerRadius(40)], layout: [Size(80, 80)])),
+        ((draw: [FillColor(0xffffff20), CornerRadius(40)], layout: [Size(80, 80)])),
+    ]),
+]) */

@@ -1,0 +1,39 @@
+((
+    layout: [Expand, Align(Center), XAlign(Center), Padding((0, 0, 0, 0))]
+), [
+    ((
+        slot: "background",
+        draw: [Image(source: "menu/paper-bg", scaling: Nine)],
+        layout: [Vertical, Align(Start), XAlign(Center), Gap(30), Padding(80)]
+    ), [
+        (Label:(
+            text: "⚠⚠⚠",
+            color: 0x7b5a51ff,
+            align: Center,
+            size: 19,
+            font: Hand,
+        )),
+        (Label:(
+            text: "t!(FailedToLoad.Notice1)",
+            color: 0x7b5a51ff,
+            align: Center,
+            size: 19,
+            font: Hand,
+            max_width: 450,
+        )),
+        (Label:(
+            text: "t!(FailedToLoad.Notice2)",
+            color: 0x7b5a51ff,
+            align: Center,
+            size: 19,
+            font: Hand,
+        )),
+        ((
+            slot: "buttons",
+            draw: [
+                FillColor(0x000000b0), CornerRadius(15)
+            ], 
+            layout: [Vertical, Align(Center), XAlign(Center), Padding((15, 15, 4, 4))]
+        )),
+    ]),
+])

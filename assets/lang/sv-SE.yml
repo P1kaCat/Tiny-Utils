@@ -1,0 +1,301 @@
+---
+AreYouSure: Är du säker?
+AreYouSure.ImSure: Ja
+AreYouSure.No: Avbryt
+Cancel: Avbryt
+Continue.Nope: Nepp
+Continue.Question: Vill du fortsätta?
+Continue.Yep: Japp
+Crash.Advice.CheckIntegrity: "Det finns ett problem med din installation av Tiny Glade, och det kan vara orsaken till kraschen."
+Crash.Advice.ClickForAdvice: Klicka här för rådgivning
+Crash.Advice.CorruptOrModifiedFiles: Skadade eller modifierade filer
+Crash.Advice.FilesLookIncorrect: Vissa Tiny Glade-filer ser felaktiga ut
+Crash.Advice.IveTriedThat: "Jag har provat det, men det hjälpte inte"
+Crash.Advice.MissingOrUnreadableFiles: Saknade eller oläsliga filer
+Crash.Advice.RemoveDozen: "Vi tror att den här kraschen orsakades av ”VulkanOn12”, som troligen förinstallerades på ditt system av misstag."
+Crash.Advice.ShowInstallationErrors: Visa installationsfel
+Crash.Advice.SteamFileIntegrityCheck: Steams filintegritetskontroll
+Crash.Advice.TroubleshootGraphics: Det här ser ut som att grafikkortet inte fungerar som det ska eller ett fel i grafikdrivrutinen.
+Crash.Advice.TryUpdateDriver: Det här ser ut som en krasch i din grafikdrivrutin. Vi misstänker att den kan vara buggig. Kontrollera om det finns en ny version 🧡
+Crash.Advice.UpdateDriver: Det här ser ut som en grafikrelaterad krasch. Din grafikdrivrutin är gammal och kan vara orsaken till kraschen. Uppdatera den 🧡
+Crash.Advice.UpdateObs: "Det här ser ut som en krasch orsakad av OBS (Open Broadcaster Software).\nÄldre versioner av OBS är ökända för att krascha Tiny Glade. Försök att uppdatera OBS 🧡"
+Crash.Advice.VerifyIntegrityOrReinstall: "Använd {link} eller installera om Tiny Glade."
+Crash.AdviceDismissed: "Det var tråkigt att höra, men tack för att du försökte!"
+Crash.AskConsent: "Vi vill gärna veta vad som hänt så att vi kan lösa det. 🕵\nSkulle du vilja dela kraschrapporten med oss? 🙏"
+Crash.Clipboard.Copied: Kopierad
+Crash.Clipboard.Copy: Kopiera till urklipp
+Crash.Clipboard.Error: Urklippsfel
+Crash.DeliveryFailed: Åh nej! Det gick inte att skicka kraschrapporten. Men tack för att du försökte – vi får ta det en annan gång. ^^;
+Crash.DeliveryOk: "Vi har tagit emot kraschrapporten.\nTackar! 💗"
+Crash.Discuss: "Använd följande kod om du vill diskutera den här kraschen med oss:"
+Crash.FixDriver: Det verkar som att det är något fel på din grafikdrivrutin och att den kraschade innan vi kunde initiera den.
+Crash.GameHasCrashed: Oj då! Tiny Glade stötte på problem och har kraschat… 😢
+Crash.MsgBoxTitle: Ett fel uppstod
+Crash.PrivacyPolicy: Integritetspolicy
+Crash.RecoveryFailed: "Vi försökte återställa ditt spel efter kraschen, men tyvärr är filen skadad. 😣\nStarta om Tiny Glade så kan du fortsätta från den senaste autosparningen."
+Crash.RecoveryOk: "Spelet har sparats, så du kan vara lugn. Det är bara att starta om Tiny Glade och fortsätta."
+Crash.ShowDetails: Information
+Crash.Signature: "Hälsningar, Ana och Tom"
+Crash.TroubleshootingGuide: Felsökning
+Crash.Under13: "Du måste ha fyllt 13 år för att skicka den här rapporten.\nVälj {nope} om du inte har fyllt 13 år."
+Daily.DownloadError: Nedladdningsfel
+Daily.Downloading: Laddar ner...
+Daily.NextThemeIn: Nästa tema om
+Daily.NoCurrentTheme: Inget aktuellt tema
+Daily.ThemeNotAvailable: Temat är inte tillgängligt
+Daily.TodaysTheme: Dagens tema
+Daily.Welcome.Author: "Startgläntans skapare:"
+Daily.Welcome.Header: "Välkommen till #TinyDaily"
+Daily.Welcome.Inspiration: "Startglänta inspirerad av:"
+Daily.Welcome.Intro: Vi vet från erfarenhet att man ibland behöver lite inspiration för att komma igång.
+Daily.Welcome.Intro2: "Varje dag delar vi ett nytt tema och en startglänta. Dagens tema är:"
+Daily.Welcome.Prompt: Vi ser fram emot att se vad du skapar!
+Daily.Welcome.Socials: "P.S. Se till att tagga ditt bygge med #TinyDaily om du delar det på sociala medier, så vi (och andra) kan se det!"
+Driver.DeviceType.DiscreteGpu: Dedikerat grafikkort
+Driver.DeviceType.Integrated: Integrerat grafikkort
+Driver.DeviceType.OldIntegratedGpu: Gammalt integrerat grafikkort
+Driver.DeviceType.Virtual: Virtuell enhet
+Driver.DriverVersion: Version
+Driver.EmulatedDriver: Emulerad Vulkan-drivrutin
+Driver.Header.PleaseConfirm: "Bekräfta din preferens:"
+Driver.Header.Reason.Changed: Ditt grafikkort eller dina drivrutiner verkar ha ändrats.
+Driver.Header.Reason.PrimaryUnsupported: Kontrollera dina grafikdrivrutiner.
+Driver.Header.Reason.Requested: Du har bett att få välja grafikkort.
+Driver.Header.Reason.UnavailableDetected: Det kan vara ett problem med dina grafikdrivrutiner.
+Driver.Header.Reason.WhichOne: Vi vet inte vilket av dina grafikkort som ska väljas.
+Driver.IgnoreAndPlay: Ignorera och spela
+Driver.InsufficientVideoMemory: Otillräckligt grafikminne
+Driver.LikelyTooSlow: troligtvis för långsamt
+Driver.MemoryAmountRequired: "{amount} krävs"
+Driver.MightBeSlow: kan vara långsamt
+Driver.MinimumSupportedVersionIs: "Lägsta version som stöds:"
+Driver.RecommendedChoice: Rekommenderat val
+Driver.ShowLogFiles: Visa loggfiler
+Driver.SupportedDriver: Drivrutin som stöds
+Driver.UnknownVendor: Vi känner inte till det här märket
+Driver.UnsupportedDriver: "Drivrutin som inte stöds: Tiny Glade kan fungera felaktigt eller krascha"
+Driver.VulkanBroken: "Vi har upptäckt den här enheten, men Vulkan-stöd är trasigt eller saknas.\nInstallera om drivrutinen om du vill använda den här enheten (även om andra spel fungerar)."
+ExceedDemoLimit.Notice: Du håller på att överskrida demons gräns på tre gläntor.
+ExceedDemoLimit.Notice2: Om du skapar en ny glänta kommer du inte längre åt den äldsta.
+ExceedDemoLimit.Notice3: (Den sparas ändå och går att ladda i fullversionen!)
+FailedToLoad.Notice1: Din senaste sparfil gick inte att ladda. 😨 Den kan vara skadad. Prova att ladda en annan fil. 🙏
+FailedToLoad.Notice2: Vi har skapat en ny session åt dig.
+Feedback.AttachBenchmark: Bifoga prestandatest
+Feedback.AttachSaveFile: Bifoga sparfil
+Feedback.AttachScreenshot: Bifoga skärmbild
+Feedback.Default: Jag har byggt ett slott i ett träsk och…
+Feedback.Header: Skicka feedback
+Feedback.HotkeyHint: "Tips: Du kan öppna den här menyn från var som helst genom att trycka på {key}"
+Feedback.Send: Skicka
+Feedback.SendError: "Åh nej, något gick fel!"
+Feedback.SentOk: Vi har tagit emot synpunkterna. Tack!
+GraphicsInitError.InternalError: Internt fel
+GraphicsInitError.NoCompatibleDevices: Ditt system har inte den grafiska prestanda som krävs för att köra Tiny Glade.
+GraphicsInitError.NoDriver: Din grafikdrivrutin stöder inte Vulkan.
+GraphicsInitError.OutOfVideoMemory: För lite tillgängligt grafikminne
+GraphicsInitError.OutOfVideoMemoryRecommendation: Stäng andra program eller sänk skärmupplösningen
+GraphicsInitError.PleaseUpdateDrivers: Kontrollera att datorn uppfyller minimikraven och prova att installera de senaste drivrutinerna till grafikkortet.
+GraphicsInitError.Prelude: Tiny Glade stötte på problem när grafiken skulle startas
+GraphicsInitError.SeeLogFile: "Se {logfile} för mer information 🙏"
+GraphicsInitError.SwapchainError: Startproblem med fönster
+GraphicsInitError.SwapchainErrorTip: Se till att skärmen är fysiskt ansluten till det här grafikkortet.
+GraphicsInitError.UnsupportedWindowingSystem: Operativsystemet eller skrivbordsmiljön du använder stöds inte
+Hint.CameraPan: Flytta kamera
+Hint.CameraRotate: Rotera kamera
+Hint.CameraZoom: Zooma kamera
+Hint.Deselect: Avmarkera verktyget
+Hint.DisableSnapping: Stäng av fästpunkter
+Hint.FocusEdit: Visa alla redigeringsverktyg
+Hint.RoofShape: Ändra form
+Hint.StairsContinue: Klicka för att fortsätta med trappa
+Hint.StairsCreateFinish: Avsluta trappa
+Hint.StairsCreateStart: Klicka för att börja skapa en trappa
+Hint.StairsDetachFromWall: Lossa
+Hint.Terrain: Rita över befintlig terräng
+Hint.TerrainSteepness: Ändra branthet
+Hint.UnlinkWindows: Koppla bort fönster
+KeyBindings.DisableSnapping: Stäng av fästpunkter
+KeyBindings.FocusOrDeselect: Fokusera eller avmarkera
+KeyBindings.HideUiInPhotoMode: Dölj gränssnittet (i fotoläget)
+KeyBindings.Move: Flytta
+KeyBindings.MoveDown: Flytta ner
+KeyBindings.MoveDownUp: Flytta ner/upp
+KeyBindings.MoveUp: Flytta upp
+KeyBindings.Redo: Gör om
+KeyBindings.ResetToDefaults: Återställ till standard
+KeyBindings.Rotate: Rotera
+KeyBindings.SendFeedback: Skicka feedback
+KeyBindings.TakeScreenshot: Ta skärmbild
+KeyBindings.Undo: Ångra
+KeyBindings.UndoRedo: Ångra/gör om
+KeyBindings.ZoomIn: Zooma in
+KeyBindings.ZoomInOut: Zooma in/ut
+KeyBindings.ZoomOut: Zooma ut
+Menu.Back: Tillbaka
+Menu.Continue: Fortsätt
+Menu.Credits: Medverkande
+Menu.Credits.Licenses: Licenser
+Menu.Goodbye.ButWaitTheresMore: "Den har fler gläntor att spela i, fler verktyg att dekorera med, större yta att bygga på med mera. Sparfilerna från demon är kompatibla med fullversionen, så du kan fortsätta där du slutade!"
+Menu.Goodbye.ComeBack: Hoppas att du hade trevligt – det skulle vara jättekul om du ville skaffa fullversionen av Tiny Glade.
+Menu.Goodbye.Release: Tiny Glade släpps den 23 september
+Menu.Goodbye.Thanks: Tack för att du spelade demon!
+Menu.Load: Ladda
+Menu.New: Ny
+Menu.New.Header: Ny glänta
+Menu.New.TryNew: Vill du prova en ny glänta?
+Menu.Quit: Avsluta
+Menu.QuitToDesktop: Avsluta till skrivbordet?
+Menu.Settings: Inställningar
+Menu.Settings.Audio: Ljud
+Menu.Settings.Audio.AmbienceVolume: Bakgrundsvolym
+Menu.Settings.Audio.EffectsVolume: Effektvolym
+Menu.Settings.Audio.MasterVolume: Huvudvolym
+Menu.Settings.Audio.MusicVolume: Musikvolym
+Menu.Settings.CameraRotationPivot.CenterPoint: Mittpunkt
+Menu.Settings.CameraRotationPivot.CenterRegion: Mittregion
+Menu.Settings.CameraRotationPivot.CenterTerrain: Mittterräng
+Menu.Settings.CameraRotationPivot.CursorPoint: Markörens punkt
+Menu.Settings.CameraRotationPivot.CursorRegion: Markörens region
+Menu.Settings.CameraRotationPivot.CursorTerrain: Markörens terräng
+Menu.Settings.Controls: Kontroller
+Menu.Settings.Controls.Camera: Kamera
+Menu.Settings.Controls.CameraPivotRegionSize: Vinkla regionstorlek
+Menu.Settings.Controls.CameraRotationPivot: Kamerans rotationsvinkel
+Menu.Settings.Controls.CameraZoomPivot: Kamerans zoomvinkel
+Menu.Settings.Controls.Confirm: Bekräfta
+Menu.Settings.Controls.ControllerBindings: Handkontrollens bindningar
+Menu.Settings.Controls.Down: Neråt
+Menu.Settings.Controls.InvertX: Invertera X-axel
+Menu.Settings.Controls.InvertY: Invertera Y-axel
+Menu.Settings.Controls.KeyBindings: Tangentbindningar
+Menu.Settings.Controls.Left: Vänster
+Menu.Settings.Controls.MovementSpeed: Förflyttningshastighet
+Menu.Settings.Controls.Other: Övrigt
+Menu.Settings.Controls.PressAKey: Tryck på en tangent
+Menu.Settings.Controls.Reset: Återställ
+Menu.Settings.Controls.Right: Höger
+Menu.Settings.Controls.RotationSpeed: Rotationshastighet
+Menu.Settings.Controls.TabNext: Nästa flik
+Menu.Settings.Controls.TabPrevious: Föregående flik
+Menu.Settings.Controls.Toolbar: Verktygsfält
+Menu.Settings.Controls.Up: Uppåt
+Menu.Settings.DeleteGlade: Radera gläntan?
+Menu.Settings.Game: Spelet
+Menu.Settings.Game.CompleteHints: Markera alla
+Menu.Settings.Game.CompleteHintsHint: Markera alla förklaringar som visade så syns de inte igen.
+Menu.Settings.Game.ContextualControlHints: Smarta handledningar
+Menu.Settings.Game.ControlHints: Kontrollförklaringar
+Menu.Settings.Game.ControlHintsHint: De här förklaringarna är situationsberoende och dyker upp vid behov.
+Menu.Settings.Game.GladeBorderOutline: Dölj gläntans gränslinje
+Menu.Settings.Game.HintsResetDone: Klart! Handledningarna har återställts.
+Menu.Settings.Game.OldTimberframe: Gammal grafik för halvtimrade torn
+Menu.Settings.Game.OldTimberframeDescription: "Timmerramarna på torn har uppdaterats i 1.14.0. Den gamla versionen stöds inte längre, men om du fortfarande vill ha den kan du aktivera det här alternativet."
+Menu.Settings.Game.ResetHintsHint: Visa alla kontrollförklaringar och välkomstmeddelandet igen.
+Menu.Settings.Game.ResetTutorial: Återställ
+Menu.Settings.Game.ScreenshotFormat: Skärmbildsformat
+Menu.Settings.Game.Tutorial: Handledningar
+Menu.Settings.Ui: Gränssnitt
+Menu.Settings.Ui.AutoHideToolbar: Dölj verktygsfält automatiskt
+Menu.Settings.Ui.AutoHideToolbarHint: Verktygsfältet visas bara om pekaren är nära det.
+Menu.Settings.Ui.IconSize: Ikonstorlek
+Menu.Settings.Ui.InputLagReduction: Reducera fördröjning
+Menu.Settings.Ui.InputLagReductionHint: "(Experimentellt:) Gör spelet mer responsivt på långsammare datorer."
+Menu.Settings.Ui.Logo: Logotyp i skärmbilder
+Menu.Settings.Ui.ToolbarAlignment: Verktygsfältets position
+Menu.Settings.Ui.ToolbarAlignment.Bottom: Nederst
+Menu.Settings.Ui.ToolbarAlignment.Left: Vänster
+Menu.Settings.Ui.ToolbarAlignment.Right: Höger
+Menu.Settings.Ui.ToolbarAlignment.Top: Överst
+Menu.Settings.Video: Video
+Menu.Settings.Video.Apply: Använd
+Menu.Settings.Video.Borderless: Kantlöst
+Menu.Settings.Video.Brightness: Ljusstyrka
+Menu.Settings.Video.Device: Grafikkort
+Menu.Settings.Video.DeviceError: Vi har stött på ett problem och kan inte använda det här grafikkortet.
+Menu.Settings.Video.DeviceHint: Grafikkortet som renderar bilden.
+Menu.Settings.Video.Display: Bildskärm
+Menu.Settings.Video.DisplayMode: Visningsläge
+Menu.Settings.Video.DisplayModeHint: Använd helskärm för bästa prestanda och bäst animationer.
+Menu.Settings.Video.DoF: Skärpedjup
+Menu.Settings.Video.FpsUnlimited: Obegränsad
+Menu.Settings.Video.FrameRateLimit: Bilduppdateringsgräns
+Menu.Settings.Video.FrameRateLimitHint: Begränsa för lägre resursförbrukning till priset av lite ojämnare animationer.
+Menu.Settings.Video.Fullscreen: Helskärm
+Menu.Settings.Video.Gamma: Gamma
+Menu.Settings.Video.Image: Bild
+Menu.Settings.Video.ImageSettings: Bildinställningar
+Menu.Settings.Video.Monitor: Bildskärm
+Menu.Settings.Video.QualityPreset: Kvalitetsförinställning
+Menu.Settings.Video.RefreshRate: Uppdateringsfrekvens
+Menu.Settings.Video.RenderScale: Upplösningsskala
+Menu.Settings.Video.RenderScaleHint: Multiplikator för skärmupplösning. Påverkar inte gränssnittet.
+Menu.Settings.Video.Resolution: Upplösning
+Menu.Settings.Video.RestartToChangeDevice: Starta om Tiny Glade för att tillämpa grafikkortsändringen
+Menu.Settings.Video.Sharpen: Skärpa
+Menu.Settings.Video.SharpenHint: Efterbehandla bilden så att den blir skarpare (men också kornigare)
+Menu.Settings.Video.Upscaling: Uppskalning
+Menu.Settings.Video.UpscalingHint: "Bilduppskalning kombinerar information från flera bildrutor som ritas i lägre upplösning för att skapa en bild med full upplösning. Det här förbättrar renderingseffektiviteten, men kan försämra bildkvaliteten."
+Menu.Settings.Video.UpscalingPreset: Uppskalningsförinställning
+Menu.Settings.Video.VSync: V-Sync
+Menu.Settings.Video.VSyncHint: Förhindrar att grafiken hackar. Sparar dessutom ström.
+Menu.Settings.Video.Windowed: Fönster
+Menu.Wishlist: Lägg till på önskelista
+Menu.YourGameIsSaved: (Spelet har sparats.)
+New.ErrorLoadingSave: Fel vid laddning av glänta
+New.Glade.Autumn: Höstlig
+New.Glade.Daily: Dagligt tema
+New.Glade.Flowery: Blommig
+New.Glade.Olden: Gammaldags
+New.Glade.Summer: Somrig
+New.Glade.ThisWeeksTheme: Veckans tema
+New.Glade.Weekly: Veckotema
+New.Glade.Winter: Vintrig
+New.LoadGladeBackup: Vill du ladda en säkerhetskopia av gläntan?
+NotInDemo: inte i demon
+Ok: OK
+PhotoMode: Fotoläge
+PhotoMode.ComingInTheFullGame: Kommer i fullversionen!
+PhotoMode.FieldOfView: Synfält
+PhotoMode.Filters: Filter
+PhotoMode.HideUi: Dölj gränssnitt
+Play: Spela
+Quality.Balanced: Balanserad
+Quality.Custom: Anpassad
+Quality.Performance: Prestanda
+Quality.Quality: Kvalitet
+Quality.UltraPerformance: Ultraprestanda
+Quality.UltraQuality: Ultrakvalitet
+Rollercoaster.Ride: Åk med vagnen
+SaveError.Advice.FreeUpSpace: Frigör lite lagringsutrymme
+SaveError.Advice.Generic: Diagnostisera problemet med din lagringsenhet
+SaveError.AffectedFile: Påverkad fil
+SaveError.DontPanic: Få inte panik
+SaveError.GladeHasBackups: "Gläntan finns säkerhetskopierad i {count} exemplar"
+SaveError.HeresThePlan: Här är planen
+SaveError.KeepTheGameRunning: Håll spelet igång
+SaveError.MostRecentBackup: Senaste
+SaveError.StorageFull: Lagring full
+SaveError.SwitchApps: "Alt+Tab för att byta program, F11 växlar helskärmsläge"
+SaveError.ThereIsAProblem: Det uppstod problem med att spara din glänta
+SaveError.WillSave: Din glänta sparas automatiskt
+Theme.SuggestionBy: Temaförslag
+Theme.Weekly.Welcome.Intro2: "Varje vecka delar vi ett nytt tema och en startglänta. Veckans tema är:"
+TimeOfDay: Tid på dygnet
+TimeOfDay.PassageOfTime: Tiden går
+TimeOfDay.Speed: Tidens förlopp
+TimeOfDay.SunAngle: Solens vinkel
+TimeOfDay.TimeNow: Tid nu
+Timelapse: Tidsförlopp
+Timelapse.Header: Se ett animerat tidsförlopp av ditt bygge
+Timelapse.Play: Spela
+Timelapse.Speed: Hastighet
+Tweaker.No: Nej
+Tweaker.Yes: Ja
+Welcome.Chemistry: I Tiny Glade interagerar olika byggdelar med varandra. Du kan till exempel
+Welcome.Greeting: Välkommen!
+Welcome.HaveFun: "Experimentera och se om du upptäcker något annat intressant.\nHa så kul!"
+Welcome.LetsGo: Nu kör vi!
+Welcome.Pitch: "Tiny Glade är en avkopplande dioramabyggare där man utformar egendomliga slott, supermysiga stugor och romantiska ruiner. Det finns inget att sköta om, inga strider och inga mål. Det är bara att luta sig tillbaka och förvandla bortglömda ängar till vackra dioramor."
+Welcome.Prompt: prova att rita en väg genom en vägg.
+Welcome.Thanks: Tack för att du provade demon! 💞
+YourGladeHasBeenSaved: Din glänta har sparats.

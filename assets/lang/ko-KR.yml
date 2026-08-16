@@ -1,0 +1,301 @@
+---
+AreYouSure: 이대로 괜찮을까요?
+AreYouSure.ImSure: 괜찮아요
+AreYouSure.No: 취소
+Cancel: 취소
+Continue.Nope: 아니요
+Continue.Question: 계속할까요?
+Continue.Yep: 네
+Crash.Advice.CheckIntegrity: 설치된 Tiny Glade에 문제가 있어서 게임이 강제 종료되었을 수 있어요.
+Crash.Advice.ClickForAdvice: 클릭해서 자세한 정보를 확인하세요.
+Crash.Advice.CorruptOrModifiedFiles: 손상되거나 수정된 파일
+Crash.Advice.FilesLookIncorrect: Tiny Glade의 일부 파일이 부정확한 것으로 보여요.
+Crash.Advice.IveTriedThat: 이미 해 봤지만 도움 안 됐어요
+Crash.Advice.MissingOrUnreadableFiles: 누락되거나 읽을 수 없는 파일
+Crash.Advice.RemoveDozen: "의도치 않게 시스템에 사전 설치되어 있던 \"VulkanOn12\" 때문에 게임이 강제 종료된 것 같아요."
+Crash.Advice.ShowInstallationErrors: 설치 오류 표시
+Crash.Advice.SteamFileIntegrityCheck: Steam의 파일 무결성 확인
+Crash.Advice.TroubleshootGraphics: GPU가 중단되었거나 그래픽 드라이버 문제인 것 같아요.
+Crash.Advice.TryUpdateDriver: 그래픽 드라이버가 내부적으로 강제 종료된 것 같아요. 그래픽 드라이버 버그일 것 같아요. 혹시 새로운 버전이 있는지 확인해 주세요. 🧡
+Crash.Advice.UpdateDriver: 그래픽 관련 문제로 강제 종료된 것 같아요. 구버전 그래픽 드라이버를 사용 중이기 때문일 수도 있어요. 업데이트해 주세요. 🧡
+Crash.Advice.UpdateObs: "OBS(오픈 브로드캐스터 소프트웨어) 때문에 게임이 강제 종료된 것 같아요.\n구버전 OBS는 Tiny Glade를 강제 종료시킨다고 알려져 있어요. OBS를 업데이트해 주세요."
+Crash.Advice.VerifyIntegrityOrReinstall: "{link} 링크를 사용하거나, Tiny Glade를 다시 설치해 주세요."
+Crash.AdviceDismissed: 아쉽지만 그래도 시도해 봐 주셔서 감사해요!
+Crash.AskConsent: "저희가 자세한 원인을 알아보고 문제를 수정해 볼게요. 🕵\n강제 종료 보고서를 공유해 주실 수 있나요? 🙏"
+Crash.Clipboard.Copied: 복사됨
+Crash.Clipboard.Copy: 클립보드에 복사
+Crash.Clipboard.Error: 클립보드 오류
+Crash.DeliveryFailed: "오, 이런. 강제 종료 보고서를 전송하는 데 실패했어요. 그래도 애써 주셔서 감사해요. 다음에 받아 볼게요. ^^;"
+Crash.DeliveryOk: "강제 종료 보고서를 수신했어요.\n감사합니다. 💗"
+Crash.Discuss: "이번 강제 종료 문제를 저희에게 알려주실 때는 다음 코드를 첨부해 주세요:"
+Crash.FixDriver: 그래픽 드라이버에 뭔가 문제가 있는 것 같아요. 초기화하기 전에 강제 종료되어 버렸어요.
+Crash.GameHasCrashed: 이런! 죄송해요... Tiny Glade에 문제가 발생해서 강제 종료됐어요. 😢
+Crash.MsgBoxTitle: Tiny Glade 오류
+Crash.PrivacyPolicy: 개인정보 정책
+Crash.RecoveryFailed: "강제 종료 이후 기존 게임을 복구하려고 시도해 봤지만, 아쉽게도 게임 상태 정보가 손상됐어요. 😣\nTiny Glade를 다시 시작해 주세요. 마지막 자동 저장 지점부터 계속할 수 있어요."
+Crash.RecoveryOk: 게임은 저장되었으니 걱정하지 마세요. Tiny Glade를 다시 시작하기만 하면 계속 플레이할 수 있어요.
+Crash.ShowDetails: 상세 정보...
+Crash.Signature: "사랑을 담아, 아나와 톰"
+Crash.TroubleshootingGuide: 문제 해결 가이드
+Crash.Under13: "이 신고를 보내려면 13세 이상이어야 해요.\n13세 미만인 경우, {nope}를 선택하세요."
+Daily.DownloadError: 다운로드 오류
+Daily.Downloading: 다운로드 중...
+Daily.NextThemeIn: 다음 테마까지
+Daily.NoCurrentTheme: 현재 테마 없음
+Daily.ThemeNotAvailable: 테마 이용 불가
+Daily.TodaysTheme: 오늘의 테마
+Daily.Welcome.Author: "시작 공터 제작자:"
+Daily.Welcome.Header: "#TinyDaily에 어서 오세요"
+Daily.Welcome.Inspiration: "시작 공터에 영감을 주신 분:"
+Daily.Welcome.Intro: 그런 때가 있죠. 낙서를 하고 싶기는 한데 왠지 어디에서든 약간의 영감을 받아야 할 것 같은 기분이 드는 때.
+Daily.Welcome.Intro2: "그래서 저희가 매일 새로운 테마와 시작 공터를 공유하려고 해요. 오늘의 테마:"
+Daily.Welcome.Prompt: 여러분이 어떤 보금자리를 만들어 낼지 기대할게요!
+Daily.Welcome.Socials: "추신: 소셜 미디어에 작품을 공유하실 때는 #TinyDaily 태그를 추가해서 저희와 다른 친구들이 찾을 수 있게 해주세요!"
+Driver.DeviceType.DiscreteGpu: 전용 그래픽 카드
+Driver.DeviceType.Integrated: 통합 그래픽
+Driver.DeviceType.OldIntegratedGpu: 구형 통합 그래픽
+Driver.DeviceType.Virtual: 가상 장치
+Driver.DriverVersion: 버전
+Driver.EmulatedDriver: 에뮬레이션된 벌칸 드라이버
+Driver.Header.PleaseConfirm: 선호하는 항목을 선택하세요.
+Driver.Header.Reason.Changed: 그래픽 카드 또는 드라이버가 변경된 것 같아요.
+Driver.Header.Reason.PrimaryUnsupported: 그래픽 드라이버를 확인해 주세요.
+Driver.Header.Reason.Requested: 그래픽 카드 선택을 요청하셨어요.
+Driver.Header.Reason.UnavailableDetected: 일부 그래픽 카드에서 문제가 발생했어요.
+Driver.Header.Reason.WhichOne: 어떤 그래픽 카드를 선택해야 할지 잘 모르겠어요.
+Driver.IgnoreAndPlay: 무시하고 플레이하기
+Driver.InsufficientVideoMemory: 비디오 메모리 부족
+Driver.LikelyTooSlow: 너무 느려질 수 있음
+Driver.MemoryAmountRequired: "{amount} 필요"
+Driver.MightBeSlow: 느려질 수 있음
+Driver.MinimumSupportedVersionIs: "최소 지원 버전:"
+Driver.RecommendedChoice: 권장하는 항목
+Driver.ShowLogFiles: 로그 파일 보기
+Driver.SupportedDriver: 지원되는 드라이버
+Driver.UnknownVendor: 알 수 없는 제조사
+Driver.UnsupportedDriver: "지원되지 않는 드라이버: Tiny Glade가 오동작하거나 강제 종료될 수 있어요"
+Driver.VulkanBroken: "이 장치를 탐지했지만 벌칸 지원이 손상되거나 누락되었어요.\n이 장치를 계속 사용하려면 드라이버를 다시 설치해 주세요(다른 게임이 정상 작동하더라도요)."
+ExceedDemoLimit.Notice: 곧 데모에서 이용할 수 있는 최대치인 공터 3개를 초과할 것 같아요.
+ExceedDemoLimit.Notice2: "새로운 공터를 생성하시면, 가장 오래된 공터는 이용하실 수 없어요."
+ExceedDemoLimit.Notice3: "(저장된 게임은 그대로 남아 있으니, 정식 버전에서 불러오실 수 있어요!)"
+FailedToLoad.Notice1: 마지막 저장 파일을 불러올 수 없어요. 😨 파일이 손상되었을 수도 있어요. 백업 파일을 불러와 보세요. 🙏
+FailedToLoad.Notice2: 대신 새로운 세션을 생성했어요.
+Feedback.AttachBenchmark: 벤치마크 첨부
+Feedback.AttachSaveFile: 저장 파일 첨부
+Feedback.AttachScreenshot: 스크린샷 첨부
+Feedback.Default: 늪에 성을 건설했는데...
+Feedback.Header: 피드백 보내기
+Feedback.HotkeyHint: "팁: 어디에서든 {key} 키를 눌러 이 메뉴를 여세요"
+Feedback.Send: 보내기
+Feedback.SendError: "이런, 뭔가 문제가 생겼어요!"
+Feedback.SentOk: 피드백을 잘 받았어요. 감사합니다!
+GraphicsInitError.InternalError: 내부 오류
+GraphicsInitError.NoCompatibleDevices: 시스템의 그래픽 성능이 부족해서 Tiny Glade를 실행할 수 없어요.
+GraphicsInitError.NoDriver: 현재 그래픽 드라이버가 Vulkan을 지원하지 않아요.
+GraphicsInitError.OutOfVideoMemory: 가용 비디오 메모리 부족
+GraphicsInitError.OutOfVideoMemoryRecommendation: 다른 애플리케이션을 닫거나 화면 해상도를 줄여 보세요.
+GraphicsInitError.PleaseUpdateDrivers: "컴퓨터가 최소 요구 사양을 충족시키는지 확인해 주시고, 그래픽 카드의 최신 버전 드라이버를 설치해 주세요."
+GraphicsInitError.Prelude: Tiny Glade에서 그래픽 초기화 중 문제가 발생했어요
+GraphicsInitError.SeeLogFile: "{logfile}에서 자세한 정보를 확인하세요. 🙏"
+GraphicsInitError.SwapchainError: 창 초기화 오류
+GraphicsInitError.SwapchainErrorTip: 모니터가 이 그래픽 카드에 물리적으로 연결되어 있는지 확인해 주세요.
+GraphicsInitError.UnsupportedWindowingSystem: 현재 운영 체제 또는 데스크톱 환경은 지원되지 않아요.
+Hint.CameraPan: 카메라 이동
+Hint.CameraRotate: 카메라 회전
+Hint.CameraZoom: 카메라 확대/축소
+Hint.Deselect: 도구 선택 해제
+Hint.DisableSnapping: 맞춤 비활성화
+Hint.FocusEdit: 모든 편집 컨트롤 표시
+Hint.RoofShape: 형태 변경
+Hint.StairsContinue: 클릭해서 계단 이어가기
+Hint.StairsCreateFinish: 계단 완료
+Hint.StairsCreateStart: 클릭해서 계단 생성 시작
+Hint.StairsDetachFromWall: 분리
+Hint.Terrain: 기존 지형 위에 겹쳐 그리기
+Hint.TerrainSteepness: 경사 변경
+Hint.UnlinkWindows: 창 연결 해제
+KeyBindings.DisableSnapping: 맞춤 비활성화
+KeyBindings.FocusOrDeselect: 초점 맞추기 또는 선택 해제
+KeyBindings.HideUiInPhotoMode: UI 숨기기(사진 모드에서)
+KeyBindings.Move: 이동
+KeyBindings.MoveDown: 아래로 이동
+KeyBindings.MoveDownUp: 아래/위로 이동
+KeyBindings.MoveUp: 위로 이동
+KeyBindings.Redo: 다시 실행
+KeyBindings.ResetToDefaults: 기본값으로 초기화
+KeyBindings.Rotate: 회전
+KeyBindings.SendFeedback: 피드백 보내기
+KeyBindings.TakeScreenshot: 스크린샷 촬영
+KeyBindings.Undo: 실행 취소
+KeyBindings.UndoRedo: 실행 취소/다시 실행
+KeyBindings.ZoomIn: 확대
+KeyBindings.ZoomInOut: 확대/축소
+KeyBindings.ZoomOut: 축소
+Menu.Back: 뒤로
+Menu.Continue: 계속하기
+Menu.Credits: 제작진
+Menu.Credits.Licenses: 라이선스
+Menu.Goodbye.ButWaitTheresMore: "향후 플레이할 수 있는 추가 공터, 장식에 사용할 새로운 도구, 더 넓은 공간 등을 이용하실 수 있어요. 데모 저장 파일은 정식 버전과도 호환되니까, 중단한 곳에서 게임을 계속할 수 있어요!"
+Menu.Goodbye.ComeBack: 지금까지 플레이한 시간이 즐거우셨으면 좋겠네요. 나중에 다시 돌아와서 Tiny Glade 정식 버전도 꼭 확인해 주세요.
+Menu.Goodbye.Release: Tiny Glade가 9월 23일 출시됩니다
+Menu.Goodbye.Thanks: 데모를 플레이해 주셔서 감사합니다!
+Menu.Load: 불러오기
+Menu.New: 새로 만들기
+Menu.New.Header: 새로운 공터
+Menu.New.TryNew: 새로운 공터를 체험하시겠어요?
+Menu.Quit: 종료
+Menu.QuitToDesktop: 데스크톱으로 나갈까요?
+Menu.Settings: 설정
+Menu.Settings.Audio: 오디오
+Menu.Settings.Audio.AmbienceVolume: 환경 볼륨
+Menu.Settings.Audio.EffectsVolume: 효과 볼륨
+Menu.Settings.Audio.MasterVolume: 마스터 볼륨
+Menu.Settings.Audio.MusicVolume: 음악 볼륨
+Menu.Settings.CameraRotationPivot.CenterPoint: 중앙 지점
+Menu.Settings.CameraRotationPivot.CenterRegion: 중앙 영역
+Menu.Settings.CameraRotationPivot.CenterTerrain: 중앙 지형
+Menu.Settings.CameraRotationPivot.CursorPoint: 커서 지점
+Menu.Settings.CameraRotationPivot.CursorRegion: 커서 영역
+Menu.Settings.CameraRotationPivot.CursorTerrain: 커서 지형
+Menu.Settings.Controls: 컨트롤
+Menu.Settings.Controls.Camera: 카메라
+Menu.Settings.Controls.CameraPivotRegionSize: 중심점 영역 크기
+Menu.Settings.Controls.CameraRotationPivot: 카메라 회전 중심점
+Menu.Settings.Controls.CameraZoomPivot: 카메라 확대/축소 중심점
+Menu.Settings.Controls.Confirm: 확인
+Menu.Settings.Controls.ControllerBindings: 컨트롤러 할당
+Menu.Settings.Controls.Down: 아래
+Menu.Settings.Controls.InvertX: X축 반전
+Menu.Settings.Controls.InvertY: Y축 반전
+Menu.Settings.Controls.KeyBindings: 키 할당
+Menu.Settings.Controls.Left: 왼쪽
+Menu.Settings.Controls.MovementSpeed: 이동 속도
+Menu.Settings.Controls.Other: 기타
+Menu.Settings.Controls.PressAKey: 키를 누르세요
+Menu.Settings.Controls.Reset: 초기화
+Menu.Settings.Controls.Right: 오른쪽
+Menu.Settings.Controls.RotationSpeed: 회전 속도
+Menu.Settings.Controls.TabNext: 다음 탭
+Menu.Settings.Controls.TabPrevious: 이전 탭
+Menu.Settings.Controls.Toolbar: 툴바
+Menu.Settings.Controls.Up: 위
+Menu.Settings.DeleteGlade: 이 숲을 삭제할까요?
+Menu.Settings.Game: 게임
+Menu.Settings.Game.CompleteHints: 모두 완료
+Menu.Settings.Game.CompleteHintsHint: 모든 힌트를 완료한 것으로 처리합니다. 힌트가 다시 표시되지 않습니다.
+Menu.Settings.Game.ContextualControlHints: 맥락 기반 튜토리얼
+Menu.Settings.Game.ControlHints: 컨트롤 힌트
+Menu.Settings.Game.ControlHintsHint: 상황에 따라 필요한 경우 힌트가 표시됩니다.
+Menu.Settings.Game.GladeBorderOutline: 공터 경계 외곽선 감추기
+Menu.Settings.Game.HintsResetDone: 완료! 튜토리얼이 초기화됐어요.
+Menu.Settings.Game.OldTimberframe: 반목구조 탑에 기존 외형 사용
+Menu.Settings.Game.OldTimberframeDescription: 탑의 반목구조 틀이 1.14.0에 업데이트되어 기존 버전은 이제 지원되지 않습니다. 그래도 계속해서 기존 외형으로 표시하고 싶다면 이 옵션을 켜 주세요.
+Menu.Settings.Game.ResetHintsHint: 모든 컨트롤 힌트와 환영 메시지를 다시 표시합니다.
+Menu.Settings.Game.ResetTutorial: 초기화
+Menu.Settings.Game.ScreenshotFormat: 스크린샷 포맷
+Menu.Settings.Game.Tutorial: 튜토리얼
+Menu.Settings.Ui: UI
+Menu.Settings.Ui.AutoHideToolbar: 툴바 자동 숨기기
+Menu.Settings.Ui.AutoHideToolbarHint: 커서가 가까이 갔을 때에만 툴바가 표시됩니다.
+Menu.Settings.Ui.IconSize: 아이콘 크기
+Menu.Settings.Ui.InputLagReduction: 입력 지연 감소
+Menu.Settings.Ui.InputLagReductionHint: (실험적 기능) 느린 컴퓨터에서 게임 반응 속도를 향상시킵니다.
+Menu.Settings.Ui.Logo: 스크린샷에 로고 포함
+Menu.Settings.Ui.ToolbarAlignment: 툴바 정렬
+Menu.Settings.Ui.ToolbarAlignment.Bottom: 아래쪽
+Menu.Settings.Ui.ToolbarAlignment.Left: 왼쪽
+Menu.Settings.Ui.ToolbarAlignment.Right: 오른쪽
+Menu.Settings.Ui.ToolbarAlignment.Top: 위쪽
+Menu.Settings.Video: 동영상
+Menu.Settings.Video.Apply: 적용
+Menu.Settings.Video.Borderless: 테두리 없음
+Menu.Settings.Video.Brightness: 밝기
+Menu.Settings.Video.Device: 장치
+Menu.Settings.Video.DeviceError: 문제가 발생해서 이 장치를 사용할 수 없어요.
+Menu.Settings.Video.DeviceHint: 렌더링에 사용하는 그래픽 카드입니다.
+Menu.Settings.Video.Display: 디스플레이
+Menu.Settings.Video.DisplayMode: 디스플레이 모드
+Menu.Settings.Video.DisplayModeHint: "전체 화면에서 게임 성능이 가장 향상되고, 애니메이션도 가장 부드러워집니다."
+Menu.Settings.Video.DoF: 피사계 심도
+Menu.Settings.Video.FpsUnlimited: 무제한
+Menu.Settings.Video.FrameRateLimit: 프레임 레이트 제한
+Menu.Settings.Video.FrameRateLimitHint: 제한하면 애니메이션이 덜 부드러워지는 대신 전력 소모가 감소합니다.
+Menu.Settings.Video.Fullscreen: 전체 화면
+Menu.Settings.Video.Gamma: 감마
+Menu.Settings.Video.Image: 이미지
+Menu.Settings.Video.ImageSettings: 이미지 설정
+Menu.Settings.Video.Monitor: 모니터
+Menu.Settings.Video.QualityPreset: 품질 프리셋
+Menu.Settings.Video.RefreshRate: 주사율
+Menu.Settings.Video.RenderScale: 해상도 스케일
+Menu.Settings.Video.RenderScaleHint: 화면 해상도의 배수입니다. UI에는 영향을 주지 않습니다.
+Menu.Settings.Video.Resolution: 해상도
+Menu.Settings.Video.RestartToChangeDevice: 그래픽 장치 변경 사항을 적용하려면 Tiny Glade를 다시 시작해 주세요.
+Menu.Settings.Video.Sharpen: 샤프닝
+Menu.Settings.Video.SharpenHint: 이미지를 후처리하여 더 선명하게 표현합니다(그레인이 증가합니다)
+Menu.Settings.Video.Upscaling: 업스케일링
+Menu.Settings.Video.UpscalingHint: 이미지 업스케일링은 낮은 해상도로 렌더링한 프레임 다수의 정보를 결합하여 전체 해상도 이미지를 생성합니다. 렌더링 효율이 크게 증가하지만 이미지 품질은 감소할 수 있습니다.
+Menu.Settings.Video.UpscalingPreset: 업스케일링 프리셋
+Menu.Settings.Video.VSync: 수직 동기화
+Menu.Settings.Video.VSyncHint: 수직 동기화를 사용하면 화면 깨짐이 줄어들고 전력 소모가 감소합니다.
+Menu.Settings.Video.Windowed: 창 모드
+Menu.Wishlist: 찜하기
+Menu.YourGameIsSaved: (게임이 저장되었습니다)
+New.ErrorLoadingSave: 공터 불러오기 오류
+New.Glade.Autumn: 가을
+New.Glade.Daily: 일일 테마
+New.Glade.Flowery: 꽃
+New.Glade.Olden: 옛날
+New.Glade.Summer: 여름
+New.Glade.ThisWeeksTheme: 이번 주의 테마
+New.Glade.Weekly: 주간 테마
+New.Glade.Winter: 겨울
+New.LoadGladeBackup: 공터 백업을 불러올까요?
+NotInDemo: 데모에 포함되지 않음
+Ok: 확인
+PhotoMode: 사진 모드
+PhotoMode.ComingInTheFullGame: 정식 버전에서 공개됩니다!
+PhotoMode.FieldOfView: 시야
+PhotoMode.Filters: 필터
+PhotoMode.HideUi: UI 숨기기
+Play: 플레이
+Quality.Balanced: 균형
+Quality.Custom: 맞춤
+Quality.Performance: 성능
+Quality.Quality: 품질
+Quality.UltraPerformance: 최고 성능
+Quality.UltraQuality: 최고 품질
+Rollercoaster.Ride: 카트 타기
+SaveError.Advice.FreeUpSpace: 디스크의 여유 공간을 확보하세요.
+SaveError.Advice.Generic: 디스크의 문제를 진단하세요.
+SaveError.AffectedFile: 영향 받은 파일
+SaveError.DontPanic: 당황하지 마세요.
+SaveError.GladeHasBackups: "이 공터는 백업이 {count}개 있습니다."
+SaveError.HeresThePlan: 이렇게 하죠.
+SaveError.KeepTheGameRunning: 게임이 실행되고 있는 상태로 두세요.
+SaveError.MostRecentBackup: 최근
+SaveError.StorageFull: 저장 공간 가득 참
+SaveError.SwitchApps: "Alt+Tab으로 애플리케이션을 전환하고, F11로 전체 화면을 켜고 끌 수 있습니다."
+SaveError.ThereIsAProblem: 공터를 저장하는 데 문제가 있습니다.
+SaveError.WillSave: 공터는 자동으로 저장될 겁니다.
+Theme.SuggestionBy: 테마 제안
+Theme.Weekly.Welcome.Intro2: "매주 저희가 새로운 테마와 시작 공터를 공유할 예정이에요. 이번 주의 테마:"
+TimeOfDay: 하루의 시간
+TimeOfDay.PassageOfTime: 시간의 흐름
+TimeOfDay.Speed: 시간이 흐르는 속도
+TimeOfDay.SunAngle: 태양 각도
+TimeOfDay.TimeNow: 현재 시간
+Timelapse: 타임랩스
+Timelapse.Header: 건설 과정의 애니메이션 타임랩스를 봅니다.
+Timelapse.Play: 재생
+Timelapse.Speed: 속도
+Tweaker.No: 아니요
+Tweaker.Yes: 네
+Welcome.Chemistry: Tiny Glade에서는 건물의 구성 요소가 서로 상호작용해요. 예를 들면...
+Welcome.Greeting: 환영합니다!
+Welcome.HaveFun: "또 뭘 발견할 수 있을지 알아보세요.\n재미있게 즐기시길 바라요!"
+Welcome.LetsGo: 시작해 봐요!
+Welcome.Pitch: "Tiny Glade는 독특한 성과 포근한 오두막, 낭만적인 폐허를 그리는 작은 디오라마 제작 게임이에요. 관리도, 전투도, 목표도 필요 없어요. 느긋하게 자리에 앉아 잊힌 숲을 사랑스러운 디오라마로 바꿔 보세요."
+Welcome.Prompt: 벽을 통과하는 길을 그려 보세요.
+Welcome.Thanks: 데모를 플레이해 주셔서 감사합니다. 💞
+YourGladeHasBeenSaved: 공터가 저장되었습니다.

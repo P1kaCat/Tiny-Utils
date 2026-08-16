@@ -1,0 +1,4 @@
+((
+    slot: "rows",
+    layout: [Vertical, Expand, Align(Center), XAlign(Center), Padding((0, 0, 10, 0)), Gap(40)]
+))

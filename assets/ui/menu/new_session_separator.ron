@@ -1,0 +1,9 @@
+((
+    // Extra padding on top
+    layout: [Padding((0, 0, 10, 0))]
+), [
+    ((
+        draw: [FillColor(0xffffff60), CornerRadius(2)],
+        layout: [Size(50, 4)],
+    )),
+])

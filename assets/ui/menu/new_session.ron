@@ -1,0 +1,61 @@
+((
+    //draw: [FillColor(0xffff0028)],
+    layout: [Horizontal, XAlign(Stretch), Expand, Padding(50.0)]
+), [
+    ((
+        //draw: [FillColor(0xff00ff40)],
+        layout: [Vertical, Gap(0), Align(Center), XAlign(Center), Gap(40)]
+    ), [
+        ((
+            //draw: [FillColor(0xffffff40)],
+            slot: "top",
+            layout: [Vertical, Align(Start), Gap(20)],
+        ), [
+            /* ((
+                layout: [Size(200, 400)],
+                draw: [Image(source: "menu/logo_w_branches", scaling: FitHeight)]
+            )), */
+            ((
+            //draw: [FillColor(0xffffff40)],
+            slot: "header",
+            layout: [Vertical, Align(Start), Gap(30)],
+            )),
+            ((
+                slot: "save_note",
+                //draw: [FillColor(0x0000ff40)],
+
+                layout: [Vertical, Align(Start), XAlign(Center), Gap(20.0)]
+            )),
+        ]),
+
+        ((
+            layout: [Vertical, Padding(20.0), Gap(40), XAlign(Center)]
+        ), [
+            ((
+                slot: "list",
+                //draw: [FillColor(0x0000ff40)],
+
+                layout: [Vertical, Align(Start), XAlign(Center), Gap(20.0)]
+            )),
+
+            ((
+                slot: "back",
+                layout: [Padding((0, 0, 20.0, 0)), Horizontal, Gap(20)]
+            )),
+        ]),
+
+        // Placeholder for icons (quit, settings, photo mode)
+        ((
+            //draw: [FillColor(0xff000028)],
+            slot: "buttons",
+            layout: [Horizontal, Gap(20)]),
+        [
+        ]),
+    ]),
+
+    ((
+        //draw: [FillColor(0xff000028)],
+        layout: [Expand, Size(300, 300)],
+        slot: "info_panel",
+    )),
+])

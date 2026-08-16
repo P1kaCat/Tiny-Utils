@@ -1,0 +1,26 @@
+((
+    //draw: [FillColor(0xffff0028)],
+    layout: [Vertical, Expand, Align(Center), XAlign(Center), Padding((0, 40, 0, 100))]
+), [
+    ((
+        slot: "notice",
+        draw: [Image(source: "menu/paper-bg", scaling: Nine)],
+        layout: [Vertical, Size(550, 300), XAlign(Center), Padding((40, 40, 70, 50)), Gap(30.0)]
+    ),
+        [
+            (Label:(
+            text: "t!(Menu.Settings.DeleteGlade)",
+            color: 0x7b5a51ff,
+            align: Center,
+            size: 40,
+            font: MenuButton,
+            max_width: 600,
+            )),
+        ((
+            slot: "answer",
+            layout: [Horizontal, Align(Center), Gap(100.0)]
+        ), [
+        ])
+        ]
+    ),
+])

@@ -1,0 +1,17 @@
+((
+    //draw: [FillColor(0xffffff40)],
+    slot: "rows",
+    layout: [Expand, Vertical, Align(Center), XAlign(Center), Gap(10)]
+), [
+    ((
+        slot: "text",
+        //draw: [FillColor(0xffffff40)], 
+        //layout: [Size(Frac(1), Frac(1))]
+    )),
+
+    ((
+        //draw: [FillColor(0xffffff40)],
+        slot: "icons",
+        layout: [Expand, Horizontal, Align(Center), XAlign(Center), Gap(15)]
+    )),
+])

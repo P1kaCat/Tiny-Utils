@@ -1,0 +1,7 @@
+{
+    "ivy_flowers": true,
+    "leaf_particle_count": 400,
+    "butterflies": true,
+    "default_roof_color_id": 3,
+    "weather_fog": 0.02
+}

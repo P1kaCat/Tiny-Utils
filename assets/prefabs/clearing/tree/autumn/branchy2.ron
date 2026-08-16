@@ -1,0 +1,14 @@
+(
+    parts: {
+        "canopy": (
+            render: (
+                mesh: "branchy_tree_v2",
+            ),
+        ),
+        "trunk": (
+            render: (
+                mesh: "branchy_tree_v2",
+            ),
+        ),
+    },
+)

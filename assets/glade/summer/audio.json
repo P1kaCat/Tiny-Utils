@@ -1,0 +1,11 @@
+{
+	"ambience": "event:/Amb/amb_Summer",
+	"music": [
+		"event:/Music/Summer/Folky",
+		"event:/Music/Summer/HelloFellowWaddler",
+		"event:/Music/Summer/SeriouslySummer",
+		"event:/Music/Summer/Tiny Summer Glade",
+		"event:/Music/Summer/MyLittleLamb"
+	],
+	"select_glade_stinger": "event:/UI/ChooseSummer"
+}

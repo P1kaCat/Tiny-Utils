@@ -1,0 +1,15 @@
+((
+    layout: [Expand, Align(End), XAlign(End), Padding(10)]
+), [
+    ((
+        draw: [FillColor(0x101010e0), CornerRadius(10)],
+        layout: [Align(End), XAlign(End), Padding(20)]
+    ), [
+        (Label:(
+            text: "t!(YourGladeHasBeenSaved)",
+            color: 0xffffffff,
+            size: 19,
+            font: Hand,
+        )),
+    ])
+])

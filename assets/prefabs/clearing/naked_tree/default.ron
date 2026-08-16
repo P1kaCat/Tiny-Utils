@@ -1,0 +1,9 @@
+(
+    parts: {
+        "trunk": (
+            render: (
+                shader: "tree_trunk",
+            ),
+        ),
+    },
+)

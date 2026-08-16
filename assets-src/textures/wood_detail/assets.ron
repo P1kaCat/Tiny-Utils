@@ -1,0 +1,16 @@
+(
+    default: (
+        gamma: Linear,
+        resize: (1024, 1024),
+        mips: Full,
+    ),
+    assets: {
+        "edge_damage": (
+            resize: (512, 512),
+            compression: Grayscale,
+        ),
+        "roughness": (
+            compression: Grayscale,
+        ),
+    }
+)

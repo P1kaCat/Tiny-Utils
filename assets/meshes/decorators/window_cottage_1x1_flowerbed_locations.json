@@ -1,0 +1,1 @@
+{"attributes": ["Vertex_Position", "Vertex_Normal"], "indices": {"type": ["int", 1], "buffer": []}, "Vertex_Position": {"type": ["float", 3], "buffer": [[0.0, -0.699999988079071, 0.0]]}, "Vertex_Normal": {"type": ["float", 3], "buffer": [[0.0, 0.0, 1.0]]}}

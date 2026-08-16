@@ -1,0 +1,22 @@
+((
+    //draw: [FillColor(0x00000080)],
+    layout: [Vertical, Align(Center), XAlign(Center), Gap(50), Padding((0, 0, 50, 50))],
+), [
+    (Label:(
+        text: "t!(Daily.ThemeNotAvailable)",
+        color: 0xffffffff,
+        align: Center,
+        size: 56,
+        font: Hand,
+    )),
+
+    ((
+        draw: [Image(source: "menu/emoji/confused", scaling: FitHeight)],
+        layout: [Size(128, 128)]
+    )),
+
+    ((
+        layout: [Vertical, Align(Center)],
+        slot: "reason",
+    )),
+])

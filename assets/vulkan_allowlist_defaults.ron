@@ -1,0 +1,15 @@
+[
+    (
+        version: 1,
+        add: [
+            Vendor("VALVE"),
+            Vendor("OBS"),
+        ]
+    ),
+    (
+        version: 2,
+        add: [
+            Layer("VK_LAYER_reshade"),
+        ]
+    )
+]

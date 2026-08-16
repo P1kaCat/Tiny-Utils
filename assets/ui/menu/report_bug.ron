@@ -1,0 +1,52 @@
+((
+    //draw: [FillColor(0x202020d0)],
+    layout: [Align(Center), XAlign(Center)]
+), [
+    ((
+        draw: [FillColor(0x202020d0), CornerRadius(25)],
+        layout: [Vertical, Align(Center), Padding(50.0), Gap(30)]
+    ), [
+        ((slot: "header", layout: [Vertical, Gap(20.0)])),
+
+        ((
+            layout: [Vertical, Gap(0)]
+        ), [
+            ((
+                slot: "editor_focus_frame",
+            ), [
+                ((
+                    slot: "editor",
+                    draw: [FillColor(0x00000080), CornerRadius(20)],
+                    layout: [Padding(10)]
+                ), [
+                ]),
+            ]),
+
+            ((
+                layout: [Align(SpaceBetween), Padding(5)]
+            ), [
+                ((slot: "tags", layout: [Horizontal, Gap(30), Padding((20, 0, 0, 0))]), [
+                    /* ((draw: [Image(source: "menu/feedback/aww", scaling: FitHeight)], layout: [Size(45, 40)])),
+                    ((draw: [Image(source: "menu/feedback/think", scaling: FitHeight)], layout: [Size(45, 40)])),
+                    ((draw: [Image(source: "menu/feedback/angry", scaling: FitHeight)], layout: [Size(45, 40)])),
+                    ((draw: [Image(source: "menu/feedback/sob", scaling: FitHeight)], layout: [Size(45, 40)])), */
+                ]),
+                ((slot: "editor_status", layout: [Horizontal])),
+            ]),
+        ]),
+
+        /* ((
+            layout: [Horizontal, Align(Start)]
+        ), [
+            ((), [
+                ((slot: "attachments", layout: [Vertical, XAlign(Stretch), Padding((5, 0, 0, 0)), Size(530, 0)])),
+            ]),
+        ]), */
+        ((), [
+            ((slot: "attachments", layout: [Vertical, XAlign(Stretch), Padding((5, 0, 0, 0)), Size(530, 0)])),
+        ]),
+
+        ((slot: "buttons", layout: [Horizontal, Align(Center), Padding((0, 0, 20, 0)), Gap(160.0)])),
+        ((slot: "hint", layout: [Vertical, Align(Center)])),
+    ])
+])

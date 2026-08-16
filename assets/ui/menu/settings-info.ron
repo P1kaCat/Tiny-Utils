@@ -1,0 +1,6 @@
+((
+    //draw: [FillColor(0xff000030), CornerRadius(10)],
+    layout: [Vertical, Size(700, 0), Align(Start), XAlign(Start)],
+    slot: "hint",
+), [
+])

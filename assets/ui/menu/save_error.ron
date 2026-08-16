@@ -1,0 +1,52 @@
+((
+    layout: [Expand, Align(Center), XAlign(Center), Padding((0, 0, 0, 0))]
+), [
+    ((
+        slot: "background",
+        draw: [Image(source: "menu/paper-bg", scaling: Nine)],
+        layout: [Vertical, Align(Start), XAlign(Center), Gap(20), Padding((80, 80, 60, 60))]
+    ), [
+        (Label:(
+            text: "⚠⚠⚠",
+            color: 0x7b5a51ff,
+            align: Center,
+            size: 19,
+            font: Hand,
+        )),
+        (Label:(
+            text: "t!(SaveError.ThereIsAProblem) 😳",
+            color: 0x7b5a51ff,
+            align: Center,
+            size: 19,
+            font: Hand,
+            max_width: 450,
+            weight: Semibold,
+        )),
+        ((
+            layout: [Vertical, Gap(10)],
+            slot: "internal_error"
+        )),
+        (Label:(
+            text: "t!(SaveError.HeresThePlan):",
+            color: 0x7b5a51ff,
+            align: Left,
+            size: 19,
+            font: Hand,
+            max_width: 450,
+        )),
+        ((
+            slot: "plan"
+        )),
+        (Label:(
+            text: "(t!(SaveError.SwitchApps))",
+            color: 0x7b5a51ff,
+            align: Center,
+            size: 13,
+            font: Hand,
+            max_width: 450,
+        )),
+        ((
+            slot: "backups"
+        )),
+    ]),
+])

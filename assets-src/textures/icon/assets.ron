@@ -1,0 +1,7 @@
+(
+    default: (
+        gamma: sRGB,
+        resize: None,
+        mips: None,
+    )
+)

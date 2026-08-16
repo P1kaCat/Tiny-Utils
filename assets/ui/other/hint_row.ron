@@ -1,0 +1,5 @@
+((
+    draw: [FillColor(0xffffff20), CornerRadius(20)],
+    layout: [Horizontal, Align(Center), XAlign(Center), Gap(10), Padding(10)],
+    slot: "content",
+), [])

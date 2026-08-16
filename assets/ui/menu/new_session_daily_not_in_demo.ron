@@ -1,0 +1,17 @@
+((
+    //draw: [FillColor(0x00000080)],
+    layout: [Vertical, Align(Center), XAlign(Center), Gap(50), Padding((0, 0, 50, 50))],
+), [
+    (Label:(
+        text: "t!(PhotoMode.ComingInTheFullGame)",
+        align: Center,
+        size: 56,
+        font: Hand,
+        max_width: 800,
+    )),
+
+    ((
+        draw: [Image(source: "menu/sheep_calendar", scaling: FitHeight)],
+        layout: [Size(217, 156)]
+    )),
+])

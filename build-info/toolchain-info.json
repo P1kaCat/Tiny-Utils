@@ -1,0 +1,14 @@
+{
+    "RUSTC_COMMIT": "05f9846f893b09a1be1fc8560e33fc3c815cfecb",
+    "RUSTC_MAJOR": "1",
+    "RUSTC_MINOR": "86",
+    "RUSTC_PATCH": "0",
+    "LLVM_MAJOR": "19",
+    "LLVM_MINOR": "1",
+    "LLVM_PATCH": "7",
+    "OPT_LEVEL": "3",
+    "DEBUG": "true",
+    "NUM_JOBS": "16",
+    "TARGET": "x86_64-pc-windows-msvc",
+    "HOST": "x86_64-unknown-linux-gnu"
+}

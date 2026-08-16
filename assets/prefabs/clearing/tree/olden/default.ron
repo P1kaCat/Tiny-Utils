@@ -1,0 +1,12 @@
+(
+    parts: {
+        "trunk": (
+            render: (
+                mesh_processor: Code(
+                    name: "extract_trunk",
+                ),
+                shader: "tree_trunk",
+            ),
+        ),
+    },
+)

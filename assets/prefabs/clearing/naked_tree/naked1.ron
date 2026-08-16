@@ -1,0 +1,9 @@
+(
+    parts: {
+        "trunk": (
+            render: (
+                mesh: "naked_tree_1",
+            ),
+        ),
+    },
+)

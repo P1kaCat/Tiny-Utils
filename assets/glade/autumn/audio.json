@@ -1,0 +1,11 @@
+{
+	"ambience": "event:/Amb/amb_Autumn",
+	"music": [
+		"event:/Music/Autumn/Actually Autumn",
+		"event:/Music/Autumn/Autumn Sun",
+		"event:/Music/Autumn/Leafy Breeze",
+		"event:/Music/Autumn/Tiny Autumn Glade",
+		"event:/Music/Autumn/ToBeALeaf"
+	],
+	"select_glade_stinger": "event:/UI/ChooseAutumn"
+}

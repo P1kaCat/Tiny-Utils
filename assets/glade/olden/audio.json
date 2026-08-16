@@ -1,0 +1,11 @@
+{
+	"ambience": "event:/Amb/amb_Olden",
+	"music": [
+		"event:/Music/Olden/SingleLeaf",
+		"event:/Music/Olden/Tiny Olden Glade",
+		"event:/Music/Olden/Forgotten Ruins",
+		"event:/Music/Olden/Enchanted Forest",
+		"event:/Music/Olden/Timberframes"
+	],
+	"select_glade_stinger": "event:/UI/ChooseOlden"
+}

@@ -1,0 +1,18 @@
+((
+    //draw: [Image(source: "menu/background", scaling: FitHeight)],
+    layout: [Expand, Vertical, XAlign(Start), Align(Center), Gap(10.0), Padding(0.0)]
+), [
+    ((
+        layout: [Expand, Vertical, XAlign(Center), Align(Center), Gap(100.0)]
+    ), [
+        ((slot: "title", 
+        //draw: [FillColor(0xffffff40)],  
+        layout: [Vertical, Align(Center), XAlign(Start), Gap(20.0)])),
+        ((slot: "contents", 
+        //draw: [FillColor(0xffffff40)],
+        layout: [Vertical, Align(Start), XAlign(Center), Gap(10.0), Size(20.0, 300.0)])),
+        ((slot: "close", 
+        //draw: [FillColor(0xffffff40)],  
+        layout: [Vertical, Align(Center), XAlign(End), Gap(20.0)])),
+    ])
+])

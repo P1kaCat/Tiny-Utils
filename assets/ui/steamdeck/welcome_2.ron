@@ -1,0 +1,37 @@
+((
+    layout: [Expand, Align(Center), XAlign(Center), Padding((0, 0, 0, 0))]
+), [
+    ((
+        slot: "background",
+        draw: [Image(source: "menu/paper-bg", scaling: Nine)],
+        layout: [Vertical, Align(Start), XAlign(Center), Gap(50), Padding((80, 80, 100, 70))]
+    ), [
+        //((slot: "header", /* draw: [FillColor(0xffffff40)],  */layout: [Vertical, Align(Center), XAlign(Center)])),
+
+        //((slot: "contents", /*draw: [FillColor(0xff00ff40)],  */layout: [Vertical, Align(Center), XAlign(Center)])),
+        (Label:(
+            text: "t!(Welcome.Chemistry)",
+            color: 0x7b5a51ff,
+            align: Center,
+            size: 30,
+            font: Hand,
+            max_width: 500,
+        )),
+         (Label:(
+            text: "t!(Welcome.Prompt)",
+            color: 0x7b5a51ff,
+            align: Center,
+            size: 35,
+            weight: Bold,
+            font: Hand,
+            max_width: 700,
+        )),
+        ((
+            slot: "buttons",
+            draw: [
+                FillColor(0x000000b0), CornerRadius(15)
+            ], 
+            layout: [Vertical, Align(Center), XAlign(Center), Padding((15, 15, 4, 4))]
+        )),
+    ]),
+])

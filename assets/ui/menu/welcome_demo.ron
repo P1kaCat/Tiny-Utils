@@ -1,0 +1,71 @@
+((
+    layout: [Expand, Align(Start), XAlign(Start), Padding((0, 0, 80, 0))]
+), [
+    ((
+        slot: "background",
+        draw: [Image(source: "menu/paper-bg", scaling: Nine)],
+        layout: [Vertical, Align(Start), XAlign(Center), Gap(30), Padding(40.0)]
+    ), [
+        //((slot: "header", /* draw: [FillColor(0xffffff40)],  */layout: [Vertical, Align(Center), XAlign(Center)])),
+
+        //((slot: "contents", /*draw: [FillColor(0xff00ff40)],  */layout: [Vertical, Align(Center), XAlign(Center)])),
+
+        (Label:(
+            text: "t!(Welcome.Greeting)",
+            color: 0x7b5a51ff,
+            align: Center,
+            size: 40,
+            font: MenuButton,
+        )),
+
+        (Label:(
+            text: "t!(Welcome.Thanks)",
+            color: 0x7b5a51ff,
+            align: Center,
+            size: 17,
+            font: Hand,
+            max_width: 500,
+        )),
+
+        (Label:(
+            text: "t!(Welcome.Pitch)",
+            color: 0x7b5a51ff,
+            align: Center,
+            size: 17,
+            font: Hand,
+            max_width: 500,
+        )),
+        (Label:(
+            text: "t!(Welcome.Chemistry)",
+            color: 0x7b5a51ff,
+            align: Center,
+            size: 17,
+            font: Hand,
+            max_width: 500,
+        )),
+         (Label:(
+            text: "t!(Welcome.Prompt)",
+            color: 0x7b5a51ff,
+            align: Center,
+            size: 20,
+            weight: Bold,
+            font: Hand,
+            max_width: 500,
+        )),
+        (Label:(
+            text: "t!(Welcome.HaveFun)",
+            color: 0x7b5a51ff,
+            align: Center,
+            size: 17,
+            font: Hand,
+            max_width: 500,
+        )),
+        ((
+            slot: "buttons",
+            draw: [
+                FillColor(0x000000b0), CornerRadius(15)
+            ], 
+            layout: [Vertical, Align(Center), XAlign(Center), Padding((15, 15, 4, 4))]
+        )),
+    ]),
+])

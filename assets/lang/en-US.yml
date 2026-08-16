@@ -1,0 +1,306 @@
+---
+AreYouSure: Are you sure?
+AreYouSure.ImSure: "I'm sure"
+AreYouSure.No: Cancel
+Cancel: Cancel
+Continue.Nope: Nope
+Continue.Question: Continue?
+Continue.Yep: Yep
+Crash.Advice.CheckIntegrity: "There is a problem with your installation of Tiny Glade, and it might be responsible for this crash."
+Crash.Advice.ClickForAdvice: Click here for advice
+Crash.Advice.CorruptOrModifiedFiles: Corrupt or modified files
+Crash.Advice.FilesLookIncorrect: Some Tiny Glade files look incorrect
+Crash.Advice.InstallationLooksGood: ✅ Your Tiny Glade installation looks good.
+Crash.Advice.IveTriedThat: "I've tried that, and it didn't help"
+Crash.Advice.MissingOrUnreadableFiles: Missing or unreadable files
+Crash.Advice.RemoveDozen: "We believe this crash was caused by “VulkanOn12,” which was likely pre-installed on your system by mistake."
+Crash.Advice.ShowInstallationErrors: Show installation errors
+Crash.Advice.SteamFileIntegrityCheck: "Steam's file integrity check"
+Crash.Advice.TroubleshootGraphics: This looks like a GPU hang or a graphics driver glitch.
+Crash.Advice.TryUpdateDriver: "This looks like a crash inside your graphics driver. We suspect it might be buggy - please check if there's a new version 🧡"
+Crash.Advice.UnrecognizedFilesClickToDelete: Unrecognized files (click 🗑️ to delete)
+Crash.Advice.UpdateDriver: "This looks like a graphics-related crash. Your graphics driver is outdated, and might be responsible for this crash. Please update it 🧡"
+Crash.Advice.UpdateObs: "This looks like a crash caused by OBS (Open Broadcaster Software).\nOlder versions of OBS are known to crash Tiny Glade. Please try updating your OBS 🧡"
+Crash.Advice.VerifyIntegrityOrReinstall: "Please use {link} or reinstall Tiny Glade."
+Crash.AdviceDismissed: "Sorry to hear that, but thanks for trying!"
+Crash.AskConsent: "We'd love to know what happened, and fix it 🕵\nWould you share the crash report with us? 🙏"
+Crash.Clipboard.Copied: Copied
+Crash.Clipboard.Copy: Copy to clipboard
+Crash.Clipboard.Error: Clipboard error
+Crash.DeliveryFailed: "Oh noes, crash report delivery failed. Thanks for trying - we'll get it another time ^^;"
+Crash.DeliveryOk: "We've received the crash report.\nThank you 💗"
+Crash.Discuss: "If you'd like to discuss this crash with us, please mention the following code:"
+Crash.FixDriver: "It seems that something is wrong with your graphics driver, and it crashed before we could initialize it."
+Crash.GameHasCrashed: "Oops! We're sorry... Tiny Glade had a problem and crashed 😢"
+Crash.MsgBoxTitle: Tiny Glade error
+Crash.PrivacyPolicy: Privacy policy
+Crash.RecoveryFailed: "We've attempted to recover your game after the crash, but unfortunately the state was corrupted 😣\nPlease restart Tiny Glade, and you can continue from the last autosave."
+Crash.RecoveryOk: "Don't worry, your game has been saved. Simply restart Tiny Glade, and you can continue playing."
+Crash.ShowDetails: Details...
+Crash.Signature: "Love, Ana & Tom"
+Crash.TroubleshootingGuide: Troubleshooting guide
+Crash.Under13: "You must be at least 13 years old to send this report.\nIf you're younger than 13, select {nope}."
+Daily.DownloadError: Download error
+Daily.Downloading: Downloading...
+Daily.NextThemeIn: Next theme in
+Daily.NoCurrentTheme: No current theme
+Daily.ThemeNotAvailable: Theme not available
+Daily.TodaysTheme: "Today's theme"
+Daily.Welcome.Author: "Author of the starting glade:"
+Daily.Welcome.Header: "Welcome to #TinyDaily"
+Daily.Welcome.Inspiration: "Starting glade inspired by:"
+Daily.Welcome.Intro: We know from personal experience that sometimes you need a bit of inspiration to get doodling.
+Daily.Welcome.Intro2: "Each day we'll share a new theme and a starting glade. Today's theme is:"
+Daily.Welcome.Prompt: "Let's see what you make with it!"
+Daily.Welcome.Socials: "PS: If you share your build on social media, mention #TinyDaily, so we (and others) can find it!"
+Driver.DeviceType.DiscreteGpu: Discrete graphics card
+Driver.DeviceType.Integrated: Integrated graphics
+Driver.DeviceType.OldIntegratedGpu: Old integrated graphics
+Driver.DeviceType.Virtual: Virtual device
+Driver.DriverVersion: Version
+Driver.EmulatedDriver: Emulated Vulkan driver
+Driver.Header.PleaseConfirm: "Please confirm your preference:"
+Driver.Header.Reason.Changed: It looks like your graphics cards or drivers have changed.
+Driver.Header.Reason.PrimaryUnsupported: Please check your graphics driver.
+Driver.Header.Reason.Requested: "You've requested to select the graphics card."
+Driver.Header.Reason.UnavailableDetected: There might be a problem with some of your graphics drivers.
+Driver.Header.Reason.WhichOne: "We're not sure which one of your graphics cards to choose."
+Driver.IgnoreAndPlay: Ignore & play
+Driver.InsufficientVideoMemory: Insufficient video memory
+Driver.KnownBad: This driver version is known to cause crashes
+Driver.LikelyTooSlow: likely too slow
+Driver.MemoryAmountRequired: "{amount} required"
+Driver.MightBeSlow: might be slow
+Driver.MinimumSupportedVersionIs: "Minimum supported version:"
+Driver.RecommendedChoice: Recommended choice
+Driver.ShowLogFiles: Show log files
+Driver.SupportedDriver: Supported driver
+Driver.UnknownVendor: "We don't know this vendor"
+Driver.UnsupportedDriver: "Unsupported driver: Tiny Glade might misbehave or crash"
+Driver.VulkanBroken: "We've detected this device, but its Vulkan support is broken or missing.\nIf you'd like to use this device, please reinstall its driver (even if other games work)."
+ExceedDemoLimit.Notice: "Looks like you're about to exceed the DEMO limit of 3 glades."
+ExceedDemoLimit.Notice2: "If you create a new glade, the oldest one will become unavailable."
+ExceedDemoLimit.Notice3: "(it's still saved, and you can load it in the full version!)"
+FailedToLoad.Notice1: Your latest save file could not be loaded 😨 It might be corrupted. Please try loading a backup 🙏
+FailedToLoad.Notice2: "We've created a new session for you."
+Feedback.AttachBenchmark: Attach benchmark
+Feedback.AttachSaveFile: Attach save file
+Feedback.AttachScreenshot: Attach screenshot
+Feedback.Default: I built a castle on a swamp and...
+Feedback.Header: Send Feedback
+Feedback.HotkeyHint: "Tip: enter this menu from anywere by pressing {key}"
+Feedback.Send: Send
+Feedback.SendError: "Oh no, something went wrong!"
+Feedback.SentOk: Feedback received. Thank you!
+GraphicsInitError.InternalError: Internal error
+GraphicsInitError.NoCompatibleDevices: Your system is missing graphics capabilities necessary to run Tiny Glade.
+GraphicsInitError.NoDriver: "Your graphics driver doesn't support Vulkan."
+GraphicsInitError.OutOfVideoMemory: Not enough free video memory
+GraphicsInitError.OutOfVideoMemoryRecommendation: Try closing other applications or reducing your screen resolution
+GraphicsInitError.PleaseUpdateDrivers: "Please check that your computer meets the minimal requirements, and try installing the latest drivers for your graphics card."
+GraphicsInitError.Prelude: Tiny Glade has encountered a problem while initializing graphics
+GraphicsInitError.SeeLogFile: "Please see {logfile} for more information 🙏"
+GraphicsInitError.SwapchainError: Window initialization error
+GraphicsInitError.SwapchainErrorTip: Please ensure that your monitor is physically connected to this graphics card.
+GraphicsInitError.UnsupportedWindowingSystem: "Your operating system or desktop environment isn't supported."
+Hint.CameraPan: Move camera
+Hint.CameraRotate: Rotate camera
+Hint.CameraZoom: Zoom camera
+Hint.Deselect: Deselect the tool
+Hint.DisableSnapping: Disable snapping
+Hint.FocusEdit: Show all editing controls
+Hint.RoofShape: Change shape
+Hint.StairsContinue: Click to continue stairs
+Hint.StairsCreateFinish: Finish stairs
+Hint.StairsCreateStart: Click to start creating stairs
+Hint.StairsDetachFromWall: Detach
+Hint.Terrain: Draw over existing terrain
+Hint.TerrainSteepness: Change steepness
+Hint.UnlinkWindows: Unlink windows
+KeyBindings.DisableSnapping: Disable snapping
+KeyBindings.FocusOrDeselect: Focus or deselect
+KeyBindings.HideUiInPhotoMode: Hide UI (in photo mode)
+KeyBindings.Move: Move
+KeyBindings.MoveDown: Move down
+KeyBindings.MoveDownUp: Move down / up
+KeyBindings.MoveUp: Move up
+KeyBindings.Redo: Redo
+KeyBindings.ResetToDefaults: Reset to defaults
+KeyBindings.Rotate: Rotate
+KeyBindings.SendFeedback: Send feedback
+KeyBindings.TakeScreenshot: Take a screenshot
+KeyBindings.Undo: Undo
+KeyBindings.UndoRedo: Undo / redo
+KeyBindings.ZoomIn: Zoom in
+KeyBindings.ZoomInOut: Zoom in / out
+KeyBindings.ZoomOut: Zoom out
+Menu.Back: Back
+Menu.Continue: Continue
+Menu.Credits: Credits
+Menu.Credits.Licenses: Licenses
+Menu.Goodbye.ButWaitTheresMore: "There will be more glades to play in, new tools to decorate with, a larger space to build in, and more. Your demo save files will stay compatable with the full version, so you can continue from where you left off!"
+Menu.Goodbye.ComeBack: "We hope you enjoyed your time, and that you'll come back for the full version of Tiny Glade."
+Menu.Goodbye.Release: Tiny Glade releases on September 23
+Menu.Goodbye.Thanks: Thank you for playing our demo!
+Menu.Load: Load
+Menu.New: New
+Menu.New.Header: New Glade
+Menu.New.TryNew: Try a new glade?
+Menu.Quit: Quit
+Menu.QuitToDesktop: Quit to Desktop?
+Menu.Settings: Settings
+Menu.Settings.Audio: Audio
+Menu.Settings.Audio.AmbienceVolume: Ambience volume
+Menu.Settings.Audio.EffectsVolume: Effects volume
+Menu.Settings.Audio.MasterVolume: Master volume
+Menu.Settings.Audio.MusicVolume: Music volume
+Menu.Settings.CameraRotationPivot.CenterPoint: Center point
+Menu.Settings.CameraRotationPivot.CenterRegion: Center region
+Menu.Settings.CameraRotationPivot.CenterTerrain: Center terrain
+Menu.Settings.CameraRotationPivot.CursorPoint: Cursor point
+Menu.Settings.CameraRotationPivot.CursorRegion: Cursor region
+Menu.Settings.CameraRotationPivot.CursorTerrain: Cursor terrain
+Menu.Settings.Controls: Controls
+Menu.Settings.Controls.Camera: Camera
+Menu.Settings.Controls.CameraPivotRegionSize: Pivot region size
+Menu.Settings.Controls.CameraRotationPivot: Camera rotation pivot
+Menu.Settings.Controls.CameraZoomPivot: Camera zoom pivot
+Menu.Settings.Controls.Confirm: Confirm
+Menu.Settings.Controls.ControllerBindings: Controller bindings
+Menu.Settings.Controls.Down: Down
+Menu.Settings.Controls.InvertX: Invert X axis
+Menu.Settings.Controls.InvertY: Invert Y axis
+Menu.Settings.Controls.KeyBindings: Key bindings
+Menu.Settings.Controls.Left: Left
+Menu.Settings.Controls.MovementSpeed: Movement speed
+Menu.Settings.Controls.Other: Other
+Menu.Settings.Controls.PressAKey: Press a key
+Menu.Settings.Controls.Reset: Reset
+Menu.Settings.Controls.Right: Right
+Menu.Settings.Controls.RotationSpeed: Rotation speed
+Menu.Settings.Controls.TabNext: Next tab
+Menu.Settings.Controls.TabPrevious: Previous tab
+Menu.Settings.Controls.Toolbar: Toolbar
+Menu.Settings.Controls.Up: Up
+Menu.Settings.DeleteGlade: Delete this glade?
+Menu.Settings.Game: Game
+Menu.Settings.Game.CompleteHints: Complete all
+Menu.Settings.Game.CompleteHintsHint: "Mark all hints as complete, and they won't be shown again."
+Menu.Settings.Game.ContextualControlHints: Contextual tutorials
+Menu.Settings.Game.ControlHints: Control Hints
+Menu.Settings.Game.ControlHintsHint: "The hints are contextual and try to pop up intelligently as they're needed."
+Menu.Settings.Game.GladeBorderOutline: Hide glade border outline
+Menu.Settings.Game.HintsResetDone: Done!
+Menu.Settings.Game.OldTimberframe: Old visuals for half-timbered towers
+Menu.Settings.Game.OldTimberframeDescription: "The timber frames on towers have been updated in 1.14.0. The old version is no longer supported. However, if you still wish to have the old version, you can toggle this on."
+Menu.Settings.Game.ResetHintsHint: Show all the control hints and welcome message again.
+Menu.Settings.Game.ResetTutorial: Reset
+Menu.Settings.Game.ScreenshotFormat: Screenshot format
+Menu.Settings.Game.Tutorial: Tutorial
+Menu.Settings.Ui: UI
+Menu.Settings.Ui.AutoHideToolbar: Auto-hide toolbar
+Menu.Settings.Ui.AutoHideToolbarHint: The toolbar will only appear if your cursor gets close to it.
+Menu.Settings.Ui.CustomCursor: Custom cursor
+Menu.Settings.Ui.CustomCursorHint: "If enabled, Tiny Glade will draw its own cursor instead of using the one provided by your operating system.\n\nThis can be handy if the OS cursor is not showing."
+Menu.Settings.Ui.IconSize: Icon size
+Menu.Settings.Ui.InputLagReduction: Input lag reduction
+Menu.Settings.Ui.InputLagReductionHint: (Experimental) Improves game responsiveness on slower computers.
+Menu.Settings.Ui.Logo: Logo in screenshots
+Menu.Settings.Ui.ToolbarAlignment: Toolbar alignment
+Menu.Settings.Ui.ToolbarAlignment.Bottom: Bottom
+Menu.Settings.Ui.ToolbarAlignment.Left: Left
+Menu.Settings.Ui.ToolbarAlignment.Right: Right
+Menu.Settings.Ui.ToolbarAlignment.Top: Top
+Menu.Settings.Video: Video
+Menu.Settings.Video.Apply: Apply
+Menu.Settings.Video.Borderless: Borderless
+Menu.Settings.Video.Brightness: Brightness
+Menu.Settings.Video.Device: Device
+Menu.Settings.Video.DeviceError: "We've encountered a problem, and could not use this device."
+Menu.Settings.Video.DeviceHint: The graphics card used for rendering.
+Menu.Settings.Video.Display: Display
+Menu.Settings.Video.DisplayMode: Display mode
+Menu.Settings.Video.DisplayModeHint: Use Fullscreen for best performance and smoothest animation.
+Menu.Settings.Video.DoF: Depth of field
+Menu.Settings.Video.FpsUnlimited: Unlimited
+Menu.Settings.Video.FrameRateLimit: Frame rate limit
+Menu.Settings.Video.FrameRateLimitHint: "If limited, reduces power consumption by sacrificing animation smoothness."
+Menu.Settings.Video.Fullscreen: Fullscreen
+Menu.Settings.Video.Gamma: Gamma
+Menu.Settings.Video.Image: Image
+Menu.Settings.Video.ImageSettings: Image settings
+Menu.Settings.Video.Monitor: Monitor
+Menu.Settings.Video.QualityPreset: Quality preset
+Menu.Settings.Video.RefreshRate: Refresh rate
+Menu.Settings.Video.RenderScale: Resolution scale
+Menu.Settings.Video.RenderScaleHint: "Multiplier over screen resolution. Doesn't affect UI."
+Menu.Settings.Video.Resolution: Resolution
+Menu.Settings.Video.RestartToChangeDevice: Restart Tiny Glade to apply the graphics device change
+Menu.Settings.Video.Sharpen: Sharpening
+Menu.Settings.Video.SharpenHint: Post-process the image to look sharper (but also grainier)
+Menu.Settings.Video.Upscaling: Upscaling
+Menu.Settings.Video.UpscalingHint: "Image upscaling combines information from multiple frames rendered at a reduced resolution to produce a full-resolution image. This greatly improves rendering efficiency, but can degrade image quality."
+Menu.Settings.Video.UpscalingPreset: Upscaling preset
+Menu.Settings.Video.VSync: V-Sync
+Menu.Settings.Video.VSyncHint: Vertical synchronization prevents screen tearing and conserves power.
+Menu.Settings.Video.Windowed: Windowed
+Menu.Wishlist: Wishlist
+Menu.YourGameIsSaved: (your game is saved)
+New.ErrorLoadingSave: Error loading glade
+New.Glade.Autumn: Autumn
+New.Glade.Daily: Daily theme
+New.Glade.Flowery: Flowery
+New.Glade.Olden: Olden
+New.Glade.Summer: Summer
+New.Glade.ThisWeeksTheme: "This week's theme"
+New.Glade.Weekly: Weekly theme
+New.Glade.Winter: Winter
+New.LoadGladeBackup: Load glade backup?
+NotInDemo: Not in demo
+Ok: OK
+PhotoMode: Photo mode
+PhotoMode.ComingInTheFullGame: Coming in the full game!
+PhotoMode.FieldOfView: Field of view
+PhotoMode.Filters: Filters
+PhotoMode.HideUi: Hide UI
+Play: Play
+Quality.Balanced: Balanced
+Quality.Custom: Custom
+Quality.Performance: Performance
+Quality.Quality: Quality
+Quality.UltraPerformance: Ultra Performance
+Quality.UltraQuality: Ultra Quality
+Rollercoaster.Ride: Ride the cart
+SaveError.Advice.FreeUpSpace: Free up some space on your disk
+SaveError.Advice.Generic: Diagnose the problem with your disk
+SaveError.AffectedFile: Affected file
+SaveError.DontPanic: "Don't panic"
+SaveError.GladeHasBackups: "This glade has {count} backup(s)"
+SaveError.HeresThePlan: "Here's the plan"
+SaveError.KeepTheGameRunning: Keep the game running
+SaveError.MostRecentBackup: Most recent
+SaveError.StorageFull: Storage full
+SaveError.SwitchApps: "Alt+Tab switches applications, F11 toggles fullscreen"
+SaveError.ThereIsAProblem: There is a problem with saving your glade
+SaveError.WillSave: Your glade will be automatically saved
+Theme.SuggestionBy: Theme suggestion
+Theme.Weekly.Welcome.Intro2: "Each week we'll share a new theme and a starting glade. This week's theme is:"
+TimeOfDay: Time of day
+TimeOfDay.PassageOfTime: Passage of time
+TimeOfDay.Speed: Time passage speed
+TimeOfDay.SunAngle: Sun angle
+TimeOfDay.TimeNow: Time now
+Timelapse: Timelapse
+Timelapse.Header: See an animated timelapse of your build
+Timelapse.Play: Play
+Timelapse.Speed: Speed
+Tweaker.No: "No"
+Tweaker.Yes: "Yes"
+Welcome.Chemistry: "In Tiny Glade, building elements interact with each other. For example,"
+Welcome.Greeting: Welcome!
+Welcome.HaveFun: "See what else you can discover.\nWe hope you have fun!"
+Welcome.LetsGo: "Let's go!"
+Welcome.Pitch: "Tiny Glade is a small diorama builder where you doodle whimsical castles, cozy cottages and romantic ruins. There's no management, combat, or goals. Just kick back and turn forgotten meadows into lovable dioramas."
+Welcome.Prompt: try drawing a path through a wall.
+Welcome.Thanks: Thanks for trying our demo 💞
+YourGladeHasBeenSaved: Your glade has been saved.

@@ -1,0 +1,22 @@
+(
+    default: (
+        gamma: Linear,
+        resize: (1024, 1024),
+        mips: Full,
+    ),
+    assets: {
+        "stone_floor_seed": (
+            gamma: sRGB,
+        ),
+        "stone_floor_height": (
+            compression: Grayscale,
+        ),
+        "stone_floor_roughness": (
+            compression: Grayscale,
+        ),
+        "icon": (
+            gamma: sRGB,
+            resize: (256, 256),
+        ),
+    }
+)

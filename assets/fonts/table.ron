@@ -1,0 +1,6 @@
+(fonts: {
+    Label: (family: "Baloo 2"),
+    MenuButton: (family: "Averia Sans Libre"),
+    TextEditor: (family: "Baloo 2"),
+    Hand: (family: "Playpen Sans"),
+})

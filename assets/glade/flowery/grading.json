@@ -1,0 +1,8 @@
+{
+    "bypass_color": false,
+    "contrast": 1.05,
+    "current_grading_lut": "candy-2",
+    "ev_shift": 0.15,
+    "grading_strength": 0.8,
+    "saturation": 1.08
+}

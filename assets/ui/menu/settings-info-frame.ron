@@ -1,0 +1,8 @@
+((
+    // Corner radius also hardcoded here: 792865b8-9f26-4236-8d41-0ae8cbb7938e
+    draw: [FillColor(0x00000030), CornerRadius(10)],
+
+    layout: [Vertical, Align(Start), XAlign(Start), Padding(20)],
+    slot: "hint",
+), [
+])

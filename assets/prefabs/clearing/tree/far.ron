@@ -1,0 +1,14 @@
+(
+    parts: {
+        "canopy": (
+            render: (
+                mesh: "far_distance_tree",
+            ),
+        ),
+        "trunk": (
+            render: (
+                mesh: "far_distance_tree",
+            ),
+        ),
+    },
+)

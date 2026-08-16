@@ -1,0 +1,12 @@
+(
+    assets: {
+        "noknok_logo": (
+            resize: (376, 334),
+            mips: Full
+        ), 
+        "delete": (
+            resize: (128, 128),
+            mips: Full
+        ),
+    }
+)

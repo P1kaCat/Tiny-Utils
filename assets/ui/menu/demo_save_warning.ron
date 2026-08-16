@@ -1,0 +1,48 @@
+((
+    //draw: [FillColor(0xffff0028)],
+    layout: [Vertical, Expand, Align(Center), XAlign(Center), Padding((0, 40, 0, 100))]
+), [
+    ((
+        slot: "notice",
+        draw: [Image(source: "menu/paper-bg", scaling: Nine)],
+        layout: [Vertical, Size(750, 200), XAlign(Center), Padding((40, 40, 70, 50)), Gap(30.0)]
+    ),
+        [
+            (Label:(
+            text: "t!(ExceedDemoLimit.Notice)",
+            color: 0x7b5a51ff,
+            align: Center,
+            size: 40,
+            font: MenuButton,
+            max_width: 600,
+            )),
+            (Label:(
+            text: "t!(ExceedDemoLimit.Notice2)",
+            color: 0x7b5a51ff,
+            align: Center,
+            size: 30,
+            font: MenuButton,
+            max_width: 600,
+            )),
+            (Label:(
+            text: "t!(ExceedDemoLimit.Notice3)",
+            color: 0x7b5a51ff,
+            align: Center,
+            size: 20,
+            font: MenuButton,
+            )),
+            (Label:(
+            text: "t!(Continue.Question)",
+            color: 0x7b5a51ff,
+            align: Center,
+            size: 40,
+            font: MenuButton,
+            )),
+        ((
+            slot: "answer",
+            layout: [Horizontal, Align(Center), Gap(100.0)]
+        ), [
+        ])
+        ]
+    ),
+])

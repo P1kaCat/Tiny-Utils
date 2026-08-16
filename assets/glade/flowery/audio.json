@@ -1,0 +1,11 @@
+{
+	"ambience": "event:/Amb/amb_Flowery",
+	"music": [
+		"event:/Music/Flowery/Ivy",
+		"event:/Music/Flowery/Springtime Blossoms",
+		"event:/Music/Flowery/SwayingFlowers",
+		"event:/Music/Flowery/Tiny Flowery Glade",
+		"event:/Music/Flowery/Waltzing Petals"
+	],
+	"select_glade_stinger": "event:/UI/ChooseFlower"
+}

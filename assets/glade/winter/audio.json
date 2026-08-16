@@ -1,0 +1,11 @@
+{
+	"ambience": "event:/Amb/amb_Winter",
+	"music": [
+		"event:/Music/Winter/New Snow",
+		"event:/Music/Winter/Snowflakes",
+		"event:/Music/Winter/Tiny Winter Glade",
+		"event:/Music/Winter/Wishful Winter",
+		"event:/Music/Winter/GlisteningSoftly"
+	],
+	"select_glade_stinger": "event:/UI/ChooseWinter"
+}

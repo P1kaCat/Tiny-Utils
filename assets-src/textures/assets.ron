@@ -1,0 +1,68 @@
+(
+    default: (
+        gamma: sRGB,
+        resize: None,
+        mips: Full,
+    ),
+    assets: {
+        "canopy_alpha": (
+            resize: (256, 256),
+            gamma: Linear,
+            compression: None,
+            mips: Limited(5)
+        ),
+        "canopy_flowers_depth": (
+            // Not a color texture. Should still be compressed though.
+            gamma: Linear,
+            compression: Grayscale,
+        ),
+        "flag_palettes": (
+            compression: None,
+        ),
+        "rocky_terrain": (
+            resize: (1024, 1024),
+        ),
+        "blue_noise": (
+            gamma: Linear,
+            compression: None,
+        ),
+        "cloth_normal_1": (
+            gamma: Linear,
+        ),
+        "cloth_normal_2": (
+            gamma: Linear,
+        ),
+        "clover_normal": (
+            gamma: Linear,
+        ),
+        "cursor_grab": (
+            resize: (64, 64),
+            compression: None,
+        ),
+        "cursor_arrow": (
+            resize: (64, 64),
+            compression: None,
+        ),
+        "default_normal": (
+            gamma: Linear,
+        ),
+        "terrain_height": (
+            gamma: Linear,
+            compression: Grayscale,
+            mips: None,
+        ),
+        "window_sill_normal": (
+            gamma: Linear,
+        ),
+        "wooden_gate_normal": (
+            gamma: Linear,
+        ),
+        "wooden_gate_seed": (
+            gamma: Linear,
+        ),
+        "flag_animation_pos": (
+            gamma: Linear,
+            compression: None,
+        ),
+    }
+)

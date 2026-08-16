@@ -1,0 +1,7 @@
+[
+    {
+        "shader": "meadow_plant_shader",
+        "mesh": "plant_leafy",
+        "placements": "plants/leafy_plants.json"
+    }
+]

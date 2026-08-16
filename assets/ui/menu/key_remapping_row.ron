@@ -1,0 +1,15 @@
+((
+    layout: [Horizontal, Expand, Align(Center), XAlign(Center), Padding((20, 20, 5, 5)), Size(600, 50)],
+    slot: "content",
+    draw: [FillColor(0xffffff20), CornerRadius(20)]
+),
+[
+    ((
+        slot: "action",
+        layout: [Horizontal, Expand, Align(Start), XAlign(Center), Gap(5.0)],
+    )),
+    ((
+        slot: "key",
+        layout: [Horizontal, Expand, Align(End), XAlign(Center), Gap(5.0)],
+    ))
+])

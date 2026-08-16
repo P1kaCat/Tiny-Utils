@@ -1,0 +1,18 @@
+((
+    // Offset to the right
+    layout: [Padding((0, 0, 50, 0))]
+), [
+    ((
+        draw: [FillColor(0x00000080), CornerRadius(10)],
+        layout: [Horizontal, Padding((20, 20, 10, 10))],
+    ), [
+        (Label:(
+            text: "t!(TimeOfDay.PassageOfTime)",
+            color: 0xffffffff,
+            align: Center,
+            size: 20,
+            font: Hand,
+            max_width: 450,
+        )),
+    ])
+])

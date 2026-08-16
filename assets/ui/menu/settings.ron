@@ -1,0 +1,56 @@
+((
+    //draw: [Image(source: "menu/settings/green", scaling: BlurExtend)],
+    //draw: [FillColor(0x0000ff40)],
+    layout: [Expand, Horizontal, Padding((0, 0, 60, 60))]
+), [
+    ((
+        //draw: [FillColor(0x0000ff20)],
+        layout: [Expand, Vertical, Align(Start), XAlign(Stretch), Gap(20.0)]
+    ), [
+        ((
+            //draw: [FillColor(0xffffff40)],
+            slot: "header",
+            layout: [Align(Center)],
+        )),
+
+        // Container for categories and the settings list
+        ((
+            //draw: [FillColor(0xff00ff40)],
+            layout: [Vertical, Expand, Gap(40), Align(Start), XAlign(Stretch)]
+        ), [
+            // Container for catogeries
+            ((
+                layout: [Horizontal, XAlign(Start)]
+            ), [
+                ((
+                    slot: "categories",
+                    //draw: [FillColor(0x0000ff40)],
+
+                    layout: [Expand, Horizontal, Align(SpaceBetween), XAlign(Start), Padding((0, 0, 0, 0)), Gap(0.0)]
+                )),
+            ]),
+
+            ((
+                layout: [Horizontal, Expand, Align(SpaceBetween), Gap(0)],
+                slot: "settings-and-info"
+            ), [
+                // The actual body of settings
+                ((
+                    //draw: [FillColor(0xff00ff40)],
+                    //draw: [FillColor(0x202020a0), CornerRadius(10)],
+                    //draw: [Image(source: "menu/paper-bg", scaling: Nine), FillColor(0xf0f0f0ff)],
+                    layout: [Vertical, Size(700, 0), Align(Start), XAlign(Stretch)]), [
+                    ((
+                        //draw: [FillColor(0x00ff0040)],
+                        layout: [Vertical, Align(Center), XAlign(Stretch), Gap(20.0), Padding(20)],
+                        slot: "settings"
+                    )),
+                ]),
+            ]),
+
+            ((
+                slot: "back",
+            )),
+        ]),
+    ])
+])

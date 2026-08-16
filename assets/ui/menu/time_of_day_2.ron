@@ -1,0 +1,24 @@
+((
+    //draw: [Image(source: "menu/craft_paper", scaling: FitHeight)],
+    layout: [Expand, Vertical, XAlign(End), Align(Center), Padding(50.0), Gap(40.0)]
+), [
+  
+    ((      
+        layout: [Horizontal, XAlign(Center), Align(Center), Gap(5.0)]
+    ), 
+    [
+        ((slot: "tod_button", 
+        //draw: [FillColor(0xffffff40), CornerRadius(20)],
+        layout: [Size(70, 70), Vertical, Align(Center), XAlign(Center)])),
+        ((slot: "tod_circle", 
+        //draw: [FillColor(0xffffff40), CornerRadius(125)],
+        //draw: [Image(source: "menu/tod/background", scaling: FitHeight)],
+        layout: [Size(160, 160), Vertical, Align(Center), XAlign(Center)])),
+    ]),
+
+    ((slot: "angle_circle", 
+    //draw: [FillColor(0xffffff40), CornerRadius(125)],
+    //draw: [Image(source: "menu/tod/background", scaling: FitHeight)],
+    layout: [Size(160, 160), Vertical, Align(Center), XAlign(Center)]))
+   
+])

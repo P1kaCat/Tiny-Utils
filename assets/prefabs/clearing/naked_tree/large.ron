@@ -1,0 +1,9 @@
+(
+    parts: {
+        "trunk": (
+            render: (
+                mesh: "olden_tree_large",
+            ),
+        ),
+    },
+)

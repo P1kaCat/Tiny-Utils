@@ -1,0 +1,28 @@
+((
+    layout: [Horizontal, Align(Center), XAlign(End), Gap(5)]
+), [
+    ((
+        draw: [FillColor(0xffffffa0), CornerRadius(4)], 
+        layout: [Size(28, 28), Padding(5)],
+        slot: "left",
+    )),
+    ((
+        layout: [Vertical, Gap(5)]
+    ), [
+        ((
+            draw: [FillColor(0xffffffa0), CornerRadius(4)], 
+            layout: [Size(28, 28), Padding(5)],
+            slot: "forward",
+        )),
+        ((
+            draw: [FillColor(0xffffffa0), CornerRadius(4)], 
+            layout: [Size(28, 28), Padding(5)],
+            slot: "back",
+        )),
+    ]),
+    ((
+        draw: [FillColor(0xffffffa0), CornerRadius(4)], 
+        layout: [Size(28, 28), Padding(5)],
+        slot: "right",
+    )),
+])

@@ -1,0 +1,11 @@
+((
+    layout: [Vertical, Expand, Align(Start), XAlign(End), Padding(50)]
+), [
+    (Label:(
+        text: "👻",
+        color: 0xffffffff,
+        align: Center,
+        size: 60,
+        font: Label,
+    )),
+])

@@ -1,0 +1,49 @@
+((
+    //draw: [FillColor(0x00000080)],
+    layout: [Vertical, Align(Center), XAlign(Center), Gap(50), Padding((0, 0, 50, 50))],
+), [
+    ((
+        layout: [Horizontal, XAlign(Center), Gap(10)]
+    ), [
+        ((
+            draw: [Image(source: "menu/button/select_left", scaling: FitHeight)],
+            layout: [Size(40, 40)]
+        )),
+
+        ((
+            layout: [Vertical, Align(Center)],
+            slot: "theme_kind",
+        )),
+
+        ((
+            draw: [Image(source: "menu/button/select_right", scaling: FitHeight)],
+            layout: [Size(40, 40)]
+        )),
+    ]),
+
+    ((
+        layout: [Vertical, Align(Center)],
+        slot: "theme_name",
+    )),
+
+    ((
+        draw: [Image(source: "menu/sheep_calendar_xmas", scaling: FitHeight)],
+        layout: [Size(217, 156)]
+    )),
+
+    ((
+        //draw: [FillColor(0x00000040), CornerRadius(25)],
+        layout: [Vertical, Size(300, 90)],
+    ), [
+        (Label:(
+            text: "t!(Daily.NextThemeIn)",
+            color: 0xffffffff,
+            align: Center,
+            size: 32,
+            font: Hand,
+        )),
+        ((
+            slot: "next_theme_in",
+        )),
+    ])
+])

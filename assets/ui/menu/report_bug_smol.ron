@@ -1,0 +1,15 @@
+((
+    //draw: [FillColor(0x202020d0)],
+    layout: [Align(Center), XAlign(Center)]
+), [
+    ((
+        draw: [FillColor(0x202020d0), CornerRadius(25)],
+        layout: [Vertical, Align(Center), Padding((70, 70, 50, 50)), Gap(50)]
+    ), [
+        ((
+            slot: "content",
+            layout: [Vertical, Align(Center), Gap(80.0)]
+        ), [
+        ]),
+    ])
+])

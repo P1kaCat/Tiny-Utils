@@ -1,0 +1,11 @@
+((
+    //draw: [FillColor(0xffffff40)],
+    layout: [Expand, Align(Center), XAlign(Center), Padding((0, 0, 0, 0))]
+), [
+    ((
+        slot: "text",
+        //draw: [FillColor(0xffffff40)], 
+        //layout: [Size(Frac(1), Frac(1))]
+        layout: [Gap(15.0)]
+    )),
+])

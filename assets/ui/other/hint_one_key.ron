@@ -1,0 +1,5 @@
+((
+    draw: [FillColor(0xffffffa0), CornerRadius(10)], 
+    layout: [Size(48, 48), Padding((10, 10, 5, 5))],
+    slot: "key",
+))

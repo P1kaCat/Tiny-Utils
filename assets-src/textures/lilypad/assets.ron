@@ -1,0 +1,7 @@
+(
+    default: (
+        gamma: Linear,
+        resize: (256, 256),
+        mips: Full,
+    )
+)

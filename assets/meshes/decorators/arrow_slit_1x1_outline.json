@@ -1,0 +1,1 @@
+{"attributes": ["Vertex_Position"], "indices": {"type": ["int", 1], "buffer": [0, 1, 2, 2, 3, 0]}, "Vertex_Position": {"type": ["float", 3], "buffer": [[0.25, -0.25, 0.0], [0.25, 0.25, 0.0], [-0.25, 0.25, 0.0], [-0.25, -0.25, 0.0]]}}

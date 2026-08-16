@@ -1,0 +1,1 @@
+{"indices": {"buffer": [0, 1, 3, 3, 2, 0], "type": ["int", 1]}, "attributes": ["Vertex_Position", "Vertex_Color"], "Vertex_Color": {"buffer": [[0.0, 0.0, 0.0], [0.0, 1.0, 0.0], [1.0, 0.0, 0.0], [1.0, 1.0, 0.0]], "type": ["float", 3]}, "Vertex_Position": {"buffer": [[-3.0, -1.5, 0.0], [3.0, -1.5, 0.0], [-3.0, 1.5, 0.0], [3.0, 1.5, 0.0]], "type": ["float", 3]}}

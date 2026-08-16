@@ -1,0 +1,36 @@
+((
+    layout: [Expand, Align(Center), XAlign(Center)]
+), [
+    ((
+        slot: "background",
+        draw: [Image(source: "menu/paper-bg", scaling: Nine)],
+        layout: [Vertical, Align(Start), XAlign(Center), Gap(50), Padding(60.0)]
+    ), [
+        //((slot: "header", /* draw: [FillColor(0xffffff40)],  */layout: [Vertical, Align(Center), XAlign(Center)])),
+
+        //((slot: "contents", /*draw: [FillColor(0xff00ff40)],  */layout: [Vertical, Align(Center), XAlign(Center)])),
+
+        (Label:(
+            text: "t!(Welcome.Greeting)",
+            color: 0x7b5a51ff,
+            align: Center,
+            size: 60,
+            font: MenuButton,
+        )),
+        (Label:(
+            text: "t!(Welcome.Pitch)",
+            color: 0x7b5a51ff,
+            align: Center,
+            size: 30,
+            font: Hand,
+            max_width: 700,
+        )),
+        ((
+            slot: "buttons",
+            draw: [
+                FillColor(0x000000b0), CornerRadius(15)
+            ], 
+            layout: [Vertical, Align(Center), XAlign(Center), Padding((15, 15, 4, 4))]
+        )),
+    ]),
+])

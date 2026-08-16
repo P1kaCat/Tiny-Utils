@@ -1,0 +1,109 @@
+((
+    layout: [Expand, Align(Start), XAlign(Start), Padding((0, 0, 80, 0))]
+), [
+    ((
+        slot: "background",
+        draw: [Image(source: "menu/paper-bg", scaling: Nine)],
+        layout: [Vertical, Align(Start), XAlign(Center), Gap(30), Padding((40.0, 40.0, 70.0, 40.0))]
+    ), [
+        //((slot: "header", /* draw: [FillColor(0xffffff40)],  */layout: [Vertical, Align(Center), XAlign(Center)])),
+
+        //((slot: "contents", /*draw: [FillColor(0xff00ff40)],  */layout: [Vertical, Align(Center), XAlign(Center)])),
+
+        (Label:(
+            text: "t!(Daily.Welcome.Header)",
+            color: 0x7b5a51ff,
+            align: Center,
+            size: 30,
+            font: MenuButton,
+        )),
+
+        (Label:(
+            text: "t!(Daily.Welcome.Intro)",
+            color: 0x7b5a51ff,
+            align: Center,
+            size: 17,
+            font: Hand,
+            max_width: 400,
+        )),
+
+        // "t!(Theme.Weekly.Welcome.Intro2)"
+
+        ((
+            slot: "intro2",
+            draw: [],
+            layout: [Align(Center)]
+        )),
+
+        ((
+            slot: "theme",
+            draw: [
+                //FillColor(0x000000b0), CornerRadius(15)
+            ], 
+            layout: [Vertical, Align(Center), XAlign(Center), Padding((15, 15, 4, 4))]
+        )),
+        (Label:(
+            text: "t!(Daily.Welcome.Prompt)",
+            color: 0x7b5a51ff,
+            align: Center,
+            size: 17,
+            font: Hand,
+            max_width: 400,
+        )),
+        /*
+        (Label:(
+            text: "t!(Daily.Welcome.Socials) 💚",
+            color: 0x7b5a51ff,
+            align: Center,
+            size: 14,
+            font: Hand,
+            max_width: 360,
+        )),
+        */
+        ((
+            slot: "buttons",
+            draw: [
+                FillColor(0x000000b0), CornerRadius(15)
+            ], 
+            layout: [Vertical, Align(Center), XAlign(Center), Padding((15, 15, 4, 4))]
+        )),
+        ((
+            layout: [Vertical, Gap(5.0)]
+        ), [
+            ((
+                slot: "idea",
+                draw: [], 
+                layout: [Vertical]
+            )),
+            ((
+                slot: "author",
+                draw: [], 
+                layout: [Vertical]
+            )),
+        ]),
+        /*
+        ((
+            layout: [Vertical],
+        ), [
+            (Label:(
+                text: "t!(Daily.Welcome.Author)",
+                color: 0x7b5a51ff,
+                align: Center,
+                size: 12,
+                weight: Light,
+                font: Hand,
+                max_width: 360,
+            )),
+            (Label:(
+                text: "Lord Evil Meow Meow",
+                color: 0x7b5a51ff,
+                align: Center,
+                size: 12,
+                weight: Light,
+                font: Hand,
+                max_width: 360,
+            )),
+        ]),
+        */
+    ]),
+])

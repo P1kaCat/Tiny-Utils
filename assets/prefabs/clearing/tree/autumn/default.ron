@@ -1,0 +1,36 @@
+(
+    parts: {
+        "canopy": (
+            render: (
+                mesh_processor: Code(
+                    name: "extract_canopy",
+                ),
+                shader: "tree_canopy",
+            ),
+            rt: (
+                mesh: Aabb,
+                mesh_scale: [0.9, 0.9, 0.9],
+                summer_albedo: [0.09, 0.18, 0.06],
+                autumn_albedo: [0.18, 0.12, 0.06],
+                winter_albedo: [0.18, 0.12, 0.06],
+                semantic: Canopy,
+            ),
+            audio: (
+                trigger: (
+                    shape: Aabb,
+                    // Don't trigger audio until camera is well inside the volume.
+                    shape_scale: [0.8, 1.0, 0.8],
+                    kind: "Tree",
+                ),
+            ),
+        ),
+        "trunk": (
+            render: (
+                mesh_processor: Code(
+                    name: "extract_trunk",
+                ),
+                shader: "tree_trunk",
+            ),
+        ),
+    },
+)

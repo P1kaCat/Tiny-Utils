@@ -1,0 +1,6 @@
+{
+    "vegetation_around_buildings": true,
+    "ivy_leaves": true,
+    "default_building_color_id": 4,
+    "weather_fog": 0.04
+}

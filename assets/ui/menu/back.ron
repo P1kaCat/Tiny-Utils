@@ -1,0 +1,13 @@
+((
+    //draw: [FillColor(0xffff0028)],
+    layout: [Horizontal, Expand, Align(End), XAlign(Start), Padding((0, 40, 20, 0))]
+), [
+    ((slot: "container", layout: [Vertical, Gap(20.0)]),
+    [
+        ((
+        slot: "button",
+        //draw: [FillColor(0xffffff40), CornerRadius(40)], 
+        layout: [Size(50, 50)])),
+        ((slot: "build_id"))
+    ])
+])

@@ -1,0 +1,7 @@
+{
+    "weather_fog": 0.02,
+    "wind_strength": 0.2,
+    "rain": true,
+    "default_freeform_wall_color_id": 3,
+    "default_roof_color_id": 1
+}

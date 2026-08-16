@@ -1,0 +1,33 @@
+((
+    //draw: [FillColor(0xffff0028)],
+    layout: [Vertical, Expand, Align(Center), XAlign(Center), Padding((0, 40, 0, 100))]
+), [
+    ((
+        slot: "notice",
+        draw: [Image(source: "menu/paper-bg", scaling: Nine)],
+        layout: [Vertical, Size(750, 200), XAlign(Center), Padding((40, 40, 70, 50)), Gap(30.0)]
+    ),
+        [
+            (Label:(
+            text: "To find your screenshots, press STEAM button on your device and navigate to the Media tab.",
+            color: 0x7b5a51ff,
+            align: Center,
+            size: 40,
+            font: MenuButton,
+            max_width: 600,
+            )),
+            ((
+            slot: "image",
+            draw: [Image(source: "menu/steamdeck_screenshots", scaling: FitHeight)],
+            layout: [Vertical, Size(1148, 400), XAlign(Center), Padding((40, 40, 70, 50)), Gap(30.0)]
+            ), []),
+            ((
+                slot: "answer",
+                draw: [
+                FillColor(0x000000b0), CornerRadius(15)
+                ],
+                layout: [Horizontal, Align(Center), Gap(100.0), Padding((15, 15, 4, 4))]
+            ), [])
+        ]
+    ),
+])

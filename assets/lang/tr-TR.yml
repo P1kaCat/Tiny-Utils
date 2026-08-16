@@ -1,0 +1,301 @@
+---
+AreYouSure: Emin misin?
+AreYouSure.ImSure: Eminim
+AreYouSure.No: İptal
+Cancel: İptal
+Continue.Nope: Hayır
+Continue.Question: Devam etmek istiyor musun?
+Continue.Yep: Evet
+Crash.Advice.CheckIntegrity: Tiny Glade yüklenirken bir problem yaşandı ve çökmenin sebebi bu olabilir.
+Crash.Advice.ClickForAdvice: Öneri almak için buraya tıkla
+Crash.Advice.CorruptOrModifiedFiles: Bozuk veya değiştirilmiş dosyalar
+Crash.Advice.FilesLookIncorrect: Bazı Tiny Glade dosyaları hatalı görünüyor
+Crash.Advice.IveTriedThat: Bunu denedim ve sorunu çözmedi
+Crash.Advice.MissingOrUnreadableFiles: Eksik veya okunamayan dosyalar
+Crash.Advice.RemoveDozen: "Bu çökmenin sebebinin muhtemelen sistemine yanlışlıkla önceden yüklenen \"VulkanOn12\" olduğunu düşünüyoruz."
+Crash.Advice.ShowInstallationErrors: Yükleme hatalarını göster
+Crash.Advice.SteamFileIntegrityCheck: "Steam'in dosya bütünlüğü kontrolü"
+Crash.Advice.TroubleshootGraphics: Ekran kartında bir takılma veya grafik sürücüsü hatası var gibi görünüyor.
+Crash.Advice.TryUpdateDriver: "Grafik sürücünün içinde bir çökme yaşanmış gibi görünüyor. Hatalı olabileceğinden şüpheleniyoruz, lütfen yeni bir sürümü olup olmadığını kontrol et 🧡"
+Crash.Advice.UpdateDriver: Grafiklerle ilgili bir çökme yaşanmış gibi görünüyor. Grafik sürücün eskimiş ve bu çökmeye sebep olmuş olabilir. Lütfen güncelle 🧡
+Crash.Advice.UpdateObs: "Bu çökmeye OBS (Open Broadcaster Software) sebep olmuş gibi görünüyor.\nOBS'in eski sürümlerinin Tiny Glade'i çökerttiği biliniyor. Lütfen OBS'ini güncellemeyi dene 🧡"
+Crash.Advice.VerifyIntegrityOrReinstall: "Lütfen {link} özelliğini kullan veya Tiny Glade'i yeniden yükle."
+Crash.AdviceDismissed: Bunu duyduğumuza çok üzüldük ama denediğin için teşekkürler!
+Crash.AskConsent: "Sorunu öğrenmek ve düzeltmek isteriz 🕵\nÇökme raporunu bizimle paylaşır mısın? 🙏"
+Crash.Clipboard.Copied: Kopyalandı
+Crash.Clipboard.Copy: Panoya kopyala
+Crash.Clipboard.Error: Pano hatası
+Crash.DeliveryFailed: "Hay aksi, çökme raporu gönderilemedi. Denediğin için teşekkürler, raporu başka bir zaman alırız artık! ^^;"
+Crash.DeliveryOk: "Çökme raporunu aldık.\nTeşekkür ederiz 💗"
+Crash.Discuss: "Bu çökme hakkında bizimle görüşmek istersen lütfen şu kodu belirt:"
+Crash.FixDriver: Görünüşe göre grafik sürücünle ilgili bir sorun var ve biz başlatmadan çöktü.
+Crash.GameHasCrashed: "Olamaz! Üzgünüz... Tiny Glade'de bir sorun oluştu ve oyun çöktü 😢"
+Crash.MsgBoxTitle: Tiny Glade hatası
+Crash.PrivacyPolicy: Gizlilik politikası
+Crash.RecoveryFailed: "Çökmenin ardından oyununu kurtarmaya çalıştık ama oyunun bozulduğu için maalesef kurtaramadık 😣\nLütfen Tiny Glade'i yeniden başlat. Oyuna son otomatik kayıttan devam edebilirsin."
+Crash.RecoveryOk: "Merak etme, oyunun kaydedildi. Tiny Glade'i yeniden başlatıp oynamaya devam edebilirsin."
+Crash.ShowDetails: Detaylar...
+Crash.Signature: "Sevgiler, Ana ve Tom"
+Crash.TroubleshootingGuide: Sorun giderme rehberi
+Crash.Under13: "Bu raporu göndermek için en az 13 yaşında olman gerekir.\nEğer 13 yaşından küçüksen {nope} seçeneğini seç."
+Daily.DownloadError: İndirme hatası
+Daily.Downloading: İndiriliyor...
+Daily.NextThemeIn: "Sıradaki Temaya Kalan:"
+Daily.NoCurrentTheme: Mevcut tema yok
+Daily.ThemeNotAvailable: Tema mevcut değil
+Daily.TodaysTheme: Bugünün teması
+Daily.Welcome.Author: "Başlangıç korusunun yazarı:"
+Daily.Welcome.Header: "#TinyDaily'ye hoş geldin"
+Daily.Welcome.Inspiration: "Başlangıç korusuna ilham veren:"
+Daily.Welcome.Intro: Bazen bir şeyler üretebilmek için biraz ilham gerektiğini kişisel tecrübelerimizden biliyoruz.
+Daily.Welcome.Intro2: "Her gün yeni bir tema ve bir başlangıç korusu paylaşacağız. Bugünün teması:"
+Daily.Welcome.Prompt: Hünerlerini göster bakalım!
+Daily.Welcome.Socials: "Not: Eğer yapını sosyal medyada paylaşırken #TinyDaily'den bahset ki bizler de dâhil kimsenin gözünden kaçmasın!"
+Driver.DeviceType.DiscreteGpu: Haricî ekran kartı
+Driver.DeviceType.Integrated: Dâhilî grafikler
+Driver.DeviceType.OldIntegratedGpu: Eski dâhilî grafikler
+Driver.DeviceType.Virtual: Sanal cihaz
+Driver.DriverVersion: Sürüm
+Driver.EmulatedDriver: Benzer Vulkan sürücüsü
+Driver.Header.PleaseConfirm: "Lütfen tercihini onayla:"
+Driver.Header.Reason.Changed: Ekran kartların veya sürücülerin değişmiş görünüyor.
+Driver.Header.Reason.PrimaryUnsupported: Lütfen grafik sürücünü kontrol et.
+Driver.Header.Reason.Requested: Ekran kartını seçmeyi talep ettin.
+Driver.Header.Reason.UnavailableDetected: Bazı grafik sürücülerinde bir sorun olabilir.
+Driver.Header.Reason.WhichOne: Ekran kartlarından hangisini seçeceğimizden emin değiliz.
+Driver.IgnoreAndPlay: Görmezden gel ve oyna
+Driver.InsufficientVideoMemory: Ekran kartı belleği yetersiz
+Driver.LikelyTooSlow: muhtemelen çok yavaş
+Driver.MemoryAmountRequired: "{amount} gerekir"
+Driver.MightBeSlow: yavaş olabilir
+Driver.MinimumSupportedVersionIs: "Minimum desteklenen sürüm:"
+Driver.RecommendedChoice: Önerilen seçim
+Driver.ShowLogFiles: Kayıt dosyalarını göster
+Driver.SupportedDriver: Desteklenen sürücü
+Driver.UnknownVendor: Bu satıcıyı tanımıyoruz
+Driver.UnsupportedDriver: "Desteklenmeyen sürücü: Tiny Glade düzgün çalışmayabilir veya çökebilir"
+Driver.VulkanBroken: "Bu cihazı algıladık ama Vulkan desteği bozuk veya eksik.\nBu cihazı kullanmak istiyorsan diğer oyunlar çalışsa bile lütfen Vulkan sürücüsünü yeniden yükle."
+ExceedDemoLimit.Notice: Görünüşe göre 3 koruluk DEMO limitini aşmak üzeresin.
+ExceedDemoLimit.Notice2: Yeni bir koru oluşturursan en eskisi kullanılamaz hâle gelecek.
+ExceedDemoLimit.Notice3: (En eski korun hâlâ kayıtlı. Tam sürümde bu kaydı geri yükleyebilirsin!)
+FailedToLoad.Notice1: Son kayıt dosyan yüklenemedi 😨 Dosya bozulmuş olabilir. Lütfen bir yedek dosya yüklemeyi dene 🙏
+FailedToLoad.Notice2: Senin için yeni bir oturum oluşturduk.
+Feedback.AttachBenchmark: Performans testi ekle
+Feedback.AttachSaveFile: Kayıt dosyası ekle
+Feedback.AttachScreenshot: Ekran görüntüsü ekle
+Feedback.Default: Bataklığın üzerine bir kale inşa ettim ve...
+Feedback.Header: Geri Bildirim Gönder
+Feedback.HotkeyHint: "İpucu: Bu menüye {key} tuşuna basarak istediğin yerden erişebilirsin."
+Feedback.Send: Gönder
+Feedback.SendError: "Eyvah, bir şeyler ters gitti!"
+Feedback.SentOk: Geri bildirim alındı. Teşekkürler!
+GraphicsInitError.InternalError: İç hata
+GraphicsInitError.NoCompatibleDevices: "Sistemin Tiny Glade'i çalıştırmak için gereken grafik kapasitesine sahip değil."
+GraphicsInitError.NoDriver: Grafik sürücün Vulkan grafiklerini desteklemiyor.
+GraphicsInitError.OutOfVideoMemory: Ekran kartı belleği yetersiz
+GraphicsInitError.OutOfVideoMemoryRecommendation: Diğer uygulamaları kapatmayı veya ekran çözünürlüğünü azaltmayı dene
+GraphicsInitError.PleaseUpdateDrivers: Lütfen bilgisayarının minimum gereksinimleri karşılayıp karşılamadığını kontrol et ve ekran kartın için en güncel sürücüleri yüklemeyi dene.
+GraphicsInitError.Prelude: Tiny Glade grafikleri yüklerken bir sorunla karşılaştı
+GraphicsInitError.SeeLogFile: "Lütfen daha fazla bilgi için buraya göz at: {logfile} 🙏"
+GraphicsInitError.SwapchainError: Pencere başlatma hatası
+GraphicsInitError.SwapchainErrorTip: Lütfen monitörünün bu ekran kartına fiziksel olarak bağlı olduğundan emin ol.
+GraphicsInitError.UnsupportedWindowingSystem: İşletim sistemin veya masaüstü ortamın desteklenmiyor.
+Hint.CameraPan: Kamerayı hareket ettir
+Hint.CameraRotate: Kamerayı döndür
+Hint.CameraZoom: Kamerayı yakınlaştır
+Hint.Deselect: Araç seçimini kaldır
+Hint.DisableSnapping: Yapışmayı devre dışı bırak
+Hint.FocusEdit: Tüm düzenleme seçeneklerini göster
+Hint.RoofShape: Şekli değiştir
+Hint.StairsContinue: Merdivenlere devam etmek için tıkla
+Hint.StairsCreateFinish: Merdivenleri bitir
+Hint.StairsCreateStart: Merdiven oluşturmaya başlamak için tıkla
+Hint.StairsDetachFromWall: Ayır
+Hint.Terrain: Mevcut arazinin üzerine çiz
+Hint.TerrainSteepness: Dikliği değiştir
+Hint.UnlinkWindows: Pencereleri ayır
+KeyBindings.DisableSnapping: Yapışmayı devre dışı bırak
+KeyBindings.FocusOrDeselect: Odakla veya seçimi kaldır
+KeyBindings.HideUiInPhotoMode: Arayüzü gizle (fotoğraf modunda)
+KeyBindings.Move: Hareket et
+KeyBindings.MoveDown: Aşağı hareket et
+KeyBindings.MoveDownUp: Aşağı/yukarı hareket et
+KeyBindings.MoveUp: Yukarı hareket et
+KeyBindings.Redo: Yinele
+KeyBindings.ResetToDefaults: Varsayılan ayarlara sıfırla
+KeyBindings.Rotate: Döndür
+KeyBindings.SendFeedback: Geri bildirim gönder
+KeyBindings.TakeScreenshot: Ekran görüntüsü al
+KeyBindings.Undo: Geri al
+KeyBindings.UndoRedo: Geri al/yinele
+KeyBindings.ZoomIn: Yakınlaştır
+KeyBindings.ZoomInOut: Yakınlaştır/uzaklaştır
+KeyBindings.ZoomOut: Uzaklaştır
+Menu.Back: Geri
+Menu.Continue: Devam
+Menu.Credits: Katkıda Bulunanlar
+Menu.Credits.Licenses: Lisanslar
+Menu.Goodbye.ButWaitTheresMore: "Tam sürümde oynayabileceğin daha fazla koru, süsleme yapabileceğin yeni araçlar, üzerine inşa edebileceğin daha geniş bir alan ve çok daha fazlası olacak. Demodaki kayıt dosyaların tam sürümle uyumlu olacak. Böylece oyuna kaldığın yerden devam edebileceksin!"
+Menu.Goodbye.ComeBack: "Keyifli vakit geçirdiğini ve Tiny Glade'in tam sürümünü oynamak için geri geleceğini umuyoruz."
+Menu.Goodbye.Release: "Tiny Glade 23 Eylül'de çıkıyor"
+Menu.Goodbye.Thanks: Demomuzu oynadığın için teşekkürler!
+Menu.Load: Yükle
+Menu.New: Yeni
+Menu.New.Header: Yeni Koru
+Menu.New.TryNew: Yeni bir koru denemeye ne dersin?
+Menu.Quit: Çık
+Menu.QuitToDesktop: Masaüstüne çıkılsın mı?
+Menu.Settings: Ayarlar
+Menu.Settings.Audio: Ses
+Menu.Settings.Audio.AmbienceVolume: Ortam sesi
+Menu.Settings.Audio.EffectsVolume: Efekt sesi
+Menu.Settings.Audio.MasterVolume: Ana ses
+Menu.Settings.Audio.MusicVolume: Müzik sesi
+Menu.Settings.CameraRotationPivot.CenterPoint: Merkez nokta
+Menu.Settings.CameraRotationPivot.CenterRegion: Merkez bölge
+Menu.Settings.CameraRotationPivot.CenterTerrain: Merkez arazi
+Menu.Settings.CameraRotationPivot.CursorPoint: İmleçteki nokta
+Menu.Settings.CameraRotationPivot.CursorRegion: İmleçteki bölge
+Menu.Settings.CameraRotationPivot.CursorTerrain: İmleçteki arazi
+Menu.Settings.Controls: Kontroller
+Menu.Settings.Controls.Camera: Kamera
+Menu.Settings.Controls.CameraPivotRegionSize: Eksen bölgesi boyutu
+Menu.Settings.Controls.CameraRotationPivot: Kamera dönüş ekseni
+Menu.Settings.Controls.CameraZoomPivot: Kamera yakınlaştırma ekseni
+Menu.Settings.Controls.Confirm: Onayla
+Menu.Settings.Controls.ControllerBindings: Oyun kumandası atamaları
+Menu.Settings.Controls.Down: Aşağı
+Menu.Settings.Controls.InvertX: X eksenini ters çevir
+Menu.Settings.Controls.InvertY: Y eksenini ters çevir
+Menu.Settings.Controls.KeyBindings: Tuş atamaları
+Menu.Settings.Controls.Left: Sol
+Menu.Settings.Controls.MovementSpeed: Hareket hızı
+Menu.Settings.Controls.Other: Diğer
+Menu.Settings.Controls.PressAKey: Bir tuşa bas
+Menu.Settings.Controls.Reset: Sıfırla
+Menu.Settings.Controls.Right: Sağ
+Menu.Settings.Controls.RotationSpeed: Dönme hızı
+Menu.Settings.Controls.TabNext: Sonraki sekme
+Menu.Settings.Controls.TabPrevious: Önceki sekme
+Menu.Settings.Controls.Toolbar: Araç çubuğu
+Menu.Settings.Controls.Up: Yukarı
+Menu.Settings.DeleteGlade: Bu koruyu silmek istiyor musun?
+Menu.Settings.Game: Oyun
+Menu.Settings.Game.CompleteHints: Tümünü tamamla
+Menu.Settings.Game.CompleteHintsHint: "Tüm ipuçlarını tamamlanmış olarak işaretle, bir daha görüntülenmezler."
+Menu.Settings.Game.ContextualControlHints: Akıllı ipuçları
+Menu.Settings.Game.ControlHints: Kontrol ipuçları
+Menu.Settings.Game.ControlHintsHint: "İpuçları, bağlama göre gerektiğinde akıllıca görüntülenir."
+Menu.Settings.Game.GladeBorderOutline: Koru sınırı dış hattını gizle
+Menu.Settings.Game.HintsResetDone: İşte bu kadar! İpuçları sıfırlandı.
+Menu.Settings.Game.OldTimberframe: Yarı ahşap kuleler için eski görseller
+Menu.Settings.Game.OldTimberframeDescription: Kulelerdeki ahşap çerçeveler 1.14.0 ile güncellendi. Eski sürüm artık desteklenmemektedir. Ancak hâlâ eski sürüme sahip olmak istiyorsan bu seçeneği etkinleştirebilirsin.
+Menu.Settings.Game.ResetHintsHint: Tüm kontrol ipuçlarını ve hoş geldin mesajını tekrar görüntüle.
+Menu.Settings.Game.ResetTutorial: Sıfırla
+Menu.Settings.Game.ScreenshotFormat: Ekran görüntüsü formatı
+Menu.Settings.Game.Tutorial: İpuçları
+Menu.Settings.Ui: Arayüz
+Menu.Settings.Ui.AutoHideToolbar: Araç çubuğunu otomatik gizle
+Menu.Settings.Ui.AutoHideToolbarHint: Araç çubuğu yalnızca imlecin ona yaklaştığında görünür.
+Menu.Settings.Ui.IconSize: Simge boyutu
+Menu.Settings.Ui.InputLagReduction: Girdi gecikmesini azaltma
+Menu.Settings.Ui.InputLagReductionHint: (Deneysel) Yavaş bilgisayarlarda oyunun tepki hızını iyileştirir.
+Menu.Settings.Ui.Logo: Ekran görüntülerine logo ekle
+Menu.Settings.Ui.ToolbarAlignment: Araç çubuğu konumu
+Menu.Settings.Ui.ToolbarAlignment.Bottom: Alt
+Menu.Settings.Ui.ToolbarAlignment.Left: Sol
+Menu.Settings.Ui.ToolbarAlignment.Right: Sağ
+Menu.Settings.Ui.ToolbarAlignment.Top: Üst
+Menu.Settings.Video: Video
+Menu.Settings.Video.Apply: Uygula
+Menu.Settings.Video.Borderless: Çerçevesiz
+Menu.Settings.Video.Brightness: Parlaklık
+Menu.Settings.Video.Device: Cihaz
+Menu.Settings.Video.DeviceError: Bir sorunla karşılaştığımız için bu cihazı kullanamadık.
+Menu.Settings.Video.DeviceHint: Görüntü işleme için kullanılan ekran kartı.
+Menu.Settings.Video.Display: Ekran
+Menu.Settings.Video.DisplayMode: Görüntü modu
+Menu.Settings.Video.DisplayModeHint: En iyi performans ve en akıcı animasyonlar için tam ekranda oyna.
+Menu.Settings.Video.DoF: Alan derinliği
+Menu.Settings.Video.FpsUnlimited: Sınırsız
+Menu.Settings.Video.FrameRateLimit: Kare hızı sınırı
+Menu.Settings.Video.FrameRateLimitHint: Sınırlandığında animasyonların akıcılığını azaltarak güç tüketimini düşürür.
+Menu.Settings.Video.Fullscreen: Tam ekran
+Menu.Settings.Video.Gamma: Gama
+Menu.Settings.Video.Image: Görüntü
+Menu.Settings.Video.ImageSettings: Görüntü Ayarları
+Menu.Settings.Video.Monitor: Monitör
+Menu.Settings.Video.QualityPreset: Kalite ön ayarı
+Menu.Settings.Video.RefreshRate: Yenileme hızı
+Menu.Settings.Video.RenderScale: Çözünürlük ölçeği
+Menu.Settings.Video.RenderScaleHint: Ekran çözünürlüğüne bağlı çarpan. Kullanıcı arayüzünü etkilemez.
+Menu.Settings.Video.Resolution: Çözünürlük
+Menu.Settings.Video.RestartToChangeDevice: "Grafik cihazı değişikliğini uygulamak için Tiny Glade'i yeniden başlat."
+Menu.Settings.Video.Sharpen: Keskinleştirme
+Menu.Settings.Video.SharpenHint: İşlem sonrası düzenlemelerle görüntüyü keskinleştirir ve biraz daha pürüzlü hâle getirir
+Menu.Settings.Video.Upscaling: Ölçekleme
+Menu.Settings.Video.UpscalingHint: "Görüntü ölçekleme, tam çözünürlüklü bir görüntü üretmek için azaltılmış çözünürlükte işlenen birden fazla kareden gelen bilgileri birleştirir. Bu, işleme verimliliğini büyük ölçüde artırır ancak görüntü kalitesini düşürebilir."
+Menu.Settings.Video.UpscalingPreset: Ölçekleme ön ayarı
+Menu.Settings.Video.VSync: Dikey senkronizasyon
+Menu.Settings.Video.VSyncHint: Dikey senkronizasyon ekran yırtılmasını önler ve güç tasarrufu sağlar.
+Menu.Settings.Video.Windowed: Pencereli
+Menu.Wishlist: İstek Listesine Ekle
+Menu.YourGameIsSaved: (Oyunun kaydedildi.)
+New.ErrorLoadingSave: Koru yükleme hatası
+New.Glade.Autumn: Sonbahar
+New.Glade.Daily: Günlük tema
+New.Glade.Flowery: Çiçeksi
+New.Glade.Olden: Antik
+New.Glade.Summer: Yaz
+New.Glade.ThisWeeksTheme: Bu haftanın teması
+New.Glade.Weekly: Haftalık tema
+New.Glade.Winter: Kış
+New.LoadGladeBackup: Koru yedeği yüklensin mi?
+NotInDemo: Demoda mevcut değil.
+Ok: Tamam
+PhotoMode: Fotoğraf modu
+PhotoMode.ComingInTheFullGame: Tam sürümde geliyor!
+PhotoMode.FieldOfView: Görüş alanı
+PhotoMode.Filters: Filtreler
+PhotoMode.HideUi: Arayüzü gizle
+Play: Oyna
+Quality.Balanced: Dengeli
+Quality.Custom: Özel
+Quality.Performance: Performans
+Quality.Quality: Kalite
+Quality.UltraPerformance: Yüksek Performans
+Quality.UltraQuality: Yüksek Kalite
+Rollercoaster.Ride: Arabaya atla
+SaveError.Advice.FreeUpSpace: Diskinde biraz yer aç
+SaveError.Advice.Generic: Diskindeki sorunu teşhis et
+SaveError.AffectedFile: Etkilenen dosya
+SaveError.DontPanic: Panik yapma
+SaveError.GladeHasBackups: "Bu korunun {count} yedeği var"
+SaveError.HeresThePlan: İşte plan şu
+SaveError.KeepTheGameRunning: Oyunu çalışır durumda tut
+SaveError.MostRecentBackup: En son
+SaveError.StorageFull: Depolama alanı dolu
+SaveError.SwitchApps: "Alt+Tab uygulamalar arasında geçiş yapar, F11 tam ekrana geçer"
+SaveError.ThereIsAProblem: Korunu kaydederken bir sorun oluştu
+SaveError.WillSave: Korun otomatik olacak kaydedilecektir
+Theme.SuggestionBy: Tema önerisi
+Theme.Weekly.Welcome.Intro2: "Her hafta yeni bir tema ve başlangıç korusu paylaşacağız. Bu haftanın teması:"
+TimeOfDay: Vakit
+TimeOfDay.PassageOfTime: Zaman akışı
+TimeOfDay.Speed: Zaman akış hızı
+TimeOfDay.SunAngle: Güneş açısı
+TimeOfDay.TimeNow: Şimdiki vakit
+Timelapse: Zaman hızlandırma
+Timelapse.Header: Yapının hızlandırılmış bir animasyonunu izle.
+Timelapse.Play: Oynat
+Timelapse.Speed: Hız
+Tweaker.No: Kapalı
+Tweaker.Yes: Açık
+Welcome.Chemistry: "Tiny Glade'de yapı unsurları birbirleriyle etkileşime geçer. Örneğin,"
+Welcome.Greeting: Hoş geldin!
+Welcome.HaveFun: "Başka neler keşfedebileceğine göz at.\nEğleneceğini umuyoruz!"
+Welcome.LetsGo: Başlayalım!
+Welcome.Pitch: "Tiny Glade sıra dışı kaleler, şirin kulübeler ve şairane harabeler oluşturduğun, ufak bir manzara yaratma oyunudur. Bu oyunda herhangi bir yönetim, savaş veya hedef yok. Arkana yaslan ve unutulmuş çayırları sevimli manzaralara dönüştür."
+Welcome.Prompt: duvarın içinden geçen bir yol çizmeyi dene.
+Welcome.Thanks: Demomuzu denediğin için teşekkürler 💞
+YourGladeHasBeenSaved: Korun kaydedildi

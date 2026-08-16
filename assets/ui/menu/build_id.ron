@@ -1,0 +1,9 @@
+((
+    //draw: [FillColor(0xffff0028)],
+    layout: [Horizontal, Expand, Align(End), XAlign(End), Padding(10)]
+), [
+    ((
+        slot: "info",
+        //draw: [FillColor(0xffffff40)], 
+    ))
+])

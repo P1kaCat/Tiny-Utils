@@ -1,0 +1,10 @@
+((
+    //draw: [FillColor(0xffff0028)],
+    layout: [Horizontal, Expand, Align(End), XAlign(End), Padding((0, 40, 0, 100))]
+), [
+    ((
+        slot: "survey",
+        //draw: [FillColor(0xffffff40), CornerRadius(40)], 
+        layout: [Vertical, XAlign(End), Padding((0, 0, 0, 0)), Gap(10.0)],
+    ))
+])

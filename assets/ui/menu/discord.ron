@@ -1,0 +1,21 @@
+((
+    //draw: [FillColor(0xffff0028)],
+    layout: [Vertical, Expand, Align(End), XAlign(End), Padding((0, 40, 0, 100)), Gap(10.0)]
+), [
+    ((
+        slot: "buttons",
+        //draw: [FillColor(0x00000050), CornerRadius(10)], 
+        layout: [Horizontal, Align(End), XAlign(Center), Padding(0.0), Gap(10.0)],
+    ),[
+        ((
+            slot: "newsletter",
+            //draw: [FillColor(0xffffff10), CornerRadius(10)], 
+            layout: [Horizontal, Align(End), XAlign(Center), Padding(0.0)],
+        )),
+        ((
+            slot: "discord",
+            //draw: [FillColor(0xffffff10), CornerRadius(10)], 
+            layout: [Horizontal, Align(End), XAlign(Center), Padding(0.0)],
+        ))
+    ])
+])

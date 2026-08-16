@@ -1,0 +1,264 @@
+---
+AreYouSure: Er du sikker?
+AreYouSure.ImSure: Jeg er sikker
+AreYouSure.No: "Nei, vent! "
+Cancel: Avbryt
+Continue.Nope: Nope
+Continue.Question: Du vil fortsette?
+Continue.Yep: Jepp
+Crash.Advice.CheckIntegrity: "Det er noe galt med installasjonen av Tiny Glade, og det kan være årsaken til at det kræsja."
+Crash.Advice.ClickForAdvice: Klikk her for råd
+Crash.Advice.CorruptOrModifiedFiles: Korrupte eller modifiserte filer
+Crash.Advice.FilesLookIncorrect: Det er feil i noen av filene til Tiny Glade
+Crash.Advice.IveTriedThat: "Jeg har prøvd det, og det hjalp ikke"
+Crash.Advice.MissingOrUnreadableFiles: Manglende eller uleselige filer
+Crash.Advice.RemoveDozen: "Vi tror årsaken til kræsjet er \"VulkanOn12\", som ved en feil sannsynligvis var forhåndsinstallert i systemet ditt."
+Crash.Advice.ShowInstallationErrors: Vis installasjonsfeilmeldinger
+Crash.Advice.SteamFileIntegrityCheck: Steam sin filintegritetssjekk
+Crash.Advice.TroubleshootGraphics: "Det virker som GPU'en har hengt seg opp eller at det er noe galt med grafikkdriveren."
+Crash.Advice.TryUpdateDriver: Det set ut som grafikkdriveren din har kræsjet. Vi mistenker at det er noe galt med den - vennligst sjekk om det finnes en ny versjon 🧡
+Crash.Advice.UpdateDriver: Dette virker som et grafikkrelatert kræsj. Grafikkdriveren din er utdatert og kan være årsaken til kræsjet. Vennligst oppdater den 🧡
+Crash.Advice.UpdateObs: "Dette virker som et kræsj forårsaket av OBS (Open Broadcaster Software). Vi vet at eldre versjoner av OBS kan få Tiny Glade til å kræsje, så vennligst prøv å oppdatere OBS 🧡"
+Crash.Advice.VerifyIntegrityOrReinstall: "Vennligst bruk {link} eller gjeninstaller Tiny Glade."
+Crash.AdviceDismissed: "Skjønner, det var leit. Takk for at du prøvde da!"
+Crash.AskConsent: "Vi vil gjerne vite hva som skjedde så vi kan fikse det. 🕵\nKunne du sendt oss kræsjrapporten?🙏"
+Crash.Clipboard.Copied: Kopiert
+Crash.Clipboard.Copy: Kopier til utklippstavle
+Crash.Clipboard.Error: Det oppstod en feil med utklippstavlen
+Crash.DeliveryFailed: "Å nei, kræsjrapporten kom ikke fram. Takk som prøvde - vi får det til en annen gang ^^;"
+Crash.DeliveryOk: "Vi har mottatt kræsjrapporten. \nTakk skal du ha 💗"
+Crash.Discuss: "Dersom du ønsker å diskutere krasjen med oss, vennligst vil til denne koden:"
+Crash.FixDriver: "Det virker som noe er galt med grafikkdriveren din, og den kræsja før vi kunne starte den."
+Crash.GameHasCrashed: "Oi da! Beklager virkelig... Det dukka opp et problem, og Tiny Glade kræsja 😢"
+Crash.MsgBoxTitle: Tiny Glade error
+Crash.PrivacyPolicy: Personværnerklæring
+Crash.RecoveryFailed: "Vi prøvde å gjenopprette spillet ditt etter det kræsja, men det er dessverre korrupt 😣\nVennligst start Tiny Glade på nytt, så kan du fortsette fra forrige autosave."
+Crash.RecoveryOk: "Ingen grunn til bekymring, spillet ditt er lagret. Bare start Tiny Glade på nytt, så kan du fortsette å spille."
+Crash.ShowDetails: Detaljer...
+Crash.Signature: "Vennlig hilsen, Ana & Tom"
+Crash.TroubleshootingGuide: Veiledning for feilsøking
+Crash.Under13: "Du må være minst 13 år gammel for å sende denne rapporten. Hvis du er yngre enn 13, velg {nope}"
+Daily.DownloadError: Nedlastningsfeil
+Daily.Downloading: Laster ned...
+Daily.NextThemeIn: Neste tema kommer om
+Daily.NoCurrentTheme: Ingen tema for øyeblikket
+Daily.ThemeNotAvailable: Tema ikke tilgjengelig
+Daily.TodaysTheme: Dagens tema
+Daily.Welcome.Author: "Utgangspunkt skapt av:"
+Daily.Welcome.Header: "Velkommen til #TinyDaily"
+Daily.Welcome.Inspiration: "Lysningens begynnelse er inspirert av:"
+Daily.Welcome.Intro: Vi vet godt fra personlig erfaring at det kan være fint med litt inspirasjon for å komme i gang.
+Daily.Welcome.Intro2: "Hver dag har derfor et tema, og et nytt utgangspunkt når du åpner en ny lysning. Dagens tema er:"
+Daily.Welcome.Prompt: La oss se hva du kommer opp med!
+Daily.Welcome.Socials: "PS: Sørg for å nevne #TinyDaily om du deler byggverket ditt på sosiale medier, så vi (og andre) kan finne det!"
+Driver.DeviceType.DiscreteGpu: Diskret grafikkort
+Driver.DeviceType.Integrated: Integrert grafikk
+Driver.DeviceType.OldIntegratedGpu: Gammel integrert grafikk
+Driver.DeviceType.Virtual: Virtuell enhet
+Driver.DriverVersion: Versjon
+Driver.EmulatedDriver: Emulert Vulkan-driver
+Driver.Header.PleaseConfirm: "Vennligst bekreft hva du foretrekker:"
+Driver.Header.Reason.Changed: Det ser ut som noen av grafikkortene eller -driverne dine har blitt endret.
+Driver.Header.Reason.PrimaryUnsupported: Vennligst sjekk grafikkdriveren din.
+Driver.Header.Reason.Requested: Du har bedt om å velge grafikkdriver.
+Driver.Header.Reason.UnavailableDetected: Det virker somd det er problemer med grafikkdriverne dine.
+Driver.Header.Reason.WhichOne: Vi er ikke sikre på hvilket grafikkort som bør brukes.
+Driver.IgnoreAndPlay: Ignorer og spill
+Driver.InsufficientVideoMemory: Ikke nok videominne
+Driver.LikelyTooSlow: sannsynligvis for treig
+Driver.MemoryAmountRequired: "{amount} kreves"
+Driver.MightBeSlow: kan være treig
+Driver.MinimumSupportedVersionIs: "Minimumsversjon som støttes:"
+Driver.RecommendedChoice: Anbefalt valg
+Driver.ShowLogFiles: Vis loggfiler
+Driver.SupportedDriver: Støttet driver
+Driver.UnknownVendor: Vi kjenner ikke denne produsenten
+Driver.UnsupportedDriver: "Driver en støttes ikke:Tiny Glade kan oppføre seg rart eller krasje"
+Driver.VulkanBroken: "Vi har oppdaget denne enheten, men Vulkan-støtten fungerer ikke eller mangler. \nVennligst installer driveren på nytt hvis du ønsker å bruke denne enheten (selv om andre spill fungerer)."
+ExceedDemoLimit.Notice: Ser ut som du er i ferd med å overstige DEMO-grensa på 3 lysninger.
+ExceedDemoLimit.Notice2: Hvis du lager en ny lysning vil den eldste bli utilgjengelig.
+ExceedDemoLimit.Notice3: "(den er fortsatt lagret, og du kan åpne den i fullversjonen!)"
+FailedToLoad.Notice1: Den forrige lagringsfila di kunne ikke lastes inn 😨 Det kan være den er korrupt. Se om du kan laste inn en backup-fil 🙏
+FailedToLoad.Notice2: Vi har laget en ny økt for deg.
+Feedback.AttachBenchmark: Legg ved benchmark
+Feedback.AttachSaveFile: Legg ved lagringsfil
+Feedback.AttachScreenshot: Legg ved skjermbilde
+Feedback.Default: Jeg bygde et slott i ei myr og...
+Feedback.Header: Send tilbakemelding
+Feedback.HotkeyHint: "Tips: du kan åpne denne menyen fra hvor som helst ved å trykke på {key}-knappen"
+Feedback.Send: Send
+Feedback.SendError: "Å nei, noe gikk galt!"
+Feedback.SentOk: Tilbakemelding mottatt. Tusen takk!
+GraphicsInitError.InternalError: Intern feilmelding
+GraphicsInitError.NoCompatibleDevices: Systemet ditt mangler grafikkevnene som trengs for å kjøre Tiny Glade.
+GraphicsInitError.NoDriver: Grafikkdriveren din støtter ikke Vulkan-grafikk.
+GraphicsInitError.OutOfVideoMemory: Ikke nok ledig videominne
+GraphicsInitError.OutOfVideoMemoryRecommendation: Prøv å lukke andre programmer eller å redusere skjermoppløsningen din
+GraphicsInitError.PleaseUpdateDrivers: "Vennligst sjekk at maskina di møter minimumskravene, og prøv å installere nyeste versjon av driveren for grafikkortet ditt."
+GraphicsInitError.Prelude: Tiny Glade fikk litt problemer mens grafikken skulle settes i gang
+GraphicsInitError.SeeLogFile: "Vennligst sjekk {logfile} for mer informasjon 🙏"
+GraphicsInitError.SwapchainError: Feil ved bytting av vinduer
+GraphicsInitError.SwapchainErrorTip: Vennligst sjekk at monitoren din er fysisk koblet til hovedgrafikkortet.
+GraphicsInitError.UnsupportedWindowingSystem: Operativsystemet eller skrivebords environment ditt støttes ikke.
+Hint.CameraPan: Beveg kameraet
+Hint.CameraRotate: Rotér kameraet
+Hint.CameraZoom: Zoom
+Hint.Deselect: Slipp verktøyet
+Hint.DisableSnapping: Skru av snapping
+Hint.FocusEdit: Vis alle redigeringskontrollerne
+Hint.RoofShape: Endre fasong
+Hint.Terrain: Tegne over eksisterende terreng
+Hint.TerrainSteepness: Endre hvor bratt
+Hint.UnlinkWindows: Del opp vinduer
+KeyBindings.DisableSnapping: Skru av snapping
+KeyBindings.FocusOrDeselect: Fokusér eller slipp
+KeyBindings.HideUiInPhotoMode: Skjul grensesnitt (i fotomodus)
+KeyBindings.Move: Flytt
+KeyBindings.MoveDown: Flytt ned
+KeyBindings.MoveDownUp: Flytt ned / opp
+KeyBindings.MoveUp: Flytt opp
+KeyBindings.Redo: Gjenta
+KeyBindings.ResetToDefaults: Tilbake til utgangspunkt
+KeyBindings.Rotate: Rotér
+KeyBindings.SendFeedback: Send tilbakemelding
+KeyBindings.TakeScreenshot: Ta skjermbilde
+KeyBindings.Undo: Angre
+KeyBindings.UndoRedo: Angre / gjenta
+KeyBindings.ZoomIn: Zoom inn
+KeyBindings.ZoomInOut: Zoom inn / ut
+KeyBindings.ZoomOut: Zoom ut
+Menu.Back: Tilbake
+Menu.Continue: Fortsett
+Menu.Credits: Medvirkende
+Menu.Credits.Licenses: Lisenser
+Menu.Goodbye.ButWaitTheresMore: "Det vil være flere lysninger å leke i, nye verktøy å pynte med, større plass å bygge på og mer til. Lagringsfilene dine fra demoen vil fungere i fullversjonen, så du kan fortsette fra der du slapp!"
+Menu.Goodbye.ComeBack: "Håper du koste deg, og at du kommer tilbake senere og spiller fullversjonen av Tiny Glade."
+Menu.Goodbye.Release: Tiny Glade slippes 23. September
+Menu.Goodbye.Thanks: Takk for at du spilte demoen vår!
+Menu.Load: Last inn
+Menu.New: Ny
+Menu.New.Header: Ny lysning
+Menu.New.TryNew: Vil du prøve en ny lysning?
+Menu.Quit: Avslutt
+Menu.QuitToDesktop: Avslutt og gå til skrivebordet
+Menu.Settings: Innstillinger
+Menu.Settings.Audio: Lyd
+Menu.Settings.Audio.AmbienceVolume: Naturlyd
+Menu.Settings.Audio.EffectsVolume: Lydeffekter
+Menu.Settings.Audio.MasterVolume: Hovedvolum
+Menu.Settings.Audio.MusicVolume: Musikk
+Menu.Settings.CameraRotationPivot.CenterPoint: Midtpunkt
+Menu.Settings.CameraRotationPivot.CenterRegion: Midtre område
+Menu.Settings.CameraRotationPivot.CenterTerrain: Midtre terreng
+Menu.Settings.CameraRotationPivot.CursorPoint: Punkt under markør
+Menu.Settings.CameraRotationPivot.CursorRegion: Område under markør
+Menu.Settings.CameraRotationPivot.CursorTerrain: Terreng under markør
+Menu.Settings.Controls: Kontroller
+Menu.Settings.Controls.Camera: Kamera
+Menu.Settings.Controls.CameraPivotRegionSize: Rotasjonsankerets størrelse
+Menu.Settings.Controls.CameraRotationPivot: Kameraets rotasjonsanker
+Menu.Settings.Controls.CameraZoomPivot: Kameraets zoomanker
+Menu.Settings.Controls.Confirm: Bekreft
+Menu.Settings.Controls.ControllerBindings: Kontrolleroppsett
+Menu.Settings.Controls.Down: Ned
+Menu.Settings.Controls.InvertX: Speilvend X-aksen
+Menu.Settings.Controls.InvertY: Speilvend Y-aksen
+Menu.Settings.Controls.KeyBindings: Tastaturoppsett
+Menu.Settings.Controls.Left: Venstre
+Menu.Settings.Controls.MovementSpeed: Bevegelseshastighet
+Menu.Settings.Controls.Other: Annet
+Menu.Settings.Controls.PressAKey: Trykk på en knapp
+Menu.Settings.Controls.Reset: Tilbakestill
+Menu.Settings.Controls.Right: Høyre
+Menu.Settings.Controls.RotationSpeed: Rotasjonshastighet
+Menu.Settings.Controls.TabNext: Neste fane
+Menu.Settings.Controls.TabPrevious: Forrige fane
+Menu.Settings.Controls.Toolbar: Verktøylinje
+Menu.Settings.Controls.Up: Opp
+Menu.Settings.DeleteGlade: Slette denne lysningen?
+Menu.Settings.Game: Spill
+Menu.Settings.Game.CompleteHints: Fullfør alle
+Menu.Settings.Game.CompleteHintsHint: "Merk alle hint som fullførte, så dukker de ikke opp igjen."
+Menu.Settings.Game.ContextualControlHints: Opplæring i kontekst
+Menu.Settings.Game.ControlHints: Kontroller hint
+Menu.Settings.Game.ControlHintsHint: Hintene dukker opp utifra kontekst etter beste evne når de trengs.
+Menu.Settings.Game.GladeBorderOutline: Skjul omrisset av lysningens ytterkant
+Menu.Settings.Game.HintsResetDone: Sånn! Opplæring har blitt tilbakestilt.
+Menu.Settings.Game.ResetHintsHint: Vis alle kontrollerhintene og velkomsthilsenen igjen.
+Menu.Settings.Game.ResetTutorial: Tilbakestill
+Menu.Settings.Game.ScreenshotFormat: Skjermbildeformat
+Menu.Settings.Game.Tutorial: Opplæring
+Menu.Settings.Ui: Grensesnitt
+Menu.Settings.Ui.AutoHideToolbar: Skjul verktøylinja automatisk
+Menu.Settings.Ui.AutoHideToolbarHint: Verktøylinja vises bare hvis musepekeren er i nærheten av den.
+Menu.Settings.Ui.IconSize: Ikonstørrelse
+Menu.Settings.Ui.InputLagReduction: Reduksjon av inputforsinkelse
+Menu.Settings.Ui.InputLagReductionHint: (Eksperimentell) Forbedrer spillets reaksjonsevne på treigere maskiner.
+Menu.Settings.Ui.Logo: Logo i skjermbilder
+Menu.Settings.Ui.ToolbarAlignment: Verktøylinjas plassering
+Menu.Settings.Ui.ToolbarAlignment.Bottom: Bånn
+Menu.Settings.Ui.ToolbarAlignment.Left: Venstre
+Menu.Settings.Ui.ToolbarAlignment.Right: Høyre
+Menu.Settings.Ui.ToolbarAlignment.Top: Topp
+Menu.Settings.Video: Video
+Menu.Settings.Video.Apply: Bruk
+Menu.Settings.Video.Borderless: Ingen kantlinje
+Menu.Settings.Video.Device: Enhet
+Menu.Settings.Video.DeviceError: "Et problem har oppstått, og vi kan ikke bruke denne enheten."
+Menu.Settings.Video.DeviceHint: Grafikkortet som brukes til rendering.
+Menu.Settings.Video.DisplayMode: Visningsmodus
+Menu.Settings.Video.DisplayModeHint: Fullskjerm gir bedre ytelse og smoothere animasjoner.
+Menu.Settings.Video.DoF: Dybdeskarphet
+Menu.Settings.Video.FpsUnlimited: Ubegrensa
+Menu.Settings.Video.FrameRateLimit: Begrens bildefrekvens
+Menu.Settings.Video.FrameRateLimitHint: "Å begrense ofrer animasjonskvaliteten for å redusere strømbruk. "
+Menu.Settings.Video.Fullscreen: Fullskjerm
+Menu.Settings.Video.Monitor: Monitor
+Menu.Settings.Video.RefreshRate: Oppdateringsfrekvens
+Menu.Settings.Video.RenderScale: Oppløsningsskala
+Menu.Settings.Video.RenderScaleHint: Høyere verdi gir høyere kvalitet. Lavere verdi gir bedre ytelse.
+Menu.Settings.Video.Resolution: Oppløsning
+Menu.Settings.Video.RestartToChangeDevice: Start Tiny Glade på nytt for å ta i bruk den nye grafikkenheten.
+Menu.Settings.Video.Sharpen: Bildeskarphet
+Menu.Settings.Video.SharpenHint: Etterbehandle bildet for å gjøre det skarpere (men også mer kornete)
+Menu.Settings.Video.VSync: V-Sync
+Menu.Settings.Video.VSyncHint: Vertikal synkronisering hindrer skjermrivning og sparer strøm.
+Menu.Settings.Video.Windowed: Innrammet
+Menu.Wishlist: Ønsk deg
+Menu.YourGameIsSaved: (spillet er lagret)
+New.Glade.Autumn: Høst
+New.Glade.Daily: Dagens tema
+New.Glade.Flowery: Blomstereng
+New.Glade.Olden: Urskog
+New.Glade.Summer: Sommer
+New.Glade.ThisWeeksTheme: Ukas tema
+New.Glade.Weekly: Ukentlig tema
+New.Glade.Winter: Vinter
+NotInDemo: Ikke i demoen
+Ok: OK
+PhotoMode: Fotomodus
+PhotoMode.ComingInTheFullGame: Kommer i fullversjonen av spillet!
+PhotoMode.FieldOfView: Synsbredde
+PhotoMode.Filters: Filtre
+PhotoMode.HideUi: Skjul grensesnitt
+Play: Spill
+Theme.SuggestionBy: Temaforslag
+Theme.Weekly.Welcome.Intro2: "Hver uke deler vi et nytt tema og en ny lysning å begynne i. Denne ukas tema er:"
+TimeOfDay: Klokkeslett
+TimeOfDay.PassageOfTime: Tidsflyt
+TimeOfDay.Speed: Tidens hastighet
+TimeOfDay.SunAngle: Solas vinkel
+TimeOfDay.TimeNow: Klokkeslett nå
+Timelapse: Timelapse
+Timelapse.Header: Se animert timelapse av kunstverket ditt
+Timelapse.Play: Spill
+Timelapse.Speed: Hastighet
+Tweaker.No: Nei
+Tweaker.Yes: Ja
+Welcome.Chemistry: "I Tiny Glade jobber ulike elementer sammen når du bygger. For eksempel, "
+Welcome.Greeting: Velkommen!
+Welcome.HaveFun: "Finn ut hva mer du kan oppdage.\nHåper du koser deg!"
+Welcome.LetsGo: Den er god!
+Welcome.Pitch: "Tiny Glade er et avslappende spill hvor du drodler finurlige slott, hyggelige hytter og romantiske ruiner. Det er ingenting å holde styr på, ingen å sloss mot og ingen mål å jage etter. Så senk skuldrene og slapp av, for nå er det bare deg og lysningen som gjelder."
+Welcome.Prompt: Prøv å tegne en sti gjennom en vegg.
+Welcome.Thanks: Takk som prøvde demoen vår 💞

@@ -1,0 +1,7 @@
+# Fichiers binaires et exécutables
+*.exe
+*.rne
+
+# Fichiers audio lourds (.bank)
+*.bank
+assets/audio/

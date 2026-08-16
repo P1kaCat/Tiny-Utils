@@ -1,0 +1,21 @@
+(
+    default: (
+        gamma: sRGB,
+        resize: None,
+        mips: Full,
+    ),
+    assets: {
+        "locked": (
+            compression: None,
+        ),
+        "unlocked": (
+            compression: None,
+        ),
+        "circle_angle": (
+            compression: None,
+        ),
+        "circle_tod": (
+            compression: None,
+        ),
+    }
+)

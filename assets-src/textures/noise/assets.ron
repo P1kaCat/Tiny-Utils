@@ -1,0 +1,8 @@
+(
+    default: (
+        gamma: Linear,
+        compression: None,
+        resize: None,
+        mips: None,
+    ),
+)

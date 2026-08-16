@@ -1,0 +1,7 @@
+[INFO tiny_glade] Starting the crash reporter server
+[INFO tiny_glade::crash_pickup::server] Crash reporter server initialized. Watching for crashes...
+[DEBUG minidumper::ipc::server] accepted connection 1
+[DEBUG minidumper::ipc::server] client closed socket 0
+[DEBUG minidumper::ipc::server] on_client_disconnected exited message loop
+[DEBUG tiny_glade::crash_pickup::server] Shutting down the crash server.
+[INFO tiny_glade] Game process has terminated

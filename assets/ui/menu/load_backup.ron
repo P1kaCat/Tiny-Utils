@@ -1,0 +1,24 @@
+((
+    //draw: [FillColor(0xffff0028)],
+    layout: [Vertical, Expand, Align(Center), XAlign(Center), Padding((0, 0, 0, 100))]
+), [
+    ((
+        draw: [Image(source: "menu/paper-bg", scaling: Nine)],
+        layout: [Vertical, Size(550, 300), XAlign(Center), Padding((80, 80, 70, 50)), Gap(30.0)]
+    ), [
+        ((
+            slot: "header",
+            layout: [Vertical, XAlign(Center), Gap(20.0)]
+        ), []),
+
+        ((
+            slot: "list",
+            layout: [Vertical, XAlign(Start), Gap(20.0)]
+        ), []),
+
+        ((
+            slot: "footer",
+            layout: [Vertical, XAlign(Center), Gap(20.0)]
+        ), []),
+    ]),
+])

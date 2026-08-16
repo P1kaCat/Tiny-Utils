@@ -1,0 +1,12 @@
+(
+    default: (
+        gamma: sRGB,
+        resize: None,
+    ),
+    assets: {
+        "animation": (
+            gamma: Linear,
+            compression: None,
+        )
+    }
+)
