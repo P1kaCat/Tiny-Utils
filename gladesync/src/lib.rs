@@ -1,4 +1,3 @@
-pub mod avatars;
 pub mod console;
 pub mod hook;
 pub mod network;
@@ -22,22 +21,14 @@ pub unsafe extern "system" fn DllMain(
     match fdw_reason {
         DLL_PROCESS_ATTACH => {
             proxy::init_proxy();
-
             thread::spawn(move || {
                 let network = network::NetworkManager::new();
-
                 ui::start_ui_thread(Arc::clone(&network));
-
-                // Start the avatar overlay (player visualization)
-                avatars::start_avatars_thread(Arc::clone(&network));
-
                 let hook_engine = hook::HookEngine::new(Arc::clone(&network));
                 hook_engine.start();
             });
         }
-        DLL_PROCESS_DETACH => {
-            // Cleanup logic if needed
-        }
+        DLL_PROCESS_DETACH => {}
         _ => {}
     }
     TRUE
