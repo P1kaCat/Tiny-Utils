@@ -60,9 +60,14 @@ impl HookEngine {
     /// Unlock the building boundary limits
     pub fn unlock_build_borders(&self) -> bool {
         unsafe {
-            // Original known functions
+            // Original known functions (placement checks)
             self.patch_function(0xAD2950, "is_pos_inside");
             self.patch_function(0xAD2970, "is_shape_inside");
+
+            // Second copy of is_pos_inside found via binary analysis.
+            // Same function signature (test byte [rax],1; jne at +7 bytes).
+            // Likely used by camera clamping and/or deletion boundary checks.
+            self.patch_function(0x00FB64F0, "is_pos_inside (camera/delete)");
         }
 
         BORDER_UNLOCKED.store(true, Ordering::SeqCst);
