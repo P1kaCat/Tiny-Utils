@@ -8,12 +8,10 @@ echo     Multijoueur + Zone Illimitee + Menu In-Game
 echo ======================================================
 echo.
 
-if not exist "gladesync\target\release\dxgi.dll" (
-    echo [INFO] Compilation de la derniere version de Tiny Utils en cours...
-    cd gladesync
-    cargo build --release
-    cd ..
-)
+echo [INFO] Recompilation de Tiny Utils en cours...
+cd gladesync
+cargo build --release
+cd ..
 
 if exist "gladesync\target\release\dxgi.dll" (
     copy /Y "gladesync\target\release\dxgi.dll" "dxgi.dll" >nul
@@ -28,7 +26,8 @@ if exist "gladesync\target\release\dxgi.dll" (
     echo 4. Pour rejoindre : entre l'IP et le port de ton ami.
     echo.
 ) else (
-    echo [ERREUR] Impossible de trouver ou compiler dxgi.dll.
+    echo [ERREUR] Impossible de compiler dxgi.dll.
+    echo Verifie que Rust/Cargo est installe sur ta machine.
 )
 
 echo.
