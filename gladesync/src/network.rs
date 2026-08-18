@@ -413,10 +413,11 @@ impl NetworkManager {
                                 {
                                     if crate::hook::write_save_file(glade_name, &bytes) {
                                         crate::debug_log!("[GladeSync] Save state received and written: {}", glade_name);
-                                        // Suppress auto-sync for 5s to prevent the save we just
-                                        // wrote from immediately being re-broadcast back (which
-                                        // would create an infinite ping-pong loop).
-                                        crate::hook::SUPPRESS_SYNC.store(true, std::sync::atomic::Ordering::SeqCst);
+                                        // Record this save's mtime as "already synced" so the
+                                        // auto-sync polling loop doesn't mistake it for a fresh
+                                        // local change and immediately bounce it back to the
+                                        // host (infinite ping-pong loop).
+                                        crate::hook::mark_remote_save_written();
                                         // Auto-reload: wait briefly for the file write to settle,
                                         // then simulate a quick-load keypress so the game picks
                                         // up the new save without manual intervention.
@@ -424,9 +425,6 @@ impl NetworkManager {
                                             thread::sleep(Duration::from_millis(500));
                                             crate::hook::trigger_reload();
                                             crate::debug_log!("[GladeSync] Auto-reload triggered");
-                                            // Clear suppress flag after 5s
-                                            thread::sleep(Duration::from_millis(4500));
-                                            crate::hook::SUPPRESS_SYNC.store(false, std::sync::atomic::Ordering::SeqCst);
                                         });
                                     } else {
                                         crate::debug_log!("[GladeSync ERROR] Failed to write save state: {}", glade_name);
@@ -549,11 +547,11 @@ impl NetworkManager {
                 {
                     if crate::hook::write_save_file(&glade_name, &bytes) {
                         crate::debug_log!("[GladeSync] Save from peer written: {}", glade_name);
-                        crate::hook::SUPPRESS_SYNC.store(true, Ordering::SeqCst);
-                        thread::spawn(move || {
-                            thread::sleep(Duration::from_secs(5));
-                            crate::hook::SUPPRESS_SYNC.store(false, Ordering::SeqCst);
-                        });
+                        // Record this save's mtime as "already synced" so the
+                        // host's own auto-sync loop doesn't immediately
+                        // re-broadcast it back to the client that just sent it
+                        // (infinite ping-pong loop).
+                        crate::hook::mark_remote_save_written();
                     }
                 }
             }

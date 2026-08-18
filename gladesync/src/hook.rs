@@ -21,10 +21,20 @@ use std::sync::Mutex;
 
 pub static BORDER_UNLOCKED: AtomicBool = AtomicBool::new(false);
 
-/// Set to true for a few seconds after receiving a remote save sync, so the
-/// auto-sync watcher doesn't immediately re-broadcast the save we just wrote
-/// (which would create an infinite ping-pong loop between host and client).
-pub static SUPPRESS_SYNC: AtomicBool = AtomicBool::new(false);
+/// Records the mtime of the last save we wrote to disk *because we received
+/// it over the network* (from host or from a peer). The auto-sync polling
+/// loop below adopts this value as its own "already synced" bookmark before
+/// checking whether the save changed — so the save we just received is never
+/// mistaken for a new local change and re-broadcast, which would otherwise
+/// create an infinite ping-pong loop between host and client.
+pub static LAST_REMOTE_SAVE_MTIME: Mutex<Option<SystemTime>> = Mutex::new(None);
+
+/// Called by network.rs right after writing a save received from a peer.
+pub fn mark_remote_save_written() {
+    if let Some((_, mtime, _)) = get_latest_save_info() {
+        *LAST_REMOTE_SAVE_MTIME.lock().unwrap() = Some(mtime);
+    }
+}
 
 // ─────────────────────────────────────────────────────────────────────────────
 // Debug console — F12 opens a console window showing all GladeSync log
@@ -256,10 +266,17 @@ impl HookEngine {
                     continue;
                 }
 
-                // Skip auto-sync for a few seconds after receiving a remote save
-                // to prevent infinite save ping-pong between host and client.
-                if SUPPRESS_SYNC.load(Ordering::SeqCst) {
-                    continue;
+                // Adopt any mtime we just received over the network as our own
+                // "already synced" bookmark, BEFORE checking for local changes
+                // below. This is what actually prevents the ping-pong loop: the
+                // save we just wrote from a peer/host now looks like something
+                // we already sent, so the "changed" check further down stays
+                // false for it.
+                if let Some(remote_mtime) = *LAST_REMOTE_SAVE_MTIME.lock().unwrap() {
+                    if last_save_mtime.map_or(true, |m| remote_mtime > m) {
+                        last_save_mtime = Some(remote_mtime);
+                        last_sync_time = Some(SystemTime::now());
+                    }
                 }
 
                 // Log save dir status once when connection starts
