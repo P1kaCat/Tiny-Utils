@@ -21,6 +21,11 @@ use std::sync::Mutex;
 
 pub static BORDER_UNLOCKED: AtomicBool = AtomicBool::new(false);
 
+/// Set to true for a few seconds after receiving a remote save sync, so the
+/// auto-sync watcher doesn't immediately re-broadcast the save we just wrote
+/// (which would create an infinite ping-pong loop between host and client).
+pub static SUPPRESS_SYNC: AtomicBool = AtomicBool::new(false);
+
 // ─────────────────────────────────────────────────────────────────────────────
 // Debug console — F12 opens a console window showing all GladeSync log
 // messages. A ring buffer stores the last 500 messages so nothing is lost
@@ -247,12 +252,18 @@ impl HookEngine {
                 }
                 f12_was_down = f12_down;
 
-                if !net.is_hosting() {
+                if !net.is_active() {
                     continue;
                 }
 
-                // Log save dir status once when hosting starts
-                if !save_dir_logged {
+                // Skip auto-sync for a few seconds after receiving a remote save
+                // to prevent infinite save ping-pong between host and client.
+                if SUPPRESS_SYNC.load(Ordering::SeqCst) {
+                    continue;
+                }
+
+                // Log save dir status once when connection starts
+                if !save_dir_logged && net.is_hosting() {
                     save_dir_logged = true;
                     match find_save_dir() {
                         Some(dir) => {

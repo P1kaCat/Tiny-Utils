@@ -413,6 +413,10 @@ impl NetworkManager {
                                 {
                                     if crate::hook::write_save_file(glade_name, &bytes) {
                                         crate::debug_log!("[GladeSync] Save state received and written: {}", glade_name);
+                                        // Suppress auto-sync for 5s to prevent the save we just
+                                        // wrote from immediately being re-broadcast back (which
+                                        // would create an infinite ping-pong loop).
+                                        crate::hook::SUPPRESS_SYNC.store(true, std::sync::atomic::Ordering::SeqCst);
                                         // Auto-reload: wait briefly for the file write to settle,
                                         // then simulate a quick-load keypress so the game picks
                                         // up the new save without manual intervention.
@@ -420,6 +424,9 @@ impl NetworkManager {
                                             thread::sleep(Duration::from_millis(500));
                                             crate::hook::trigger_reload();
                                             crate::debug_log!("[GladeSync] Auto-reload triggered");
+                                            // Clear suppress flag after 5s
+                                            thread::sleep(Duration::from_millis(4500));
+                                            crate::hook::SUPPRESS_SYNC.store(false, std::sync::atomic::Ordering::SeqCst);
                                         });
                                     } else {
                                         crate::debug_log!("[GladeSync ERROR] Failed to write save state: {}", glade_name);
@@ -533,8 +540,22 @@ impl NetworkManager {
                 crate::debug_log!("[GladeSync] Remote edit: {:?} (ID: {})", action.edit_category, action.action_id);
             }
             NetMessage::CursorStream(_) => {}
-            NetMessage::SyncSaveState { glade_name, .. } => {
+            NetMessage::SyncSaveState { glade_name, save_bytes_base64 } => {
                 crate::debug_log!("[GladeSync] Received glade snapshot: {}", glade_name);
+                // Host receives a save from a client — write it to disk so the
+                // host can load it. This makes sync bidirectional.
+                if let Ok(bytes) = base64::engine::general_purpose::STANDARD
+                    .decode(&save_bytes_base64)
+                {
+                    if crate::hook::write_save_file(&glade_name, &bytes) {
+                        crate::debug_log!("[GladeSync] Save from peer written: {}", glade_name);
+                        crate::hook::SUPPRESS_SYNC.store(true, Ordering::SeqCst);
+                        thread::spawn(move || {
+                            thread::sleep(Duration::from_secs(5));
+                            crate::hook::SUPPRESS_SYNC.store(false, Ordering::SeqCst);
+                        });
+                    }
+                }
             }
             NetMessage::ChatMessage { sender, text } => {
                 println!("[{}] {}", sender, text);
