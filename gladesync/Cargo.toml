@@ -1,0 +1,30 @@
+[package]
+name = "gladesync"
+version = "0.1.0"
+edition = "2021"
+
+[lib]
+name = "dxgi"
+crate-type = ["cdylib"]
+
+[dependencies]
+windows-sys = { version = "0.59", features = [
+    "Win32_Foundation",
+    "Win32_System_LibraryLoader",
+    "Win32_System_Console",
+    "Win32_System_Threading",
+    "Win32_System_Memory",
+    "Win32_System_SystemServices",
+    "Win32_System_Diagnostics_Debug",
+    "Win32_UI_Input_KeyboardAndMouse",
+    "Win32_UI_WindowsAndMessaging",
+    "Win32_Graphics_Gdi",
+] }
+serde = { version = "1.0", features = ["derive"] }
+serde_json = "1.0"
+crossbeam-channel = "0.5"
+socket2 = "0.5"
+tiny-skia = "0.11"
+base64 = "0.22"
+zip = { version = "0.6", default-features = false, features = ["deflate"] }
+walkdir = "2"

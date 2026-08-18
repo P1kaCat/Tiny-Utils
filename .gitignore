@@ -1,0 +1,19 @@
+# Game files - do not commit
+*.exe
+*.dll
+*.bank
+*.rne
+steam_emu.ini
+assets/
+assets-src/
+build-info/
+compiled-assets/
+compiled-shaders/
+rune_controller_glyphs/
+legal/
+tmp/
+credits-crates.txt
+default_settings.ron
+third-party-licenses.html
+scan_glade.py
+Install.zip

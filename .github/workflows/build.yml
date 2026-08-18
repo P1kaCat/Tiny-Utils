@@ -1,0 +1,50 @@
+name: Build Tiny Utils
+
+on:
+  push:
+    branches: [master]
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: windows-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Install Rust
+        uses: dtolnay/rust-toolchain@stable
+
+      - name: Build mod
+        run: cargo build --release
+        working-directory: gladesync
+
+      - name: Create Install.zip
+        shell: pwsh
+        run: |
+          $dest = "Install"
+          New-Item -ItemType Directory -Path $dest -Force
+          Copy-Item "tinyutils.bat" -Destination "$dest/"
+          Copy-Item "tinyutils_setup.ps1" -Destination "$dest/"
+          Compress-Archive -Path "$dest/*" -DestinationPath "Install.zip" -Force
+
+      - name: Upload to release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: latest
+          name: Latest Build
+          body: |
+            Automated build from commit ${{ github.sha }}
+
+            Download Install.zip, extract it anywhere, and run tinyutils.bat.
+            The installer will find your Tiny Glade folder and download the mod automatically.
+            To uninstall, run tinyutils.bat again and pick Uninstall.
+          files: |
+            Install.zip
+            gladesync/target/release/dxgi.dll
+          prerelease: true
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
