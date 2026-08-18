@@ -6,13 +6,21 @@ use socket2::{Socket, Domain, Type};
 use std::sync::atomic::{AtomicBool, AtomicU32, Ordering};
 use std::sync::{Arc, Mutex};
 use std::thread;
-use std::time::Duration;
+use std::time::{Duration, Instant};
+
+/// How long we tolerate silence from a peer/host before treating the
+/// connection as dead. Combined with the periodic heartbeat Ping sent every
+/// HEARTBEAT_INTERVAL, this detects "silent" disconnects (NAT timeout, cable
+/// unplugged, router reboot) that never send a TCP FIN/RST, which otherwise
+/// leave a stale peer in the player list forever.
+const HEARTBEAT_TIMEOUT: Duration = Duration::from_secs(12);
 
 struct PeerConnection {
     stream: TcpStream,
     id: u32,
     name: String,
     addr: String,
+    last_seen: Arc<Mutex<Instant>>,
 }
 
 pub struct NetworkManager {
@@ -26,6 +34,9 @@ pub struct NetworkManager {
     active_client: Arc<Mutex<Option<TcpStream>>>,
     player_list: Arc<Mutex<Vec<PlayerInfo>>>,
     next_player_id: AtomicU32,
+    /// Last time we heard ANYTHING from the host (client role only). Used by
+    /// the heartbeat watchdog to detect a silently-dead connection.
+    last_server_seen: Arc<Mutex<Instant>>,
 }
 
 impl NetworkManager {
@@ -41,6 +52,7 @@ impl NetworkManager {
             active_client: Arc::new(Mutex::new(None)),
             player_list: Arc::new(Mutex::new(Vec::new())),
             next_player_id: AtomicU32::new(2),
+            last_server_seen: Arc::new(Mutex::new(Instant::now())),
         })
     }
 
@@ -167,8 +179,11 @@ impl NetworkManager {
                                 }
                             }
                         }
-                        // Reset read timeout to none for ongoing reads
-                        let _ = reader.get_ref().set_read_timeout(None);
+                        // Keep a short read timeout (instead of blocking forever) so the
+                        // peer thread wakes up periodically and can notice, via the
+                        // heartbeat watchdog below, a connection that died silently
+                        // (no FIN/RST — e.g. NAT mapping expired or cable unplugged).
+                        let _ = reader.get_ref().set_read_timeout(Some(Duration::from_secs(3)));
 
                         let assigned_id = self_clone.next_player_id.fetch_add(1, Ordering::SeqCst);
                         let ack = NetMessage::HandshakeAck {
@@ -178,11 +193,13 @@ impl NetworkManager {
                         if let Ok(json) = serde_json::to_string(&ack) {
                             let _ = writeln!(socket, "{}", json);
                         }
+                        let last_seen = Arc::new(Mutex::new(Instant::now()));
                         {
                             let mut peers = self_clone.peers.lock().unwrap();
                             peers.push(PeerConnection {
                                 stream: socket, id: assigned_id,
                                 name: player_name.clone(), addr: peer_addr.clone(),
+                                last_seen: Arc::clone(&last_seen),
                             });
                         }
                         self_clone.rebuild_player_list_and_broadcast();
@@ -209,11 +226,48 @@ impl NetworkManager {
                         let peer_id = assigned_id;
                         let peer_addr_clone = peer_addr.clone();
                         thread::spawn(move || {
-                            for line in reader.lines() {
-                                match line {
-                                    Ok(data) => {
-                                        if let Ok(msg) = serde_json::from_str::<NetMessage>(&data) {
+                            let mut line = String::new();
+                            loop {
+                                line.clear();
+                                match reader.read_line(&mut line) {
+                                    Ok(0) => {
+                                        crate::debug_log!("[GladeSync Server] Player {} (id={}) disconnected.", peer_addr_clone, peer_id);
+                                        let mut peers = self_peer.peers.lock().unwrap();
+                                        peers.retain(|p| p.id != peer_id);
+                                        drop(peers);
+                                        self_peer.rebuild_player_list_and_broadcast();
+                                        break;
+                                    }
+                                    Ok(_) => {
+                                        *last_seen.lock().unwrap() = Instant::now();
+                                        let trimmed = line.trim();
+                                        if trimmed.is_empty() { continue; }
+                                        if let Ok(msg) = serde_json::from_str::<NetMessage>(trimmed) {
+                                            if matches!(msg, NetMessage::Ping) {
+                                                // Reply immediately so the peer's own watchdog
+                                                // sees fresh traffic too.
+                                                if let Ok(json) = serde_json::to_string(&NetMessage::Pong) {
+                                                    let _ = writeln!(reader.get_mut(), "{}", json);
+                                                }
+                                                continue;
+                                            }
                                             self_peer.handle_incoming_message(msg);
+                                        }
+                                    }
+                                    Err(ref e) if e.kind() == std::io::ErrorKind::WouldBlock
+                                        || e.kind() == std::io::ErrorKind::TimedOut =>
+                                    {
+                                        let elapsed = last_seen.lock().unwrap().elapsed();
+                                        if elapsed > HEARTBEAT_TIMEOUT {
+                                            crate::debug_log!(
+                                                "[GladeSync Server] Player {} (id={}) timed out (no response for {}s) — dropping.",
+                                                peer_addr_clone, peer_id, elapsed.as_secs()
+                                            );
+                                            let mut peers = self_peer.peers.lock().unwrap();
+                                            peers.retain(|p| p.id != peer_id);
+                                            drop(peers);
+                                            self_peer.rebuild_player_list_and_broadcast();
+                                            break;
                                         }
                                     }
                                     Err(_) => {
@@ -303,14 +357,19 @@ impl NetworkManager {
             }
         }
 
-        // Reset to blocking with no timeout for normal ongoing play.
-        stream.set_read_timeout(None).map_err(|e| e.to_string())?;
+        // Keep a short read timeout (instead of blocking forever) so this
+        // thread wakes up periodically to run the heartbeat watchdog below —
+        // detects a connection that died silently (NAT timeout, cable
+        // unplugged, host crashed without closing the socket) instead of
+        // leaving the UI showing "connected" forever.
+        stream.set_read_timeout(Some(Duration::from_secs(3))).map_err(|e| e.to_string())?;
 
         // Store the original stream for writing (broadcast_message uses it).
         if let Ok(mut client_slot) = self.active_client.lock() { *client_slot = Some(stream); }
         self.is_connected.store(true, Ordering::SeqCst);
         self.local_id.store(assigned_id, Ordering::SeqCst);
         self.update_self_in_player_list();
+        *self.last_server_seen.lock().unwrap() = Instant::now();
         crate::debug_log!("[GladeSync] Connected! ID: #{} | Host: {}", assigned_id, host_name_recv);
 
         // ── Receive thread ──
@@ -318,10 +377,30 @@ impl NetworkManager {
         // messages from the server are lost.
         let self_clone = Arc::clone(self);
         thread::spawn(move || {
-            for line in reader.lines() {
-                match line {
-                    Ok(data) => {
-                        if let Ok(msg) = serde_json::from_str::<NetMessage>(&data) {
+            let mut line = String::new();
+            loop {
+                line.clear();
+                match reader.read_line(&mut line) {
+                    Ok(0) => {
+                        crate::debug_log!("[GladeSync] Disconnected from host.");
+                        self_clone.is_connected.store(false, Ordering::SeqCst);
+                        *self_clone.active_client.lock().unwrap() = None;
+                        *self_clone.player_list.lock().unwrap() = vec![];
+                        break;
+                    }
+                    Ok(_) => {
+                        *self_clone.last_server_seen.lock().unwrap() = Instant::now();
+                        let trimmed = line.trim();
+                        if trimmed.is_empty() { continue; }
+                        if let Ok(msg) = serde_json::from_str::<NetMessage>(trimmed) {
+                            if matches!(msg, NetMessage::Ping) {
+                                // Reply immediately so the host's watchdog sees fresh
+                                // traffic from us too.
+                                if let Ok(json) = serde_json::to_string(&NetMessage::Pong) {
+                                    let _ = writeln!(reader.get_mut(), "{}", json);
+                                }
+                                continue;
+                            }
                             // PlayerListUpdate: replace the entire list (server is
                             // the single source of truth — no local additions).
                             if let NetMessage::PlayerListUpdate { players } = &msg {
@@ -348,6 +427,21 @@ impl NetworkManager {
                                 }
                             }
                             self_clone.handle_incoming_message(msg);
+                        }
+                    }
+                    Err(ref e) if e.kind() == std::io::ErrorKind::WouldBlock
+                        || e.kind() == std::io::ErrorKind::TimedOut =>
+                    {
+                        let elapsed = self_clone.last_server_seen.lock().unwrap().elapsed();
+                        if elapsed > HEARTBEAT_TIMEOUT {
+                            crate::debug_log!(
+                                "[GladeSync] Lost connection to host (no response for {}s) — disconnecting.",
+                                elapsed.as_secs()
+                            );
+                            self_clone.is_connected.store(false, Ordering::SeqCst);
+                            *self_clone.active_client.lock().unwrap() = None;
+                            *self_clone.player_list.lock().unwrap() = vec![];
+                            break;
                         }
                     }
                     Err(_) => {

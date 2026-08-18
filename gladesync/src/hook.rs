@@ -190,9 +190,23 @@ impl HookEngine {
             let mut save_dir_logged = false;
             let mut f10_was_down = false;
             let mut f12_was_down = false;
+            // ── Connection heartbeat ──
+            // Sent every ~4s (13 ticks * 300ms) to both peers (as host) and
+            // to the host (as client). This keeps NAT/router mappings alive
+            // and lets each side's watchdog detect a silently-dead connection
+            // within HEARTBEAT_TIMEOUT instead of showing "connected" forever.
+            let mut heartbeat_tick: u32 = 0;
 
             loop {
                 thread::sleep(Duration::from_millis(300));
+
+                heartbeat_tick += 1;
+                if heartbeat_tick >= 13 {
+                    heartbeat_tick = 0;
+                    if net.is_active() {
+                        net.broadcast_message(&NetMessage::Ping);
+                    }
+                }
 
                 // ── F10: manual sync (host can press F10 to force-send save) ──
                 let f10_down = (unsafe { GetAsyncKeyState(MANUAL_SYNC_VK) } as u16) & 0x8000 != 0;
