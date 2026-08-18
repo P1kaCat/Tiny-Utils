@@ -5,6 +5,7 @@
 *.rne
 steam_emu.ini
 assets/
+!gladesync/assets/
 assets-src/
 build-info/
 compiled-assets/
